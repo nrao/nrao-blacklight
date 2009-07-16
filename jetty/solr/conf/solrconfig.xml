@@ -49,7 +49,7 @@
 
   <!-- config for the admin interface --> 
   <admin>
-    <defaultQuery>gbt vla +i:ron</defaultQuery>
+    <defaultQuery>institution:hopkins</defaultQuery>
 
     <!-- configure a healthcheck file for servers behind a loadbalancer
       <healthcheck type="file">server-enabled</healthcheck>
