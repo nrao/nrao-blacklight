@@ -48,7 +48,7 @@
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
    <!--Everything else is allowed, as text fields.-->
-   <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="false"/>
  </fields>
 
  <!--system_id format: <foreign_system/>.<foreign_key/>, e.g. 'opensky.110'-->
