@@ -100,11 +100,11 @@ document 5
 
 # TODO: unicode support is pretty sloppy. define it better.
 
-from httplib import HTTPConnection
 from urllib import urlencode
 from urlparse import urlsplit
 from datetime import datetime, date
-from time import strptime
+import re
+
 try:
     # for python 2.5
     from xml.etree import cElementTree as ET
@@ -129,22 +129,38 @@ except ImportError:
     # For Python >= 2.6
     import json
 
+try:
+    # Desirable from a timeout perspective.
+    from httplib2 import Http
+    TIMEOUTS_AVAILABLE = True
+except ImportError:
+    from httplib import HTTPConnection
+    TIMEOUTS_AVAILABLE = False
+
+try:
+    set
+except NameError:
+    from sets import Set as set
+
 __author__ = 'Joseph Kocherhans, Jacob Kaplan-Moss, Daniel Lindsley'
 __all__ = ['Solr']
-__version__ = (2, 0, 0)
+__version__ = (2, 0, 9)
 
 def get_version():
     return "%s.%s.%s" % __version__
+
+DATETIME_REGEX = re.compile('^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})T(?P<hour>\d{2}):(?P<minute>\d{2}):(?P<second>\d{2})(\.\d+)?Z$')
 
 class SolrError(Exception):
     pass
 
 class Results(object):
-    def __init__(self, docs, hits, highlighting={}, facets={}):
+    def __init__(self, docs, hits, highlighting={}, facets={}, spellcheck={}):
         self.docs = docs
         self.hits = hits
         self.highlighting = highlighting
         self.facets = facets
+        self.spellcheck = spellcheck
 
     def __len__(self):
         return len(self.docs)
@@ -153,10 +169,10 @@ class Results(object):
         return iter(self.docs)
 
 class Solr(object):
-    def __init__(self, url, decoder=None):
+    def __init__(self, url, decoder=None, timeout=60):
         self.decoder = decoder or json.JSONDecoder()
         self.url = url
-        scheme, netloc, path, query, fragment = urlsplit(url)
+        self.scheme, netloc, path, query, fragment = urlsplit(url)
         netloc = netloc.split(':')
         self.host = netloc[0]
         if len(netloc) == 1:
@@ -164,42 +180,70 @@ class Solr(object):
         else:
             self.host, self.port = netloc
         self.path = path.rstrip('/')
+        self.timeout = timeout
+    
+    def _send_request(self, method, path, body=None, headers=None):
+        if TIMEOUTS_AVAILABLE:
+            url = self.url.replace(self.path, '')
+            http = Http(timeout=self.timeout)
+            headers, response = http.request(url + path, method=method, body=body, headers=headers)
+            
+            if int(headers['status']) != 200:
+                raise SolrError(self._extract_error(headers, response))
+            
+            return response
+        else:
+            if headers is None:
+                headers = {}
+            
+            conn = HTTPConnection(self.host, self.port)
+            conn.request(method, path, body, headers)
+            response = conn.getresponse()
+            
+            if response.status != 200:
+                raise SolrError(self._extract_error(dict(response.getheaders()), response.read()))
+            
+            return response.read()
 
     def _select(self, params):
         # encode the query as utf-8 so urlencode can handle it
         params['q'] = params['q'].encode('utf-8')
         params['wt'] = 'json' # specify json encoding of results
         path = '%s/select/?%s' % (self.path, urlencode(params, True))
-        conn = HTTPConnection(self.host, self.port)
-        conn.request('GET', path)
-        return conn.getresponse()
+        return self._send_request('GET', path)
     
     def _mlt(self, params):
         # encode the query as utf-8 so urlencode can handle it
         params['q'] = params['q'].encode('utf-8')
         params['wt'] = 'json' # specify json encoding of results
         path = '%s/mlt/?%s' % (self.path, urlencode(params, True))
-        conn = HTTPConnection(self.host, self.port)
-        conn.request('GET', path)
-        return conn.getresponse()
+        return self._send_request('GET', path)
 
-    def _update(self, message):
+    def _update(self, message, clean_ctrl_chars=True):
         """
         Posts the given xml message to http://<host>:<port>/solr/update and
         returns the result.
+        
+        Passing `sanitize` as False will prevent the message from being cleaned
+        of control characters (default True). This is done by default because
+        these characters would cause Solr to fail to parse the XML. Only pass
+        False if you're positive your data is clean.
         """
         path = '%s/update/' % self.path
-        conn = HTTPConnection(self.host, self.port)
-        conn.request('POST', path, message, {'Content-type': 'text/xml'})
-        return conn.getresponse()
+        
+        # Clean the message of ctrl characters.
+        if clean_ctrl_chars:
+            message = sanitize(message)
+        
+        return self._send_request('POST', path, message, {'Content-type': 'text/xml'})
 
-    def _extract_error(self, response):
+    def _extract_error(self, headers, response):
         """
         Extract the actual error message from a solr response. Unfortunately,
         this means scraping the html.
         """
-        et = ET.parse(response)
-        return "[%s] %s" % (response.reason, et.findtext('body/h1'))
+        jetty_br = '<br/>                                                \n'
+        return "[Reason: %s]\n%s" % (headers.get('reason'), response.replace(jetty_br, ''))
 
     # Conversion #############################################################
 
@@ -209,9 +253,9 @@ class Solr(object):
         we send to solr.
         """
         if isinstance(value, datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
         elif isinstance(value, date):
-            value = value.strftime('%Y-%m-%dT00:00:00.000Z')
+            value = value.strftime('%Y-%m-%dT00:00:00Z')
         elif isinstance(value, bool):
             if value:
                 value = 'true'
@@ -219,6 +263,47 @@ class Solr(object):
                 value = 'false'
         else:
             value = unicode(value)
+        return value
+    
+    def _to_python(self, value):
+        """
+        Converts values from Solr to native Python values.
+        """
+        if isinstance(value, (int, float, long, complex)):
+            return value
+        
+        if isinstance(value, (list, tuple)):
+            value = value[0]
+        
+        if value == 'true':
+            return True
+        elif value == 'false':
+            return False
+        
+        if isinstance(value, basestring):
+            possible_datetime = DATETIME_REGEX.search(value)
+        
+            if possible_datetime:
+                date_values = possible_datetime.groupdict()
+            
+                for dk, dv in date_values.items():
+                    date_values[dk] = int(dv)
+            
+                return datetime(date_values['year'], date_values['month'], date_values['day'], date_values['hour'], date_values['minute'], date_values['second'])
+        
+        try:
+            # This is slightly gross but it's hard to tell otherwise what the
+            # string's original type might have been. Be careful who you trust.
+            converted_value = eval(value)
+            
+            # Try to handle most built-in types.
+            if isinstance(converted_value, (list, tuple, set, dict, int, float, long, complex)):
+                return converted_value
+        except:
+            # If it fails (SyntaxError or its ilk) or we don't trust it,
+            # continue on.
+            pass
+        
         return value
 
     # API Methods ############################################################
@@ -229,11 +314,8 @@ class Solr(object):
         params.update(kwargs)
         response = self._select(params)
         
-        if response.status != 200:
-            raise SolrError(self._extract_error(response))
-
         # TODO: make result retrieval lazy and allow custom result objects
-        result = self.decoder.decode(response.read())
+        result = self.decoder.decode(response)
         result_kwargs = {}
         
         if result.get('highlighting'):
@@ -241,6 +323,9 @@ class Solr(object):
         
         if result.get('facet_counts'):
             result_kwargs['facets'] = result['facet_counts']
+        
+        if result.get('spellcheck'):
+            result_kwargs['spellcheck'] = result['spellcheck']
         
         return Results(result['response']['docs'], result['response']['numFound'], **result_kwargs)
     
@@ -257,10 +342,14 @@ class Solr(object):
         params.update(kwargs)
         response = self._mlt(params)
         
-        if response.status != 200:
-            raise SolrError(self._extract_error(response))
-
-        result = self.decoder.decode(response.read())
+        result = self.decoder.decode(response)
+        
+        if result['response'] is None:
+            result['response'] = {
+                'docs': [],
+                'numFound': 0,
+            }
+        
         return Results(result['response']['docs'], result['response']['numFound'])
 
     def add(self, docs, commit=True):
@@ -285,8 +374,6 @@ class Solr(object):
             message.append(d)
         m = ET.tostring(message)
         response = self._update(m)
-        if response.status != 200:
-            raise SolrError(self._extract_error(response))
         # TODO: Supposedly, we can put a <commit /> element in the same post body
         # as the add element. That isn't working for some reason, and it would save us
         # an extra trip to the server. This works for now.
@@ -304,8 +391,6 @@ class Solr(object):
         elif q is not None:
             m = '<delete><query>%s</query></delete>' % q
         response = self._update(m)
-        if response.status != 200:
-            raise SolrError(self._extract_error(response))
         # TODO: Supposedly, we can put a <commit /> element in the same post body
         # as the delete element. That isn't working for some reason, and it would save us
         # an extra trip to the server. This works for now.
@@ -314,13 +399,53 @@ class Solr(object):
 
     def commit(self):
         response = self._update('<commit />')
-        if response.status != 200:
-            raise SolrError(self._extract_error(response))
 
     def optimize(self):
         response = self._update('<optimize />')
-        if response.status != 200:
-            raise SolrError(self._extract_error(response))
+
+
+# Using two-tuples to preserve order.
+REPLACEMENTS = (
+    # Nuke nasty control characters.
+    ('\x00', ''), # Start of heading
+    ('\x01', ''), # Start of heading
+    ('\x02', ''), # Start of text
+    ('\x03', ''), # End of text
+    ('\x04', ''), # End of transmission
+    ('\x05', ''), # Enquiry
+    ('\x06', ''), # Acknowledge
+    ('\x07', ''), # Ring terminal bell
+    ('\x08', ''), # Backspace
+    ('\x0b', ''), # Vertical tab
+    ('\x0c', ''), # Form feed
+    ('\x0e', ''), # Shift out
+    ('\x0f', ''), # Shift in
+    ('\x10', ''), # Data link escape
+    ('\x11', ''), # Device control 1
+    ('\x12', ''), # Device control 2
+    ('\x13', ''), # Device control 3
+    ('\x14', ''), # Device control 4
+    ('\x15', ''), # Negative acknowledge
+    ('\x16', ''), # Synchronous idle
+    ('\x17', ''), # End of transmission block
+    ('\x18', ''), # Cancel
+    ('\x19', ''), # End of medium
+    ('\x1a', ''), # Substitute character
+    ('\x1b', ''), # Escape
+    ('\x1c', ''), # File separator
+    ('\x1d', ''), # Group separator
+    ('\x1e', ''), # Record separator
+    ('\x1f', ''), # Unit separator
+)
+
+def sanitize(data):
+    fixed_string = data
+    
+    for bad, good in REPLACEMENTS:
+        fixed_string = fixed_string.replace(bad, good)
+    
+    return fixed_string
+
 
 if __name__ == "__main__":
     import doctest
