@@ -22,6 +22,17 @@
     <lst name="defaults">
       <str name="q">*:*</str>
       <str name="echoParams">explicit</str>
+      <str name="fl">id,title_t,format_code_t,author,institution,title,score</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="document" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="fl">*</str>
+      <str name="rows">1</str>
+      <str name="q">{!raw f=id v=$id}</str>
+      <!-- use id=blah instead of q=id:blah -->
     </lst>
   </requestHandler>
 
@@ -34,7 +45,7 @@
   <requestHandler name="/admin/ping" class="PingRequestHandler">
     <lst name="defaults">
       <str name="qt">standard</str>
-      <str name="q">gbt</str>
+      <str name="q">galaxy</str>
       <str name="echoParams">all</str>
     </lst>
   </requestHandler>

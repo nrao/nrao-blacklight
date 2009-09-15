@@ -44,6 +44,24 @@
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
+   <field name="Year" type="string" indexed="true" stored="true" />
+   <field name="Electronic Location" type="string" indexed="true" stored="true" />
+   <field name="ADS Bibcode" type="string" indexed="true" stored="true" />
+   <field name="PreDoc" type="string" indexed="true" stored="true" />
+
+   <field name="Title" type="text" indexed="true" stored="true" />
+   <field name="Author" type="text" indexed="true" stored="true" />
+   <field name="Institution" type="text" indexed="true" stored="true" />
+   <field name="Notes" type="text" indexed="true" stored="true" />
+
+   <field name="Instruments" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="Surveys" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="NRAO Libraries" type="text" indexed="true" stored="true" multiValued="true"/>
+
+   <!--Blacklight-required fields.-->
+   <field name="title_t" type="text" indexed="true" stored="true"/>
+   <field name="format_code_t" type="text" indexed="true" stored="true" default="thesis"/>
+
    <!--Free-text search field.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
