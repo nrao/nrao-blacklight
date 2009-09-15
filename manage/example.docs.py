@@ -2,7 +2,7 @@
 
 import csv
 
-raw_docs = [record for record in csv.DictReader(open('data.csv'))]
+raw_docs = [record for record in csv.DictReader(open('example.data.csv'))]
 docs = []
 
 # This can be simplified, but let's make it work first.
