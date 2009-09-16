@@ -44,23 +44,21 @@
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
-   <field name="Year" type="string" indexed="true" stored="true" />
-   <field name="Electronic Location" type="string" indexed="true" stored="true" />
-   <field name="ADS Bibcode" type="string" indexed="true" stored="true" />
-   <field name="PreDoc" type="string" indexed="true" stored="true" />
+   <field name="year" type="string" indexed="true" stored="true" />
+   <field name="electronic_location" type="string" indexed="true" stored="true" />
+   <field name="ads_bibcode" type="string" indexed="true" stored="true" />
+   <field name="predoc" type="string" indexed="true" stored="true" />
 
-   <field name="Title" type="text" indexed="true" stored="true" />
-   <field name="Author" type="text" indexed="true" stored="true" />
-   <field name="Institution" type="text" indexed="true" stored="true" />
-   <field name="Notes" type="text" indexed="true" stored="true" />
+   <field name="title" type="text" indexed="true" stored="true" />
+   <field name="author" type="text" indexed="true" stored="true" />
+   <field name="institution" type="text" indexed="true" stored="true" />
+   <field name="notes" type="text" indexed="true" stored="true" />
 
-   <field name="Instruments" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="Surveys" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="NRAO Libraries" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="instruments" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="surveys" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="nrao_libraries" type="string" indexed="true" stored="true" multiValued="true"/>
 
-   <!--Blacklight-required fields.-->
-   <field name="title_t" type="text" indexed="true" stored="true"/>
-   <field name="format_code_t" type="text" indexed="true" stored="true" default="thesis"/>
+   <field name="title_display" type="string" indexed="false" stored="true"/>
 
    <!--Free-text search field.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
