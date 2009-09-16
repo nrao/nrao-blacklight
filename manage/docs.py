@@ -43,7 +43,11 @@ for raw_doc in raw_docs:
         doc['Surveys'].append(other)
 
     doc['id'] = doc.pop('Primary Key', '')
-    doc['title_t'] = '%s / %s' % (doc['Title'], doc['Author'])
+    doc['title_display'] = '%s / %s' % (doc['Title'], doc['Author'])
     doc['Electronic Location'] = doc['Electronic Location'].strip('#')
 
-    docs.append(doc)
+    formatted_doc = dict()
+    for k,v in doc.items():
+        formatted_doc[k.strip().lower().replace(' ', '_')] = v
+
+    docs.append(formatted_doc)
