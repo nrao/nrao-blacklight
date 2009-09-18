@@ -22,7 +22,7 @@
     <lst name="defaults">
       <str name="q">*:*</str>
       <str name="echoParams">explicit</str>
-      <str name="fl">id,title_t,format_code_t,author,institution,title,score</str>
+      <str name="fl">*,score</str>
     </lst>
   </requestHandler>
 

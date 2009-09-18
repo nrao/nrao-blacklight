@@ -58,7 +58,15 @@
    <field name="surveys" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="nrao_libraries" type="string" indexed="true" stored="true" multiValued="true"/>
 
+   <field name="instrument" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="survey" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="library" type="string" indexed="true" stored="true" multiValued="true"/>
+
    <field name="title_display" type="string" indexed="false" stored="true"/>
+   <field name="instruments_display" type="string" indexed="false" stored="true"/>
+   <field name="surveys_display" type="string" indexed="false" stored="true"/>
+   <field name="nrao_libraries_display" type="string" indexed="false" stored="true"/>
+   <field name="format_code" type="text" indexed="true" stored="true" default="thesis"/>
 
    <!--Free-text search field.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -71,6 +79,10 @@
  <uniqueKey>id</uniqueKey>
  <defaultSearchField>text</defaultSearchField>
  <solrQueryParser defaultOperator="AND"/>
+
+ <copyField source="instruments" dest="instrument"/>
+ <copyField source="surveys" dest="survey"/>
+ <copyField source="libraries" dest="library"/>
 
  <!--Copy fields for generic term searches.-->
  <copyField source="*" dest="text"/>
