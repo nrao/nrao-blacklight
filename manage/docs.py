@@ -50,4 +50,14 @@ for raw_doc in raw_docs:
     for k,v in doc.items():
         formatted_doc[k.strip().lower().replace(' ', '_')] = v
 
+    instruments_display = ', '.join(sorted(formatted_doc['instruments']))
+    surveys_display = ', '.join(sorted(formatted_doc['surveys']))
+    nrao_libraries_display = ', '.join(sorted(formatted_doc['nrao_libraries']))
+
+    formatted_doc['instruments_display'] = instruments_display
+    formatted_doc['surveys_display'] = surveys_display
+    formatted_doc['nrao_libraries_display'] = nrao_libraries_display
+
+    [formatted_doc.pop(k) for k,v in formatted_doc.items() if not v]
+
     docs.append(formatted_doc)
