@@ -38,9 +38,11 @@ for raw_doc in raw_docs:
         ks = field_map[key]
         doc[key] = [k for k,v in raw_doc.items() if k in ks and str(v) == '1']
 
+    doc['Survey Facet'] = [survey for survey in doc['Surveys']]
     other = raw_doc.get('Other (Write in)', '')
     if other:
         doc['Surveys'].append(other)
+        doc['Survey Facet'].append('Other')
 
     doc['id'] = doc.pop('Primary Key', '')
     doc['title_display'] = '%s / %s' % (doc['Title'], doc['Author'])
@@ -59,5 +61,12 @@ for raw_doc in raw_docs:
     formatted_doc['nrao_libraries_display'] = nrao_libraries_display
 
     [formatted_doc.pop(k) for k,v in formatted_doc.items() if not v]
+
+    # if formatted_doc.get('year', ''):
+    #     formatted_doc['date'] = '%s-01-01T00:00:00Z' % formatted_doc['year']
+    if formatted_doc.get('electronic_location', ''):
+        formatted_doc['electronic_status'] = 'online'
+    if formatted_doc.get('ads_bibcode', ''):
+        formatted_doc['has_ads_bibcode'] = True
 
     docs.append(formatted_doc)
