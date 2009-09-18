@@ -48,7 +48,7 @@
    <field name="year" type="string" indexed="true" stored="true" />
    <field name="electronic_location" type="string" indexed="true" stored="true" />
    <field name="ads_bibcode" type="string" indexed="true" stored="true" />
-   <field name="predoc" type="string" indexed="true" stored="true" />
+   <field name="predoc" type="text" indexed="true" stored="true" />
 
    <field name="title" type="text" indexed="true" stored="true" />
    <field name="author" type="text" indexed="true" stored="true" />
@@ -59,9 +59,9 @@
    <field name="surveys" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="nrao_libraries" type="string" indexed="true" stored="true" multiValued="true"/>
 
-   <field name="instrument" type="string" indexed="true" stored="false" multiValued="true"/>
-   <field name="survey" type="string" indexed="true" stored="false" multiValued="true"/>
-   <field name="library" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="instrument" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="survey" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="library" type="text" indexed="true" stored="false" multiValued="true"/>
 
    <field name="title_display" type="string" indexed="false" stored="true"/>
    <field name="instruments_display" type="string" indexed="false" stored="true"/>
