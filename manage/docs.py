@@ -11,6 +11,7 @@ for raw_doc in raw_docs:
     for k,v in raw_doc.items():
         v = v or ''
         doc[k.lower().strip().replace(' ', '_')] = v.decode('latin1')
-        doc['id'] = doc.get('filename', '')
+    doc['id'] = doc.get('filename', '')
+    doc['year'] = doc.pop('procyear', '')
     if doc.get('id', ''):
         docs.append(doc)
