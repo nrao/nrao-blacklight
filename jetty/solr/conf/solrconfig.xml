@@ -25,6 +25,16 @@
     </lst>
   </requestHandler>
 
+  <requestHandler name="document" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="fl">*</str>
+      <str name="rows">1</str>
+      <str name="q">{!raw f=id v=$id}</str>
+      <!-- use id=blah instead of q=id:blah -->
+    </lst>
+  </requestHandler>
+
   <!-- CSV update handler, loaded on demand -->
   <requestHandler name="/update/csv" class="solr.CSVRequestHandler" startup="lazy" />
 

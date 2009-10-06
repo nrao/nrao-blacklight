@@ -44,6 +44,18 @@
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
+   <field name="filename" type="string" indexed="true" stored="true"/>
+   <field name="title" type="text" indexed="true" stored="true"/>
+   <field name="authors" type="text" indexed="true" stored="true"/>
+   <field name="session" type="string" indexed="true" stored="true"/>
+   <field name="firstpage" type="string" indexed="true" stored="true"/>
+   <field name="year" type="string" indexed="true" stored="true"/>
+   <field name="abstract" type="text" indexed="true" stored="true"/>
+
+   <field name="format_code" type="text" indexed="true" stored="true" default="proceeding"/>
+
+   <field name="author" type="text" indexed="true" stored="false"/>
+
    <!--Free-text search field.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
@@ -51,11 +63,11 @@
    <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="false"/>
  </fields>
 
- <!--system_id format: <foreign_system/>.<foreign_key/>, e.g. 'opensky.110'-->
  <uniqueKey>id</uniqueKey>
  <defaultSearchField>text</defaultSearchField>
  <solrQueryParser defaultOperator="AND"/>
 
  <!--Copy fields for generic term searches.-->
  <copyField source="*" dest="text"/>
+ <copyField source="authors" dest="author"/>
 </schema>
