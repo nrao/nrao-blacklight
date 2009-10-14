@@ -39,6 +39,14 @@
         <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
       </analyzer>
     </fieldType>
+    <fieldType name="alphaOnlySort" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+        <filter class="solr.TrimFilterFactory" />
+        <filter class="solr.PatternReplaceFilterFactory" pattern="([^a-z\d])" replacement="" replace="all" />
+      </analyzer>
+    </fieldType>
  </types>
 
  <fields>
@@ -71,6 +79,10 @@
    <field name="availability_display" type="string" indexed="false" stored="true"/>
    <field name="format_code" type="string" indexed="true" stored="true" default="thesis"/>
 
+   <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="institution_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+
    <field name="survey_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="electronic_status" type="string" indexed="true" stored="false" default="not online"/>
    <field name="ads_bibcode_status" type="string" indexed="true" stored="false" default="not available"/>
@@ -94,4 +106,7 @@
 
  <!--Copy fields for generic term searches.-->
  <copyField source="*" dest="text"/>
+ <copyField source="author" dest="author_sort"/>
+ <copyField source="institution" dest="institution_sort"/>
+ <copyField source="title" dest="title_sort"/>
 </schema>
