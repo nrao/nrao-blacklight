@@ -23,6 +23,9 @@
       <str name="q">*:*</str>
       <str name="echoParams">explicit</str>
       <str name="fl">*,score</str>
+      <str name="facet">true</str>
+      <str name="facet.mincount">1</str>
+      <str name="facet.sort">false</str>
     </lst>
   </requestHandler>
 
