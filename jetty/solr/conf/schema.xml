@@ -83,6 +83,7 @@
    <field name="year_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
 
+   <field name="instrument_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="survey_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="electronic_status" type="string" indexed="true" stored="false" default="Not Online"/>
    <field name="ads_bibcode_status" type="string" indexed="true" stored="false" default="Not Available"/>
