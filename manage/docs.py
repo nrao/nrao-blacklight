@@ -10,13 +10,14 @@ field_map = {'Instruments': ('12 Meter','36 Foot','85 Foot','140 Foot',
                              'Technical','VLA','VLBA','VLBI','VSOP',
                              'Non-Observational','MK II Correlator',
                              'MK IV Correlator','20 Meter',),
-             'Surveys': ('CGPS','VGPS','MAGPIS','NVSS','SPGS','FIRST',),
+             'Surveys': ('CGPS','VGPS','MAGPIS','NVSS','SPGS','FIRST',
+                         'VGPS','MAGPIS','CGPS','SPGS','FIRST','HAS',),
              'NRAO Libraries': ('Charlottesville','Socorro','Green Bank',
                                 'NRAO Library'),
              }
 
 mapped_fields = reduce(operator.add, field_map.values())
-mapped_fields += ('Other', 'Other (Write in)')
+mapped_fields += ('Other', 'Other (Write in)') # Other is an Instrument
 
 # TODO Is there a better way?
 def build_decade_lookup(begin, end):
@@ -64,10 +65,12 @@ for raw_doc in raw_docs:
         doc[key] = [k for k,v in raw_doc.items() if k in ks and str(v) == 'TRUE']
 
     doc['Survey Facet'] = [survey for survey in doc['Surveys']]
+    doc['Instrument Facet'] = [instrument for instrument in doc['Instruments']]
+
     other = raw_doc.get('Other (Write in)', '')
     if other:
-        doc['Surveys'].append(other)
-        doc['Survey Facet'].append('Other')
+        doc['Instruments'].append(other)
+        doc['Instrument Facet'].append('Other')
 
     doc['id'] = doc.pop('Primary Key', '')
     doc['title_display'] = '%s / %s' % (doc['Title'], doc['Author'])
