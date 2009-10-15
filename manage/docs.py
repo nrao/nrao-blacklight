@@ -86,7 +86,7 @@ for raw_doc in raw_docs:
     if nrao_libraries_display:
         availability.append('NRAO Library')
     if not availability:
-        availability = ['not available at NRAO']
+        availability = ['Not Available at NRAO']
     availability_display = ', '.join(availability)
 
     formatted_doc['instruments_display'] = instruments_display
@@ -98,13 +98,13 @@ for raw_doc in raw_docs:
     # if formatted_doc.get('year', ''):
     #     formatted_doc['date'] = '%s-01-01T00:00:00Z' % formatted_doc['year']
     if formatted_doc.get('electronic_location', ''):
-        formatted_doc['electronic_status'] = 'online'
+        formatted_doc['electronic_status'] = 'Online'
         href = formatted_doc['electronic_location']
         if not (href.startswith('http://') or href.startswith('ftp://')):
             href = 'http://' + href
             formatted_doc['electronic_location'] = href
     if formatted_doc.get('ads_bibcode', ''):
-        formatted_doc['ads_bibcode_status'] = 'available'
+        formatted_doc['ads_bibcode_status'] = 'Available'
     formatted_doc['decade_facet'] = get_decade(formatted_doc.get('year', 0))
 
 
