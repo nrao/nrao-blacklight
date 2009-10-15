@@ -80,7 +80,7 @@
    <field name="format_code" type="string" indexed="true" stored="true" default="thesis"/>
 
    <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
-   <field name="institution_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="year_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
 
    <field name="survey_facet" type="string" indexed="true" stored="false" multiValued="true"/>
@@ -107,6 +107,6 @@
  <!--Copy fields for generic term searches.-->
  <copyField source="*" dest="text"/>
  <copyField source="author" dest="author_sort"/>
- <copyField source="institution" dest="institution_sort"/>
+ <copyField source="year" dest="year_sort"/>
  <copyField source="title" dest="title_sort"/>
 </schema>
