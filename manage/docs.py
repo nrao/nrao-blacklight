@@ -13,5 +13,9 @@ for raw_doc in raw_docs:
         doc[k.lower().strip().replace(' ', '_')] = v.decode('latin1')
     doc['id'] = doc.get('filename', '')
     doc['year'] = doc.pop('procyear', '')
+    doc['pagenumbers'] = str(doc.get('firstpage', ''))
+    if int(doc.get('lastpage', '0')) > 0:
+        doc['pagenumbers'] = '%s-%s' % (doc['pagenumbers'], doc['lastpage'])
+    doc['pagenumbers'].strip('-')
     if doc.get('id', ''):
         docs.append(doc)
