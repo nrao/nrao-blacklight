@@ -63,6 +63,9 @@
    <field name="year" type="string" indexed="true" stored="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
 
+   <field name="created" type="date" indexed="true" stored="true"/>
+   <field name="modified" type="date" indexed="true" stored="true"/>
+
    <field name="format_code" type="text" indexed="true" stored="true" default="proceeding"/>
 
    <field name="altauthors" type="text" indexed="true" stored="false"/>
