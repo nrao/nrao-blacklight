@@ -2,9 +2,17 @@
 
 import csv
 import datetime
+import pytz
+import user
 
 raw_docs = [record for record in csv.DictReader(open('data.csv'), escapechar='\\')]
 docs = []
+
+def get_utc_datetime(timestamp, format='%Y-%m-%d %H:%M:%S', tz='US/Eastern'):
+    timezone = pytz.timezone(tz)
+    utc = pytz.utc
+    dt = datetime.datetime.strptime(timestamp, format)
+    return timezone.localize(dt).astimezone(utc)
 
 # This can be simplified, but let's make it work first.
 for raw_doc in raw_docs:
@@ -16,11 +24,9 @@ for raw_doc in raw_docs:
     doc['year'] = doc.pop('procyear', '')
     doc['pagenumbers'] = str(doc.get('firstpage', ''))
     if doc.get('modified', ''):
-        m = doc['modified']
-        doc['modified'] = datetime.datetime.strptime(m, '%Y-%m-%d %H:%M:%S')
+        doc['modified'] = get_utc_datetime(doc['modified'])
     if doc.get('created', ''):
-        c = doc['created']
-        doc['created'] = datetime.datetime.strptime(c, '%Y-%m-%d %H:%M:%S')
+        doc['created'] = get_utc_datetime(doc['created'])
     if int(doc.get('lastpage', '0')) > 0:
         doc['pagenumbers'] = '%s-%s' % (doc['pagenumbers'], doc['lastpage'])
     doc['pagenumbers'].strip('-')
