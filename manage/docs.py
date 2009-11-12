@@ -11,7 +11,7 @@ for raw_doc in raw_docs:
     doc = dict()
     for k,v in raw_doc.items():
         v = v or ''
-        doc[k.lower().strip().replace(' ', '_')] = v.decode('latin1')
+        doc[k.lower().strip().replace(' ', '_')] = v.decode('utf8')
     doc['id'] = doc.get('filename', '')
     doc['year'] = doc.pop('procyear', '')
     doc['pagenumbers'] = str(doc.get('firstpage', ''))
