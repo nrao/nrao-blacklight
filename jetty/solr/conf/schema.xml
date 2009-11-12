@@ -74,6 +74,8 @@
    <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="year_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="modified_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="created_sort" type="alphaOnlySort" indexed="true" stored="false"/>
 
    <!--Free-text search field.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -93,4 +95,6 @@
  <copyField source="firstauthor" dest="author_sort"/>
  <copyField source="year" dest="year_sort"/>
  <copyField source="title" dest="title_sort"/>
+ <copyField source="modified" dest="modified_sort"/>
+ <copyField source="created" dest="created_sort"/>
 </schema>
