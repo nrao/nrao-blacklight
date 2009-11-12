@@ -1,6 +1,7 @@
 # See example.docs.py.
 
 import csv
+import datetime
 
 raw_docs = [record for record in csv.DictReader(open('data.csv'), escapechar='\\')]
 docs = []
@@ -14,6 +15,12 @@ for raw_doc in raw_docs:
     doc['id'] = doc.get('filename', '')
     doc['year'] = doc.pop('procyear', '')
     doc['pagenumbers'] = str(doc.get('firstpage', ''))
+    if doc.get('modified', ''):
+        m = doc['modified']
+        doc['modified'] = datetime.datetime.strptime(m, '%Y-%m-%d %H:%M:%S')
+    if doc.get('created', ''):
+        c = doc['created']
+        doc['created'] = datetime.datetime.strptime(c, '%Y-%m-%d %H:%M:%S')
     if int(doc.get('lastpage', '0')) > 0:
         doc['pagenumbers'] = '%s-%s' % (doc['pagenumbers'], doc['lastpage'])
     doc['pagenumbers'].strip('-')
