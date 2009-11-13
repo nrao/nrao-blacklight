@@ -3,11 +3,19 @@
 import csv
 import datetime
 import pytz
+import sys
 import user
 
-raw_docs = [record for record in csv.DictReader(open('data.csv'),
-                                                delimiter=';',
-                                                escapechar='\\')]
+if '-m' in sys.argv:
+    i = sys.argv.index('-m')
+    name = sys.argv[i+1]
+    print 'using module named', name
+    module = __import__(name)
+    raw_docs = module.docs
+else:
+    raw_docs = [record for record in csv.DictReader(open('data.csv'),
+                                                    delimiter=';',
+                                                    escapechar='\\')]
 docs = []
 
 def get_utc_datetime(timestamp, format='%Y-%m-%d %H:%M:%S', tz='US/Eastern'):
