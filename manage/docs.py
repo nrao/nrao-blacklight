@@ -5,7 +5,9 @@ import datetime
 import pytz
 import user
 
-raw_docs = [record for record in csv.DictReader(open('data.csv'), escapechar='\\')]
+raw_docs = [record for record in csv.DictReader(open('data.csv'),
+                                                delimiter=';',
+                                                escapechar='\\')]
 docs = []
 
 def get_utc_datetime(timestamp, format='%Y-%m-%d %H:%M:%S', tz='US/Eastern'):
@@ -23,6 +25,12 @@ for raw_doc in raw_docs:
     doc['id'] = doc.get('filename', '')
     doc['year'] = doc.pop('procyear', '')
     doc['pagenumbers'] = str(doc.get('firstpage', ''))
+    if doc.get('category1', ''):
+        doc['category'] = doc.get('category', []) + [doc['category1']]
+    if doc.get('category2', ''):
+        doc['category'] = doc.get('category', []) + [doc['category2']]
+    doc['category'] = doc.get('category', ['None'])
+    doc['category_display'] = ', '.join(doc['category'])
     if doc.get('modified', ''):
         doc['modified'] = get_utc_datetime(doc['modified'])
     if doc.get('created', ''):
