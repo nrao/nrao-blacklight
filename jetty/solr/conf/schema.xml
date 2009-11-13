@@ -63,6 +63,12 @@
    <field name="year" type="string" indexed="true" stored="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
 
+   <field name="category1" type="string" indexed="false" stored="false"/>
+   <field name="category2" type="string" indexed="false" stored="false"/>
+
+   <field name="category" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="category_display" type="string" indexed="false" stored="true"/>
+
    <field name="created" type="date" indexed="true" stored="true"/>
    <field name="modified" type="date" indexed="true" stored="true"/>
 
