@@ -1,0 +1,12 @@
+sessionname nrao-blacklight
+caption always
+screen -t editor 0 wrap $EDITOR
+screen -t git    1 wrap git status
+screen -t manage 2 wrap -C manage
+screen -t rails  8 wrap ./script/server
+screen -t solr   9 wrap -C jetty java -jar start.jar
+select 1
+select 0
+
+source $HOME/.screenrc
+caption always
