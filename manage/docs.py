@@ -63,5 +63,7 @@ for raw_doc in raw_docs:
     doc['year'] = [int(x) for x in doc['year']]
     doc['month'] = [int(x) for x in doc['month']]
 
+    [doc.pop(k) for k,v in doc.items() if not v]
+
     if doc.get('id', ''):
         docs.append(doc)

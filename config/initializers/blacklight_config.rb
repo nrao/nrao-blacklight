@@ -24,7 +24,11 @@ Blacklight.configure(:shared) do |config|
     :per_page => 10,
     :facets => {
       :fields => [
-        "format",
+        "telescope",
+        "year",
+        "band_facet",
+        "receiver_facet",
+        "detector_facet",
       ]
     }
   }
@@ -38,26 +42,34 @@ Blacklight.configure(:shared) do |config|
 
   # solr field values given special treatment in the show (single result) view
   config[:show] = {
-    :html_title => "title_display",
-    :heading => "title_display",
-    :display_type => "format"
+    :html_title => "id",
+    :heading => "id",
+    :display_type => "format_code"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
-    :show_link => "title_display",
+    :show_link => "id",
     :num_per_page => 10,
-    :record_display_type => "format"
+    :record_display_type => "format_code"
   }
 
   # solr fields that will be treated as facets by the blacklight application
   #   The ordering of the field names is the order of the display
   config[:facet] = {
     :field_names => [
-      "format",
+      "telescope",
+      "year",
+      "band_facet",
+      "receiver_facet",
+      "detector_facet",
     ],
     :labels => {
-      "format"              => "Format",
+      "telescope"               => "Telescope",
+      "year"                    => "Year",
+      "band_facet"              => "Band",
+      "receiver_facet"          => "Receiver",
+      "detector_facet"          => "Detector",
     }
   }
 
@@ -65,10 +77,26 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-      "id",
+      "telescope",
+      "observer_display",
+      "lastdate",
+      "source_display",
+      "band_display",
+      "receiver_display",
+      "frequency_display",
+      "detector_display",
+      "polarization_display",
     ],
     :labels => {
-      "id"                      => "ID:",
+      "telescope"               => "Telescope:",
+      "observer_display"        => "Observer:",
+      "lastdate"                => "Last Observation:",
+      "source_display"          => "Source:",
+      "band_display"            => "Band:",
+      "receiver_display"        => "Receiver:",
+      "frequency_display"       => "Frequency:",
+      "detector_display"        => "Detector:",
+      "polarization_display"    => "Polarization:",
     }
   }
 
@@ -76,10 +104,26 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-      "id",
+      "telescope",
+      "observer_display",
+      "lastdate",
+      "source_display",
+      "band_display",
+      "receiver_display",
+      "frequency_display",
+      "detector_display",
+      "polarization_display",
     ],
     :labels => {
-      "id"                      => "ID:",
+      "telescope"               => "Telescope:",
+      "observer_display"        => "Observer:",
+      "lastdate"                => "Last Observation:",
+      "source_display"          => "Source:",
+      "band_display"            => "Band:",
+      "receiver_display"        => "Receiver:",
+      "frequency_display"       => "Frequency:",
+      "detector_display"        => "Detector:",
+      "polarization_display"    => "Polarization:",
     }
   }
 

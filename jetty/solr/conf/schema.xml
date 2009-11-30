@@ -86,6 +86,10 @@
    <field name="year_display" type="string" indexed="false" stored="true"/>
    <field name="month_display" type="string" indexed="false" stored="true"/>
 
+   <field name="band_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
+   <field name="receiver_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
+   <field name="detector_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
+
    <field name="format_code" type="string" indexed="true" stored="true" default="gbt_raw_fits"/>
 
    <!--Free-text search field.-->
@@ -100,4 +104,8 @@
  <solrQueryParser defaultOperator="AND"/>
 
  <copyField source="*" dest="text"/>
+
+ <copyField source="band" dest="band_facet"/>
+ <copyField source="receiver" dest="receiver_facet"/>
+ <copyField source="detector" dest="detector_facet"/>
 </schema>
