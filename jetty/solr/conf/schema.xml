@@ -3,7 +3,7 @@
   <types>
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
-    <fieldType name="integer" class="solr.IntField" omitNorms="true"/>
+    <fieldType name="int" class="solr.IntField" omitNorms="true"/>
     <fieldType name="long" class="solr.LongField" omitNorms="true"/>
     <fieldType name="float" class="solr.FloatField" omitNorms="true"/>
     <fieldType name="double" class="solr.DoubleField" omitNorms="true"/>
@@ -59,7 +59,32 @@
 
  <fields>
    <!--Domain-specific fields.-->
-   <field name="id" type="uuid" indexed="true" stored="true" default="NEW"/>
+   <field name="id" type="string" indexed="true" stored="true" required="true"/>
+
+   <field name="project_session" type="string" indexed="true" stored="true"/>
+   <field name="telescope" type="string" indexed="true" stored="true"/>
+   <field name="lastdate" type="date" indexed="true" stored="true"/>
+
+   <field name="source" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="observer" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="starttime" type="date" indexed="true" stored="true" multiValued="true"/>
+   <field name="frequency" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="detector" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="receiver" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="band" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="polarization" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="year" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="month" type="int" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="source_display" type="string" indexed="false" stored="true"/>
+   <field name="observer_display" type="string" indexed="false" stored="true"/>
+   <field name="frequency_display" type="string" indexed="false" stored="true"/>
+   <field name="detector_display" type="string" indexed="false" stored="true"/>
+   <field name="receiver_display" type="string" indexed="false" stored="true"/>
+   <field name="band_display" type="string" indexed="false" stored="true"/>
+   <field name="polarization_display" type="string" indexed="false" stored="true"/>
+   <field name="year_display" type="string" indexed="false" stored="true"/>
+   <field name="month_display" type="string" indexed="false" stored="true"/>
 
    <field name="format_code" type="string" indexed="true" stored="true" default="gbt_raw_fits"/>
 
