@@ -1,0 +1,7 @@
+db/migrate/
+*.sqlite3
+tmp/
+log/
+jetty/
+vendor/
+*~
