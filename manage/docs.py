@@ -25,7 +25,7 @@ def get_utc_datetime(timestamp, format='%Y-%m-%d %H:%M:%S', tz='US/Eastern'):
 multifields = ('source', 'observer', 'starttime', 'frequency', 'detector',
                'receiver', 'band', 'polarization', 'year', 'month',)
 
-display_exceptions = ('starttime', 'frequency', 'year', 'month',)
+display_exceptions = ('source', 'starttime', 'frequency', 'year', 'month',)
 
 display_fields = tuple([k for k in multifields if k not in display_exceptions])
 
@@ -43,6 +43,7 @@ for raw_doc in raw_docs:
     for key in display_fields:
         doc[key + '_display'] = ', '.join(doc[key])
     doc['frequency_display'] = '\n'.join(doc['frequency'])
+    doc['source_display'] = '\n'.join(doc['source'])
 
     starttimes = doc.get('starttime', [])
     formatted_starttimes = []
