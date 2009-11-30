@@ -1,7 +1,7 @@
 /* Global */
-html {background: #707070;}
+html {background: #0F2637;}
 
-body {background: url('../images/bg.png') repeat-x top left; font: 0.7em Verdana, "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif; line-height: 1.4; color:#333; margin: 0px; padding: 15px;}
+body {background: #0F2637; font: 0.7em Verdana, "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif; line-height: 1.4; color:#333; margin: 0px; padding: 15px;}
 
 select,input,button,textarea {font: 1em Verdana, "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;}
 
@@ -28,7 +28,7 @@ a:hover {color: #029;}
 #hd {margin: 0em 2em 0 2em; padding: 2em 0 2em 0; border-bottom: 1px dotted #ccc;}
 #hd .yui-g {text-align: right;}
 #hd .yui-g .first {text-align: left;}
-.yui-t2 {background: #fff url('../images/border.png') repeat-x top left; border-bottom: 2px solid #555; margin: 0px auto;}
+.yui-t2 {background: #fff repeat-x top left; border-bottom: 2px solid #555; margin: 0px auto;}
 /* border-top: 10px solid #548cd8; -moz-border-top-colors: #548cd8 #5188d3 #4e84d0 #4b81cd #497dc9 #457ac6 #4376c2 #4173be #3e71bc #3d6fba; */
 #doc1, #doc2, #doc1, #doc4 {width: 920px;}
 
@@ -42,15 +42,15 @@ a:hover {color: #029;}
 .yui-t2 .yui-b p {padding-top: 2em;}
 
 /* Top Banner */
-h1.site_title {background: transparent url('../images/logo.png') no-repeat top left; margin: 2em 0px 0px 1em; height: 35px; width: 120px;} 
+h1.site_title {background: transparent url('../images/logo.png') no-repeat top left; margin: 2em 0px 0px 1em; height: 78px; width: 801px;} 
 .first h1 {margin: 0px; padding: 0px;}
-h1.site_title a {display:block; height: 35px; width:120px; text-indent: -9999px; overflow: hidden; text-decoration: none; border: 0px;}
+h1.site_title a {display:block; height: 80px; width:65px; text-indent: -9999px; overflow: hidden; text-decoration: none; border: 0px;}
 h1.site_title a:link, h1.site_title a:visited, h1.site_title a:hover, h1.site_title a:active {border: 0px;}
 h2.search {margin:0; display:inline;}
 
 /* Search Box */
-#search {position: absolute; top: -4em; left: 0; text-align: left; font-size: 120%;}
-#search #q {width: 200px;}
+#search {margin: 0 0 2em 0; text-align: left; font-size: 120%;}
+#search #q {width: 400px;}
 #search .submit {padding: 0px 0.25em; margin: 0 0.5em; text-transform: capitalize;}
 #search h2 {display: none;}
 #search hr {display: none; margin:1em 0; margin-top: 2em;}
@@ -101,7 +101,7 @@ h3.index_title {clear: both; margin: 0px; padding: 0px; width: 460px;}
 dl {margin: 0px; padding: 0px;}
 dl.defList {overflow: auto; padding: 0.5em 0;}
 dl.defList dt {float:left; text-align: right; width: 20%; clear: both; color: #888; margin: 0; padding: 2px 1em 2px 0px;}
-dl.defList dd {text-align: left; margin: 0; padding: 2px 0;}
+dl.defList dd {text-align: left; margin: 0; padding: 2px 0 2px 141px;}
 
 /* Individual Result Listing */
 #document h1 {margin: 0px; padding: 0px 0px 1em 0px;}
@@ -195,3 +195,7 @@ ul#appliedFiltersList,
 #appliedParams a#startOverLink:hover{background-color:none;}
 #appliedParams a#startOverLink span{display:none;}
 .queryName, .filterName {padding-right:14px; background:url(../images/separator.gif) no-repeat right center;}
+
+.application_details {width: 873px;}
+.application_name {margin-left: 5px; font-size: 123.1%; font-weight: bold; float: left;}
+.breadcrumbs {float: right; text-align: right; padding-top: 2px;}

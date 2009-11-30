@@ -2,80 +2,80 @@
 # Methods added to this helper will be available to all templates in the application.
 #
 module ApplicationHelper
-  
+
   def application_name
-    'Blacklight'
+    'NRAO Blacklight'
   end
-  
+
   # collection of items to be rendered in the @sidebar
   def sidebar_items
     @sidebar_items ||= []
   end
-  
+
   #
   # Blacklight.config based helpers ->
   #
-  
+
   # used in the catalog/_facets partial
   def facet_field_labels
     Blacklight.config[:facet][:labels]
   end
-  
+
   # used in the catalog/_facets partial
   def facet_field_names
     Blacklight.config[:facet][:field_names]
   end
-  
+
   # used in the catalog/_index_partials/_default view
   def index_field_names
     Blacklight.config[:index_fields][:field_names]
   end
-  
+
   # used in the _index_partials/_default view
   def index_field_labels
     Blacklight.config[:index_fields][:labels]
   end
-  
+
   # Used in the show view for displaying the main solr document heading
   def document_heading
     @document[Blacklight.config[:show][:heading]]
   end
-  
+
   # Used in the show view for setting the main html document title
   def document_show_html_title
     @document[Blacklight.config[:show][:html_title]]
   end
-  
+
   # Used in the document_list partial (search view) for building a select element
   def sort_fields
     Blacklight.config[:sort_fields]
   end
-  
+
   # Used in the document list partial (search view) for creating a link to the document show action
   def document_show_link_field
     Blacklight.config[:index][:show_link].to_sym
   end
-  
+
   # Used in the search form partial for building a select tag
   def search_fields
     Blacklight.config[:search_fields]
   end
-  
+
   # used in the catalog/_show/_default partial
   def document_show_fields
     Blacklight.config[:show_fields][:field_names]
   end
-  
+
   # used in the catalog/_show/_default partial
   def document_show_field_labels
     Blacklight.config[:show_fields][:labels]
   end
-  
+
   # currently only used by the render_document_partial helper method (below)
   def document_partial_name(document)
     document[Blacklight.config[:show][:display_type]]
   end
-  
+
   # given a doc and action_name, this method attempts to render a partial template
   # based on the value of doc[:format]
   # if this value is blank (nil/empty) the "default" is used
@@ -88,13 +88,13 @@ module ApplicationHelper
       render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}
     end
   end
-  
+
   # Search History and Saved Searches display
   def link_to_previous_search(params)
     query_part = params[:qt] == Blacklight.config[:default_qt] ? params[:q] : "#{params[:qt]}:(#{params[:q]})"
-    facet_part = 
+    facet_part =
     if params[:f]
-      tmp = 
+      tmp =
       params[:f].collect do |pair|
         "#{Blacklight.config[:facet][:labels][pair.first]}:#{pair.last}"
       end.join(" AND ")
@@ -104,7 +104,7 @@ module ApplicationHelper
     end
     link_to("#{query_part} #{facet_part}", catalog_index_path(params))
   end
-  
+
   #
   # Export Helpers
   #
@@ -127,7 +127,7 @@ module ApplicationHelper
         end
       end
       text
-    end 
+    end
   end
   def render_endnote_text(record)
     end_note_format = {
@@ -156,7 +156,7 @@ module ApplicationHelper
       else
         second_value = []
       end
-      
+
       if marc[first_value[0].to_s]
         marc.find_all{|f| (first_value[0].to_s) === f.tag}.each do |field|
           if field[first_value[1]].to_s or field[second_value[1]].to_s
@@ -174,11 +174,11 @@ module ApplicationHelper
     end
     text
   end
-  
+
   #
   # facet param helpers ->
   #
-  
+
   # adds the value and/or field to params[:f]
   def add_facet_params(field, value)
     p = params.dup
@@ -188,7 +188,7 @@ module ApplicationHelper
     p[:f][field].push(value)
     p
   end
-  
+
   # copies the current params (or whatever is passed in as the 3rd arg)
   # removes the field value from params[:f]
   # removes the field if there are no more values in params[:f][field]
@@ -208,12 +208,12 @@ module ApplicationHelper
     p[:f].delete(field) if p[:f][field].size == 0
     p
   end
-  
+
   # true or false, depending on whether the field and value is in params[:f]
   def facet_in_params?(field, value)
     params[:f] and params[:f][field] and params[:f][field].include?(value)
   end
-  
+
   # NOTE: as of 2009-04-20, this is only used for facet.html.erb, which
   #  is facet pagination ... and it probably shouldn't be used there.
   # creates a formatted label for a field (removes _facet and _display etc.)
@@ -222,16 +222,16 @@ module ApplicationHelper
     @__field_label_cache[field] ||= field.to_s.sub(/_facet$|_display$|_[a-z]$/,'').gsub(/_/,' ')
     @__field_label_cache[field]
   end
-  
+
   #
   # shortcut for built-in Rails helper, "number_with_delimiter"
   #
   def format_num(num); number_with_delimiter(num) end
-  
+
   #
   # link based helpers ->
   #
-  
+
   # create link to query (e.g. spelling suggestion)
   def link_to_query(query)
     p = params.dup
@@ -241,9 +241,9 @@ module ApplicationHelper
     link_url = catalog_index_path(p)
     link_to(query, link_url)
   end
-  
+
   # link_to_document(doc, :label=>'VIEW', :counter => 3)
-  # Use the catalog_path RESTful route to create a link to the show page for a specific item. 
+  # Use the catalog_path RESTful route to create a link to the show page for a specific item.
   # catalog_path accepts a HashWithIndifferentAccess object. The solr query params are stored in the session,
   # so we only need the +counter+ param here.
   def link_to_document(doc, opts={:label=>Blacklight.config[:index][:show_link].to_sym, :counter => nil})
@@ -317,7 +317,7 @@ module ApplicationHelper
     method, href = html_options.delete("method"), html_options['href']
     data = html_options.delete("data")
     data = data.stringify_keys if data
-    
+
     html_options["onclick"] = case
       when method
         "#{method_javascript_function_with_data(method, url, href, data)}return false;"
@@ -350,7 +350,7 @@ module ApplicationHelper
     end
     submit_function << "f.submit();"
   end
-  
+
   # performs an XSLT transform
   def xslt(stylesheet_file_path, document, params={})
     require 'nokogiri'
@@ -358,5 +358,5 @@ module ApplicationHelper
     stylesheet = Nokogiri::XSLT.parse(render(stylesheet_file_path))
     stylesheet.apply_to(Nokogiri::XML(document.to_xml), params)
   end
-  
+
 end
