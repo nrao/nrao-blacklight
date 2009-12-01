@@ -1,6 +1,10 @@
 #
 # Methods added to this helper will be available to all templates in the application.
 #
+
+require_dependency(RAILS_ROOT +
+    "/vendor/plugins/blacklight/app/helpers/application_helper.rb")
+
 module ApplicationHelper
 
   def application_name
