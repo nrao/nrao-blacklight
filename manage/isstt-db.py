@@ -2,7 +2,7 @@ from os import environ, path
 
 import _mysql
 
-db = _mysql.connect(host='newsql4', db='isstt',
+db = _mysql.connect(host='newsql5', db='isstt',
                     user='isstt', passwd='1ssttread')
 db.set_character_set('utf8')
 
