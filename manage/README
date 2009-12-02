@@ -1,7 +1,0 @@
-Simple code for building a Solr instance.
-
-post.py is a simple script to post documents to Solr using pysolr.
-post.py uses `from docs import docs` so build docs.py to have a docs
-which is a list of dictionaries for use with pysolr.
-
-See example.docs.py and example.data.csv for an example of building docs.
