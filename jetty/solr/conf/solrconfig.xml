@@ -22,20 +22,6 @@
     <lst name="defaults">
       <str name="q">*:*</str>
       <str name="echoParams">explicit</str>
-      <str name="fl">*,score</str>
-      <str name="facet">true</str>
-      <str name="facet.mincount">1</str>
-      <str name="facet.sort">false</str>
-    </lst>
-  </requestHandler>
-
-  <requestHandler name="document" class="solr.SearchHandler">
-    <lst name="defaults">
-      <str name="echoParams">explicit</str>
-      <str name="fl">*</str>
-      <str name="rows">1</str>
-      <str name="q">{!raw f=id v=$id}</str>
-      <!-- use id=blah instead of q=id:blah -->
     </lst>
   </requestHandler>
 
@@ -48,7 +34,7 @@
   <requestHandler name="/admin/ping" class="PingRequestHandler">
     <lst name="defaults">
       <str name="qt">standard</str>
-      <str name="q">*:*</str>
+      <str name="q">gbt</str>
       <str name="echoParams">all</str>
     </lst>
   </requestHandler>
@@ -63,7 +49,7 @@
 
   <!-- config for the admin interface --> 
   <admin>
-    <defaultQuery>*:*</defaultQuery>
+    <defaultQuery>gbt vla +i:ron</defaultQuery>
 
     <!-- configure a healthcheck file for servers behind a loadbalancer
       <healthcheck type="file">server-enabled</healthcheck>
