@@ -1,7 +1,7 @@
 /* Global */
 html {background: #0F2637;}
 
-body {background: #0F2637; font: 0.7em Verdana, "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif; line-height: 1.4; color:#333; margin: 0px; padding: 15px;}
+body {background: #0F2637; font-family: Verdana, "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif; line-height: 1.4; color:#333; margin: 0px; padding: 15px;}
 
 select,input,button,textarea {font: 1em Verdana, "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;}
 
@@ -100,8 +100,8 @@ h3.index_title {clear: both; margin: 0px; padding: 0px; width: 460px;}
 
 dl {margin: 0px; padding: 0px;}
 dl.defList {overflow: auto; padding: 0.5em 0;}
-dl.defList dt {float:left; text-align: right; width: 20%; clear: both; color: #888; margin: 0; padding: 2px 1em 2px 0px;}
-dl.defList dd {text-align: left; margin: 0; padding: 2px 0 2px 141px;}
+dl.defList dt {float:left; text-align: right; width: 25%; clear: both; color: #888; margin: 0; padding: 2px 1em 2px 0px;}
+dl.defList dd {text-align: left; margin: 0; padding: 2px 0 2px 175px;}
 
 /* Individual Result Listing */
 #document h1 {margin: 0px; padding: 0px 0px 1em 0px;}
