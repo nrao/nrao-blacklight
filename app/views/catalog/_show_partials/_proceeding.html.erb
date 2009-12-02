@@ -1,0 +1,15 @@
+<%# default partial to display solr document fields in catalog show view -%>
+<dl class="defList">
+  
+  <% document_show_fields.each do |solr_fname| -%>
+    <% if document[solr_fname] %>
+        <dt><%= document_show_field_labels[solr_fname]%></dt>
+        <% if solr_fname == "filename" %>
+            <dd><a href="http://www.nrao.edu/meetings/isstt/papers/<%= document[:year] %>/<%= document[solr_fname] %>.pdf" target="_blank">PDF</a></dd>
+        <% else %>
+            <dd><%= document[solr_fname] %></dd>
+        <% end -%>
+    <% end -%>
+  <% end -%>
+
+</dl>

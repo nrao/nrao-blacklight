@@ -5,8 +5,8 @@
 # Make sure the secret is at least 30 characters and all random, 
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
-  :key         => '_nrao-blacklight_session',
-  :secret      => 'a60c3ec07058bae80b43f4977eb336c152306799ca45ca05b3a973d8a56c2c66ed41c77d1a57988a7cb30702c8740a29b6b334909f98542b6a91893e044061fc'
+  :key         => '_isstt_session',
+  :secret      => '57c5a8ae52bbe9b6f9077dd9f2f65891312622f12d1919bdf97240aa07b950b1e8c7f68ddaf5417404e3d2f2f05a3d6e1a99b1aa1145721c53bf31ed92407eb1'
 }
 
 # Use the database for sessions instead of the cookie-based default,
