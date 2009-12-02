@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="NRAO Blacklight" version="1.1">
+<!--Condensed schema.  See tutorial example schema.xml for notes on config.-->
+<schema name="isstt" version="1.1">
   <types>
-    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
-    <fieldType name="integer" class="solr.IntField" omitNorms="true"/>
-    <fieldType name="long" class="solr.LongField" omitNorms="true"/>
-    <fieldType name="float" class="solr.FloatField" omitNorms="true"/>
-    <fieldType name="double" class="solr.DoubleField" omitNorms="true"/>
-    <fieldType name="sint" class="solr.SortableIntField" sortMissingLast="true" omitNorms="true"/>
-    <fieldType name="slong" class="solr.SortableLongField" sortMissingLast="true" omitNorms="true"/>
-    <fieldType name="sfloat" class="solr.SortableFloatField" sortMissingLast="true" omitNorms="true"/>
-    <fieldType name="sdouble" class="solr.SortableDoubleField" sortMissingLast="true" omitNorms="true"/>
     <fieldType name="date" class="solr.DateField" sortMissingLast="true" omitNorms="true"/>
     <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
@@ -46,22 +38,11 @@
         <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
       </analyzer>
     </fieldType>
-    <fieldType name="uuid" class="solr.UUIDField" indexed="true" />
-    <fieldType name="alphaOnlySort" class="solr.TextField" sortMissingLast="true" omitNorms="true">
-      <analyzer>
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory" />
-        <filter class="solr.TrimFilterFactory" />
-        <filter class="solr.PatternReplaceFilterFactory" pattern="([^a-z\d])" replacement="" replace="all" />
-      </analyzer>
-    </fieldType>
  </types>
 
  <fields>
    <!--Domain-specific fields.-->
-   <field name="id" type="uuid" indexed="true" stored="true" default="NEW"/>
-
-   <field name="format_code" type="string" indexed="true" stored="true" default="generic"/>
+   <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
    <!--Free-text search field.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -70,9 +51,11 @@
    <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="false"/>
  </fields>
 
+ <!--system_id format: <foreign_system/>.<foreign_key/>, e.g. 'opensky.110'-->
  <uniqueKey>id</uniqueKey>
  <defaultSearchField>text</defaultSearchField>
  <solrQueryParser defaultOperator="AND"/>
 
+ <!--Copy fields for generic term searches.-->
  <copyField source="*" dest="text"/>
 </schema>
