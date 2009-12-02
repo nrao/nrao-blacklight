@@ -77,6 +77,8 @@
    <field name="altauthors" type="text" indexed="true" stored="false"/>
    <field name="author" type="text" indexed="true" stored="false" multiValued="true"/>
 
+   <field name="firstauthor_facet" type="string" indexed="true" stored="false"/>
+
    <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="year_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
@@ -98,6 +100,7 @@
  <copyField source="*" dest="text"/>
  <copyField source="authors" dest="author"/>
  <copyField source="altauthors" dest="author"/>
+ <copyField source="firstauthor" dest="firstauthor_facet"/>
  <copyField source="firstauthor" dest="author_sort"/>
  <copyField source="year" dest="year_sort"/>
  <copyField source="title" dest="title_sort"/>
