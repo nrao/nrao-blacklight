@@ -22,42 +22,47 @@ Blacklight.configure(:shared) do |config|
   SolrDocument.default_params[:search] = {
     :qt=>:search,
     :per_page => 10,
-    :facets => {
-      :fields => [
-        "format",
-      ]
+    :facets => {:fields=>
+      ["telescope_facet",
+       "year_submitted",
+       "type_facet",
+       "joint_facet",]
     }
   }
 
   # default params for the SolrDocument.find_by_id method
   SolrDocument.default_params[:find_by_id] = {:qt => :document}
 
-  ##############################
-
   config[:default_qt] = "search"
 
   # solr field values given special treatment in the show (single result) view
   config[:show] = {
-    :html_title => "title_display",
-    :heading => "title_display",
-    :display_type => "format"
+    :html_title => "title",
+    :heading => "title",
+    :display_type => "format_code"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
-    :show_link => "title_display",
+    :show_link => "title",
     :num_per_page => 10,
-    :record_display_type => "format"
+    :record_display_type => "format_code"
   }
 
   # solr fields that will be treated as facets by the blacklight application
   #   The ordering of the field names is the order of the display
   config[:facet] = {
     :field_names => [
-      "format",
+        "telescope_facet",
+        "year_submitted",
+        "type_facet",
+        "joint_facet",
     ],
     :labels => {
-      "format"              => "Format",
+        "telescope_facet"       => "Telescope",
+        "year_submitted"        => "Year (Proposal Submitted)",
+        "type_facet"            => "Proposal Type",
+        "joint_facet"           => "Joint Proposal",
     }
   }
 
@@ -65,10 +70,22 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-      "id",
+        "telescope",
+        "prop_id",
+        "legacy_id",
+        "principal",
+        "year_submitted",
+        "type",
+        "joint",
     ],
     :labels => {
-      "id"                      => "ID:",
+        "telescope"             => "Telescope:",
+        "prop_id"               => "Proposal ID:",
+        "legacy_id"             => "Legacy ID:",
+        "principal"             => "Principal Investigator:",
+        "year_submitted"        => "Year:",
+        "type"                  => "Proposal Type:",
+        "joint"                 => "Joint Proposal:",
     }
   }
 
@@ -76,10 +93,28 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-      "id",
+        "telescope",
+        "prop_id",
+        "legacy_id",
+        "abstract",
+        "principal",
+        "investigator",
+        "year_submitted",
+        "type",
+        "joint",
+        "related",
     ],
     :labels => {
-      "id"                      => "ID:",
+        "telescope"             => "Telescope:",
+        "prop_id"               => "Proposal ID:",
+        "legacy_id"             => "Legacy ID:",
+        "abstract"              => "Abstract:",
+        "principal"             => "Principal Investigator:",
+        "investigator"          => "Investigators:",
+        "year_submitted"        => "Year:",
+        "type"                  => "Proposal Type:",
+        "joint"                 => "Joint Proposal:",
+        "related"               => "Related:",
     }
   }
 
@@ -88,7 +123,6 @@ Blacklight.configure(:shared) do |config|
   # defined in solr/conf/solrconfig.xml
   config[:search_fields] ||= []
   config[:search_fields] << ['All Fields', 'search']
-  # config[:search_fields] << ['Title', 'title_search']
 
   # "sort results by" select (pulldown)
   # label in pulldown is followed by the name of the SOLR field to sort by and
@@ -96,7 +130,11 @@ Blacklight.configure(:shared) do |config|
   # except in the relevancy case).
   # label is key, solr field is value
   config[:sort_fields] ||= []
-  config[:sort_fields] << ['relevance', 'score desc, title_sort asc']
+  config[:sort_fields] << ['relevance', '']
+  config[:sort_fields] << ['Proposal ID, ascending', 'prop_id_sort asc']
+  config[:sort_fields] << ['Proposal ID, descending', 'prop_id_sort desc']
+  config[:sort_fields] << ['Year Submitted, ascending', 'year_sort asc']
+  config[:sort_fields] << ['Year Submitted, descending', 'year_sort desc']
 
   # If there are more than this many search results, no spelling ("did you
   # mean") suggestion is offered.
