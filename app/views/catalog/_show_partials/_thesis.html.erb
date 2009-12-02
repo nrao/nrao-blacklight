@@ -7,7 +7,7 @@
     <% if document[solr_fname] %>
         <dt><%= document_show_field_labels[solr_fname]%></dt>
         <% if solr_fname == "electronic_location" %>
-            <dd><a href="<%= document[solr_fname] %>" target="_blank">link</a></dd>
+            <dd><a href="<%= document[solr_fname] %>" target="_blank">Read this thesis.</a></dd>
         <% elsif solr_fname == "ads_bibcode" %>
             <dd>
               <%= document[solr_fname] %>
