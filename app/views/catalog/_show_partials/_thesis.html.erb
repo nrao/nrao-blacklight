@@ -1,0 +1,28 @@
+<%# default partial to display solr document fields in catalog show view -%>
+<%= javascript_include_tag 'ads' %>
+<%= stylesheet_link_tag 'ads' %>
+<dl class="defList">
+
+  <% document_show_fields.each do |solr_fname| -%>
+    <% if document[solr_fname] %>
+        <dt><%= document_show_field_labels[solr_fname]%></dt>
+        <% if solr_fname == "electronic_location" %>
+            <dd><a href="<%= document[solr_fname] %>" target="_blank">link</a></dd>
+        <% elsif solr_fname == "ads_bibcode" %>
+            <dd>
+              <%= document[solr_fname] %>
+              (<a href="http://adsabs.harvard.edu/abs/<%= document[solr_fname] %>" target="_blank">view in ADS</a>)<br/>
+              <div id="ads_links"> </div>
+              <script type="text/javascript">
+                //<!--
+                create_ads_links('<%= document[solr_fname] %>', '#ads_links');
+                //-->
+              </script>
+            </dd>
+        <% else %>
+            <dd><%= document[solr_fname] %></dd>
+        <% end -%>
+    <% end -%>
+  <% end -%>
+
+</dl>

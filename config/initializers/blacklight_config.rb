@@ -22,9 +22,13 @@ Blacklight.configure(:shared) do |config|
   SolrDocument.default_params[:search] = {
     :qt=>:search,
     :per_page => 10,
-    :facets => {
-      :fields => [
-        "format",
+    :facets => {:fields=>
+      [      "decade_facet",
+             "year",
+             "instrument_facet",
+             "survey_facet",
+             "availability",
+             "ads_bibcode_status"
       ]
     }
   }
@@ -40,24 +44,34 @@ Blacklight.configure(:shared) do |config|
   config[:show] = {
     :html_title => "title_display",
     :heading => "title_display",
-    :display_type => "format"
+    :display_type => "format_code"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
     :show_link => "title_display",
     :num_per_page => 10,
-    :record_display_type => "format"
+    :record_display_type => "format_code"
   }
 
   # solr fields that will be treated as facets by the blacklight application
   #   The ordering of the field names is the order of the display
   config[:facet] = {
     :field_names => [
-      "format",
+      "decade_facet",
+      "year",
+      "instrument_facet",
+      "survey_facet",
+      "availability",
+      "ads_bibcode_status"
     ],
     :labels => {
-      "format"              => "Format",
+      "decade_facet"            => "Decade",
+      "year"                    => "Year",
+      "instrument_facet"        => "Instrument",
+      "survey_facet"            => "Survey",
+      "availability"            => "Availability",
+      "ads_bibcode_status"      => "ADS Bibcode"
     }
   }
 
@@ -65,10 +79,14 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-      "id",
+      "institution",
+      "year",
+      "electronic_location"
     ],
     :labels => {
-      "id"                      => "ID:",
+      "institution"             => "Institution:",
+      "year"                    => "Year:",
+      "electronic_location"     => "Online:",
     }
   }
 
@@ -76,18 +94,44 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-      "id",
+      "title",
+      "author",
+      "institution",
+      "year",
+      "instruments_display",
+      "surveys_display",
+      "electronic_location",
+      "availability_display",
+      "ads_bibcode",
+      "notes",
+      "predoc"
     ],
     :labels => {
-      "id"                      => "ID:",
+      "title"                   => "Title:",
+      "author"                  => "Author:",
+      "institution"             => "Institution:",
+      "year"                    => "Year:",
+      "instruments_display"     => "Instrument(s):",
+      "surveys_display"         => "Survey(s):",
+      "electronic_location"     => "Electronic Location:",
+      "availability_display"    => "Availability:",
+      "ads_bibcode"             => "ADS Bibcode:",
+      "notes"                   => "Notes:",
+      "predoc"                  => "Degree:"
     }
   }
+
+  # type of raw data in index.  Currently marcxml and marc21 are supported.
+  # config[:raw_storage_type] = "marcxml"
+  # name of solr field containing raw data
+  # config[:raw_storage_field] = "marc_display"
 
   # "fielded" search select (pulldown)
   # label in pulldown is followed by the name of a SOLR request handler as
   # defined in solr/conf/solrconfig.xml
   config[:search_fields] ||= []
   config[:search_fields] << ['All Fields', 'search']
+  # config[:search_fields] << ['Author', 'author_search']
   # config[:search_fields] << ['Title', 'title_search']
 
   # "sort results by" select (pulldown)
@@ -96,10 +140,16 @@ Blacklight.configure(:shared) do |config|
   # except in the relevancy case).
   # label is key, solr field is value
   config[:sort_fields] ||= []
-  config[:sort_fields] << ['relevance', 'score desc, title_sort asc']
+  config[:sort_fields] << ['Relevance', '']
+  config[:sort_fields] << ['Author, ascending', 'author_sort asc']
+  config[:sort_fields] << ['Author, descending', 'author_sort desc']
+  config[:sort_fields] << ['Title, ascending', 'title_sort asc']
+  config[:sort_fields] << ['Title, descending', 'title_sort desc']
+  config[:sort_fields] << ['Year, ascending', 'year_sort asc']
+  config[:sort_fields] << ['Year, descending', 'year_sort desc']
 
-  # If there are more than this many search results, no spelling ("did you
-  # mean") suggestion is offered.
-  config[:spell_max] = 5
+  # the maximum number of search results to allow display of a spelling
+  #  ("did you mean") suggestion, if one is available.
+  config[:spell_max] = 2
 end
 

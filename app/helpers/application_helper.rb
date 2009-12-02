@@ -4,7 +4,7 @@
 module ApplicationHelper
 
   def application_name
-    'NRAO Blacklight'
+    'NRAO Theses Database'
   end
 
   # collection of items to be rendered in the @sidebar
@@ -77,7 +77,7 @@ module ApplicationHelper
   end
 
   # given a doc and action_name, this method attempts to render a partial template
-  # based on the value of doc[:format]
+  # based on the value of doc[:format_code_t]
   # if this value is blank (nil/empty) the "default" is used
   # if the partial is not found, the "default" partial is rendered instead
   def render_document_partial(doc, action_name)
