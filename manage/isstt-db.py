@@ -22,31 +22,8 @@ except:
 else:
     where = 'WHERE modified > "%s"' % timestamp
 
-# Uncomment this when VIEW is available.
-# query = 'SELECT %s FROM paper_query %s;' % (select_fields, where)
-# db.query(query)
-
-# Delete the following when VIEW is available.
-# For now, build a query with multiple tables.
-papers_fields = ("fileName", "title", "authors", "firstAuthor", "altAuthors",
-                 "session", "firstPage", "lastPage", "procYear", "abstract",
-                 "created", "modified",)
-papers_select = ','.join(['papers.%s' % f for f in papers_fields])
-
-sessions_fields = ("category1", "category2",)
-sessions_select = ','.join(['sessions.%s' % f for f in sessions_fields])
-
-select_fields = '%s,%s' % (papers_select, sessions_select)
-
-join = 'papers.session = sessions.sesNo AND papers.procYear = sessions.procYear';
-if not where:
-    where = 'WHERE %s' % join
-else:
-    where = 'WHERE %s AND papers.modified > "%s"' % (join, timestamp)
-
-query = 'SELECT %s FROM papers,sessions %s;' % (select_fields, where)
+query = 'SELECT %s FROM paper_query %s;' % (select_fields, where)
 db.query(query)
-# Now back to business.
 
 r = db.use_result()
 row = r.fetch_row()
