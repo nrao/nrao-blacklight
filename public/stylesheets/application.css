@@ -96,7 +96,9 @@ th, td {border: 0;}
 #documents #results_label {margin-left: 5px;}
 
 /* Result List (http://www.quirksmode.org/css/clearing.html) */
-h3.index_title {clear: both; margin: 0px; padding: 0px; width: 460px;}
+h3.index_title {clear: both; margin: 0px; padding: 0px; width: 600px;}
+li.index {font-weight: bold; text-size: 108%;}
+div.index {float: none;}
 
 dl {margin: 0px; padding: 0px;}
 dl.defList {overflow: auto; padding: 0.5em 0;}
