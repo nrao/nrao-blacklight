@@ -68,13 +68,16 @@
    <field name="source" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="observer" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="starttime" type="date" indexed="true" stored="true" multiValued="true"/>
-   <field name="frequency" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="frequency" type="float" indexed="true" stored="true" multiValued="true"/>
    <field name="detector" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="receiver" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="band" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="polarization" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="year" type="int" indexed="true" stored="true" multiValued="true"/>
    <field name="month" type="int" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="ghz" type="float" indexed="true" stored="false" multiValued="true"/>
+   <field name="mhz" type="float" indexed="true" stored="false" multiValued="true"/>
 
    <field name="source_display" type="string" indexed="false" stored="true"/>
    <field name="observer_display" type="string" indexed="false" stored="true"/>

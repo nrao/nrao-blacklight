@@ -78,25 +78,15 @@ Blacklight.configure(:shared) do |config|
   config[:index_fields] = {
     :field_names => [
       "telescope",
-      "observer_display",
-      "lastdate",
+      # "investigator_display", # include marker of who is PI
       "source_display",
-      "band_display",
-      "receiver_display",
       "frequency_display",
-      "detector_display",
-      "polarization_display",
     ],
     :labels => {
       "telescope"               => "Telescope:",
-      "observer_display"        => "Observer:",
-      "lastdate"                => "Last Observation:",
+      "investigator_display"    => "Investigators:",
       "source_display"          => "Source:",
-      "band_display"            => "Band:",
-      "receiver_display"        => "Receiver:",
-      "frequency_display"       => "Frequency:",
-      "detector_display"        => "Detector:",
-      "polarization_display"    => "Polarization:",
+      "frequency_display"       => "Frequency (GHz):",
     }
   }
 
@@ -105,24 +95,29 @@ Blacklight.configure(:shared) do |config|
   config[:show_fields] = {
     :field_names => [
       "telescope",
-      "observer_display",
-      "lastdate",
+      # "title",
+      # "investigator_display",
+      # "abstract",
       "source_display",
-      "band_display",
-      "receiver_display",
       "frequency_display",
+      "lastdate",
+      "receiver_display",
       "detector_display",
+      # "bandwidth_display",
       "polarization_display",
     ],
     :labels => {
       "telescope"               => "Telescope:",
-      "observer_display"        => "Observer:",
-      "lastdate"                => "Last Observation:",
+      "title"                   => "Title:",
+      "investigator_display"    => "Investigators:",
+      "abstract"                => "Abstract:",
       "source_display"          => "Source:",
+      "frequency_display"       => "Frequency (GHz):",
+      "lastdate"                => "Last Observation:",
       "band_display"            => "Band:",
       "receiver_display"        => "Receiver:",
-      "frequency_display"       => "Frequency:",
       "detector_display"        => "Detector:",
+      "bandwidth_display"       => "Bandwidth (MHz):",
       "polarization_display"    => "Polarization:",
     }
   }

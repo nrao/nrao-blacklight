@@ -42,8 +42,12 @@ for raw_doc in raw_docs:
     doc['id'] = doc.get('project_session', '')
     for key in display_fields:
         doc[key + '_display'] = ', '.join(doc[key])
-    doc['frequency_display'] = '\n'.join(doc['frequency'])
-    doc['source_display'] = '\n'.join(doc['source'])
+    doc['mhz'] = [float(f) / 1000000.0 for f in doc['frequency']]
+    doc['ghz'] = [float(f) / 1000000000.0 for f in doc['frequency']]
+    formatted_ghz = ['%6.2f' % f for f in doc['ghz']]
+    [s.strip() for s in formatted_ghz]
+    doc['frequency_display'] = ', '.join(formatted_ghz)
+    doc['source_display'] = ', '.join(doc['source'])
 
     starttimes = doc.get('starttime', [])
     formatted_starttimes = []
@@ -59,7 +63,7 @@ for raw_doc in raw_docs:
 
     if doc.get('lastdate', ''):
         doc['lastdate'] = get_utc_datetime(doc['lastdate'], tz='UTC')
-    doc['frequency'] = [int(x) for x in doc['frequency']]
+    doc['frequency'] = [float(x) for x in doc['frequency']]
     doc['year'] = [int(x) for x in doc['year']]
     doc['month'] = [int(x) for x in doc['month']]
 
