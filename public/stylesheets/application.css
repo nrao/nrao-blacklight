@@ -30,11 +30,11 @@ a:hover {color: #029;}
 #hd .yui-g .first {text-align: left;}
 .yui-t2 {background: #fff repeat-x top left; border-bottom: 2px solid #555; margin: 0px auto;}
 /* border-top: 10px solid #548cd8; -moz-border-top-colors: #548cd8 #5188d3 #4e84d0 #4b81cd #497dc9 #457ac6 #4376c2 #4173be #3e71bc #3d6fba; */
-#doc1, #doc2, #doc1, #doc4 {width: 920px;}
+#doc1, #doc2, #doc1, #doc4 {width: 1000px;}
 
 /* Body Container Layout */
 #bd {padding: 0 2em 2em 2em;}
-#yui-main {position: relative; width: 875px;}
+#yui-main {position: relative; width: 945px;}
 .yui-t2 #yui-main .yui-b {border-left: 1px dotted #ccc; padding: 2em 0 2em 2em; position: relative; margin-left: 200px;}
 
 /* Left Sidebar Layout */
@@ -96,14 +96,14 @@ th, td {border: 0;}
 #documents #results_label {margin-left: 5px;}
 
 /* Result List (http://www.quirksmode.org/css/clearing.html) */
-h3.index_title {clear: both; margin: 0px; padding: 0px; width: 600px;}
+h3.index_title {clear: both; margin: 0px; padding: 0px; width: 665px;}
 li.index {font-weight: bold; text-size: 108%;}
 div.index {float: none;}
 
 dl {margin: 0px; padding: 0px;}
 dl.defList {overflow: auto; padding: 0.5em 0;}
 dl.defList dt {float:left; text-align: right; width: 25%; clear: both; color: #888; margin: 0; padding: 2px 1em 2px 0px;}
-dl.defList dd {text-align: left; margin: 0; padding: 2px 0 2px 175px;}
+dl.defList dd {text-align: left; margin: 0; padding: 2px 0 2px 195px;}
 
 /* Individual Result Listing */
 #document h1 {margin: 0px; padding: 0px 0px 1em 0px;}
@@ -198,6 +198,6 @@ ul#appliedFiltersList,
 #appliedParams a#startOverLink span{display:none;}
 .queryName, .filterName {padding-right:14px; background:url(../images/separator.gif) no-repeat right center;}
 
-.application_details {width: 873px;}
+.application_details {width: 943px;}
 .application_name {margin-left: 5px; font-size: 123.1%; font-weight: bold; float: left;}
 .breadcrumbs {float: right; text-align: right; padding-top: 2px;}
