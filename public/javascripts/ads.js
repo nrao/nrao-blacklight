@@ -29,6 +29,7 @@
   window.create_ads_links = function create_ads_links(bibcode, el) {
     get_ads_links(bibcode, function got_ads_links(data) {
       for (var key in data[0].links) {
+        if (key != "EJOURNAL") {
     if (data[0].links[key] instanceof Object) {
       var linkel = $('<div class="ads-link"><a/></div>')
         .addClass('ads-link-'+key)
@@ -43,6 +44,7 @@
         .end()
         .appendTo(el);
     }
+        }
       }
     });
   }
