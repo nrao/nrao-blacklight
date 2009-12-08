@@ -95,15 +95,15 @@ Blacklight.configure(:shared) do |config|
   config[:show_fields] = {
     :field_names => [
       "telescope",
-      # "title",
-      # "investigator_display",
-      # "abstract",
+      "title",
+      "investigator_display",
+      "abstract",
       "source_display",
       "frequency_display",
       "lastdate",
       "receiver_display",
       "detector_display",
-      # "bandwidth_display",
+      "bandwidth_display",
       "polarization_display",
     ],
     :labels => {

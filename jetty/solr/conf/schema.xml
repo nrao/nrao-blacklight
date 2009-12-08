@@ -61,6 +61,12 @@
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
+   <field name="title" type="text" indexed="true" stored="true"/>
+   <field name="abstract" type="text" indexed="true" stored="true"/>
+   <field name="pi" type="text" indexed="true" stored="true"/>
+   <field name="i" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="investigator_display" type="string" indexed="false" stored="true"/>
+
    <field name="project_session" type="string" indexed="true" stored="true"/>
    <field name="telescope" type="string" indexed="true" stored="true"/>
    <field name="lastdate" type="date" indexed="true" stored="true"/>
