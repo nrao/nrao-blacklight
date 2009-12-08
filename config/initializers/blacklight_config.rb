@@ -86,7 +86,7 @@ Blacklight.configure(:shared) do |config|
     ],
     :labels => {
       "authors"                 => "Authors:",
-      "category_display"        => "Category:",
+      "category_display"        => "Categories:",
       "year"                    => "Year:",
       "session"                 => "Session:"
     }
@@ -107,7 +107,7 @@ Blacklight.configure(:shared) do |config|
     :labels => {
       "authors"                 => "Authors:",
       "abstract"                => "Abstract:",
-      "category_display"        => "Category:",
+      "category_display"        => "Categories:",
       "year"                    => "Year:",
       "session"                 => "Session:",
       "filename"                => "Full-text:",
