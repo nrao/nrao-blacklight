@@ -88,7 +88,6 @@ th, td {border: 0;}
 
 /* Search Results */
 .document {padding: 0.5em 0 0 0; background-color: #fff; border-bottom: 1px dotted #ccc;}
-.document ol { margin-left: 0; }
 
 #documents {background-color: #eee; color: #333; width: 650px;}
 #documents .documentHeader {background-color: #fff; padding: 0px;}
@@ -97,10 +96,11 @@ th, td {border: 0;}
 #documents #results_label {margin-left: 5px;}
 
 /* Result List (http://www.quirksmode.org/css/clearing.html) */
-h3.index_title {clear: both; margin: 0px; padding: 0px; width: 660px;}
-li.index {font-weight: bold; display: block; padding-left: 3.5em; position: relative;}
-div.index {float: none;}
-li.index:before {text-align: left; content: counter(count-chocula) ". "; counter-increment: count-chocula 1; position: absolute; left: 0px;}
+h3.index_title {clear: both; margin: 0px; padding: 0px; width: 665px;}
+table.index {margin:0;}
+td.index_counter {width:10%; vertical-align:top; padding:0 6px;}
+td.index_counter h3 {padding: 0; margin:0;}
+td.index_title {width:90%; padding:0 6px;}
 
 dl {margin: 0px; padding: 0px;}
 dl.defList {overflow: auto; padding: 0.5em 0;}

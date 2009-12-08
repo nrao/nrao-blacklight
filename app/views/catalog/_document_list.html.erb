@@ -20,9 +20,10 @@
         <% # main title container for doc partial view -%>
 
         <div class="yui-u" style="float: none">
-          <ol style="counter-reset: count-chocula <%= counter + @response.params[:start].to_i %>;">
-            <li class="index"><h3 class="index_title"><%= link_to_document document, :label=>document_show_link_field, :counter => (counter + 1 + @response.params[:start].to_i) %></h3></li>
-          </ol>
+          <table class="index"><tr>
+              <td class="index_counter"><h3><%= counter + 1 + @response.params[:start].to_i %>.</h3></td>
+              <td class="index_title"><h3 class="index_title"><%= link_to_document document, :label=>document_show_link_field, :counter => (counter + 1 + @response.params[:start].to_i) %></h3></td>
+          </tr></table>
         </div>
         
       </div>
