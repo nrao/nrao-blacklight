@@ -103,9 +103,6 @@ for raw_doc in raw_docs:
     if formatted_doc.get('electronic_location', ''):
         formatted_doc['electronic_status'] = 'Online'
         href = formatted_doc['electronic_location']
-        if not (href.startswith('http://') or href.startswith('ftp://')):
-            href = 'http://' + href
-            formatted_doc['electronic_location'] = href
     if formatted_doc.get('ads_bibcode', ''):
         formatted_doc['ads_bibcode_status'] = 'Available'
     formatted_doc['decade_facet'] = get_decade(formatted_doc.get('year', 0))
