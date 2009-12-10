@@ -97,7 +97,12 @@
  <solrQueryParser defaultOperator="AND"/>
 
  <!--Copy fields for generic term searches.-->
- <copyField source="*" dest="text"/>
+ <copyField source="title" dest="text"/>
+ <copyField source="authors" dest="text"/>
+ <copyField source="firstauthor" dest="text"/>
+ <copyField source="altauthors" dest="text"/>
+ <copyField source="year" dest="text"/>
+ <copyField source="abstract" dest="text"/>
  <copyField source="authors" dest="author"/>
  <copyField source="altauthors" dest="author"/>
  <copyField source="firstauthor" dest="firstauthor_facet"/>
