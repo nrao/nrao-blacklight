@@ -34,7 +34,11 @@ def build_doc(go_path):
                              .replace("'", '')
                              + '"""'
                              )
-                    doc.update(eval('dict(config_%s=%s)' % (name, datum)))
+                    try:
+                        doc.update(eval('dict(config_%s=%s)' % (name, datum)))
+                    except SyntaxError:
+                        print >>sys.stderr, 'ignoring %s in %s' % (name,
+                                                                   go_path)
                 keyword, value = pointer.next()
         if value.startswith('Catalog'):
             while True:
@@ -48,7 +52,11 @@ def build_doc(go_path):
                              .replace("'", '')
                              + '"""'
                              )
-                    doc.update(eval('dict(catalog_%s=%s)' % (name, datum)))
+                    try:
+                        doc.update(eval('dict(catalog_%s=%s)' % (name, datum)))
+                    except SyntaxError:
+                        print >>sys.stderr, 'ignoring %s in %s' % (name,
+                                                                   go_path)
                 keyword, value = pointer.next()
     except StopIteration:
         return doc
