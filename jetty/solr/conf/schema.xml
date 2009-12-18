@@ -61,6 +61,7 @@
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
+   <!--
    <field name="title" type="text" indexed="true" stored="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
    <field name="pi" type="text" indexed="true" stored="true"/>
@@ -98,6 +99,7 @@
    <field name="band_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
    <field name="receiver_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
    <field name="detector_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
+   -->
 
    <field name="format_code" type="string" indexed="true" stored="true" default="gbt_raw_fits"/>
 
@@ -105,7 +107,7 @@
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
    <!--Everything else is allowed, as text fields.-->
-   <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="false"/>
+   <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
  </fields>
 
  <uniqueKey>id</uniqueKey>
@@ -114,7 +116,9 @@
 
  <copyField source="*" dest="text"/>
 
+ <!--
  <copyField source="band" dest="band_facet"/>
  <copyField source="receiver" dest="receiver_facet"/>
  <copyField source="detector" dest="detector_facet"/>
+ -->
 </schema>
