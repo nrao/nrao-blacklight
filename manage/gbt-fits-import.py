@@ -10,13 +10,23 @@ import pysolr
 
 keys = [] # diagnostic
 
+def interrupt(message=''):
+    print >>sys.stderr, 'Interrupted ' + message
+    sys.exit(2)
+
 def build_doc(go_path):
     doc = {}
-    hdulist = pyfits.open(go_path)
-    if len(hdulist) < 1:
+    try:
+        hdulist = pyfits.open(go_path)
+        if len(hdulist) < 1:
+            return doc
+        header = hdulist[0].header
+        pointer = iter(header.items())
+    except KeyboardInterrupt:
+        interrupt()
+    except:
+        print >>sys.stderr, 'error opening %s' % go_path
         return doc
-    header = hdulist[0].header
-    pointer = iter(header.items())
     try:
         keyword, value = pointer.next()
         while keyword != 'HISTORY':
@@ -60,6 +70,11 @@ def build_doc(go_path):
                 keyword, value = pointer.next()
     except StopIteration:
         return doc
+    except KeyboardInterrupt:
+        interrupt()
+    except:
+        print >>sys.stderr, 'error with %s' % go_path
+        return doc
     return doc
 
 def gather_project(project_path):
@@ -94,7 +109,7 @@ try:
         if doc:
             solr.add([doc])
 except KeyboardInterrupt:
-    pass
+    interrupt()
 
 solr.commit()
 

@@ -25,7 +25,7 @@
       <str name="fl">*,score</str>
       <str name="facet">true</str>
       <str name="facet.mincount">1</str>
-      <str name="facet.sort">false</str>
+      <str name="facet.sort">true</str>
     </lst>
   </requestHandler>
 
