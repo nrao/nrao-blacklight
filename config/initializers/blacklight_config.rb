@@ -23,10 +23,7 @@ Blacklight.configure(:shared) do |config|
     :qt=>:search,
     :per_page => 10,
     :facets => {:fields=>
-      ["telescope_facet",
-       "year_submitted",
-       "type_facet",
-       "joint_facet",]
+      []
     }
   }
 
@@ -37,14 +34,14 @@ Blacklight.configure(:shared) do |config|
 
   # solr field values given special treatment in the show (single result) view
   config[:show] = {
-    :html_title => "title",
-    :heading => "title",
+    :html_title => "proposal_title",
+    :heading => "proposal_title",
     :display_type => "format_code"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
-    :show_link => "title",
+    :show_link => "proposal_title",
     :num_per_page => 10,
     :record_display_type => "format_code"
   }
@@ -54,15 +51,23 @@ Blacklight.configure(:shared) do |config|
   config[:facet] = {
     :field_names => [
         "telescope_facet",
-        "year_submitted",
-        "type_facet",
-        "joint_facet",
+        "year_facet",
+        "proposal_type_facet",
+        "observing_type_facet",
+        "rapid_response_type_facet",
+        "joint_proposal_facet",
+        "scientific_category_facet",
+        "dissertation_plan_facet",
     ],
     :labels => {
-        "telescope_facet"       => "Telescope",
-        "year_submitted"        => "Year (Proposal Submitted)",
-        "type_facet"            => "Proposal Type",
-        "joint_facet"           => "Joint Proposal",
+        "telescope_facet"           => "Telescope",
+        "year_facet"                => "Year (Submitted)",
+        "proposal_type_facet"       => "Proposal Type",
+        "observing_type_facet"      => "Observing Type",
+        "rapid_response_type_facet" => "Rapid Response Type",
+        "joint_proposal_facet"      => "Joint Proposal",
+        "scientific_category_facet" => "Scientific Category",
+        "dissertation_plan_facet"   => "Dissertation Plan",
     }
   }
 
@@ -70,22 +75,31 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-        "telescope",
-        "prop_id",
+        "principal_telescope",
+        "proposal_id",
         "legacy_id",
-        "principal",
+        "principal_investigator",
         "year_submitted",
-        "type",
-        "joint",
+        "proposal_type",
+        "joint_proposal",
     ],
     :labels => {
-        "telescope"             => "Telescope:",
-        "prop_id"               => "Proposal ID:",
-        "legacy_id"             => "Legacy ID:",
-        "principal"             => "Principal Investigator:",
-        "year_submitted"        => "Year:",
-        "type"                  => "Proposal Type:",
-        "joint"                 => "Joint Proposal:",
+        "principal_telescope"    => "Telescope:",
+        "proposal_id"            => "Proposal ID:",
+        "legacy_id"              => "Legacy ID:",
+        "abstract"               => "Abstract:",
+        "principal_investigator" => "Principal Investigator:",
+        "investigators"          => "Investigators:",
+        "year_submitted"         => "Year:",
+        "proposal_type"          => "Proposal Type:",
+        "joint_proposal"         => "Joint Proposal:",
+        "related_proposal"       => "Related:",
+        "scientific_category"    => "Scientific Category:",
+        "observing_type"         => "Observing Type:",
+        "other_observing_type"   => "Other Observing Type:",
+        "rapid_response_type"    => "Rapid Response Type:",
+        "dissertation_plan"      => "Dissertation Plan:",
+        "total_time"             => "Total Time:",
     }
   }
 
@@ -93,28 +107,40 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-        "telescope",
-        "prop_id",
+        "principal_telescope",
+        "proposal_id",
         "legacy_id",
         "abstract",
-        "principal",
-        "investigator",
+        "principal_investigator",
+        "investigators",
         "year_submitted",
-        "type",
-        "joint",
-        "related",
+        "scientific_category",
+        "observing_type",
+        "other_observing_type",
+        "proposal_type",
+        "rapid_response_type",
+        "related_proposal",
+        "joint_proposal",
+        "dissertation_plan",
+        "total_time",
     ],
     :labels => {
-        "telescope"             => "Telescope:",
-        "prop_id"               => "Proposal ID:",
-        "legacy_id"             => "Legacy ID:",
-        "abstract"              => "Abstract:",
-        "principal"             => "Principal Investigator:",
-        "investigator"          => "Investigators:",
-        "year_submitted"        => "Year:",
-        "type"                  => "Proposal Type:",
-        "joint"                 => "Joint Proposal:",
-        "related"               => "Related:",
+        "principal_telescope"    => "Telescope:",
+        "proposal_id"            => "Proposal ID:",
+        "legacy_id"              => "Legacy ID:",
+        "abstract"               => "Abstract:",
+        "principal_investigator" => "Principal Investigator:",
+        "investigators"          => "Investigators:",
+        "year_submitted"         => "Year:",
+        "proposal_type"          => "Proposal Type:",
+        "joint_proposal"         => "Joint Proposal:",
+        "related_proposal"       => "Related:",
+        "scientific_category"    => "Scientific Category:",
+        "observing_type"         => "Observing Type:",
+        "other_observing_type"   => "Other Observing Type:",
+        "rapid_response_type"    => "Rapid Response Type:",
+        "dissertation_plan"      => "Dissertation Plan:",
+        "total_time"             => "Total Time:",
     }
   }
 
@@ -131,10 +157,14 @@ Blacklight.configure(:shared) do |config|
   # label is key, solr field is value
   config[:sort_fields] ||= []
   config[:sort_fields] << ['relevance', '']
-  config[:sort_fields] << ['Proposal ID, ascending', 'prop_id_sort asc']
-  config[:sort_fields] << ['Proposal ID, descending', 'prop_id_sort desc']
-  config[:sort_fields] << ['Year Submitted, ascending', 'year_sort asc']
-  config[:sort_fields] << ['Year Submitted, descending', 'year_sort desc']
+  config[:sort_fields] << ['Telescope, ascending', 'telescope_sort asc, score desc']
+  config[:sort_fields] << ['Telescope, descending', 'telescope_sort desc, score desc']
+  config[:sort_fields] << ['Proposal ID, ascending', 'proposal_id_sort asc']
+  config[:sort_fields] << ['Proposal ID, descending', 'proposal_id_sort desc']
+  config[:sort_fields] << ['Legacy ID, ascending', 'legacy_id_sort asc']
+  config[:sort_fields] << ['Legacy ID, descending', 'legacy_id_sort desc']
+  config[:sort_fields] << ['Year, ascending', 'date_sort asc, score desc']
+  config[:sort_fields] << ['Year, descending', 'date_sort desc, score desc']
 
   # If there are more than this many search results, no spelling ("did you
   # mean") suggestion is offered.

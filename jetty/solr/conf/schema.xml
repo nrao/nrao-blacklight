@@ -51,35 +51,56 @@ n  <types>
  <fields>
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true"/>
-   <field name="source_id" type="string" indexed="true" stored="true" required="true"/>
-   <field name="title" type="text" indexed="true" stored="true"/>
+   <field name="proposal_title" type="string" indexed="true" stored="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
-   <field name="principal" type="text" indexed="true" stored="true"/>
-   <field name="investigator" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="modified" type="date" indexed="true" stored="true"/>
-   <field name="telescope" type="text" indexed="true" stored="true"/>
-   <field name="prop_id" type="text" indexed="true" stored="true"/>
-   <field name="legacy_id" type="text" indexed="true" stored="true"/>
-   <field name="type" type="text" indexed="true" stored="true"/>
-   <field name="related" type="text" indexed="true" stored="true"/>
-   <field name="joint" type="text" indexed="true" stored="true"/>
-   <field name="configuration" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="principal_investigator" type="string" indexed="true" stored="true"/>
+   <field name="investigators" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="contact" type="text" indexed="true" stored="true"/>
+   <field name="editor" type="text" indexed="true" stored="true"/>
+   <!-- Need to interpret these as dates... -->
+   <field name="create_date" type="text" indexed="true" stored="true"/>
+   <field name="modify_date" type="text" indexed="true" stored="true"/>
+   <field name="submit_date" type="text" indexed="true" stored="true"/>
+   <field name="total_time" type="text" indexed="true" stored="true"/>
+   <field name="principal_telescope" type="string" indexed="true" stored="true"/>
+   <field name="telescopes" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="proposal_id" type="string" indexed="true" stored="true"/>
+   <field name="legacy_id" type="string" indexed="true" stored="true"/>
+   <field name="proposal_type" type="string" indexed="true" stored="true"/>
+   <field name="observing_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="other_observing_type" type="string" indexed="true" stored="true"/>
+   <field name="rapid_response_type" type="string" indexed="true" stored="true"/>
+   <field name="related_proposal" type="string" indexed="true" stored="true"/>
+   <field name="joint_proposal" type="string" indexed="true" stored="true"/>
+   <field name="scientific_category" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="dissertation_plan" type="string" indexed="true" stored="true"/>
+   <field name="year_submitted" type="string" indexed="true" stored="true"/>
 
    <!--Redundant fields, to index some fields in different ways.-->
+   <field name="title" type="text" indexed="true" stored="false"/>
+   <field name="related" type="text" indexed="true" stored="false"/>
+   <field name="telescope" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="principal" type="text" indexed="true" stored="false"/>
    <field name="pi" type="text" indexed="true" stored="false"/>
+   <field name="investigator" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="i" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="date" type="text" indexed="true" stored="false"/>
-   <field name="year_submitted" type="string" indexed="true" stored="true"/>
 
    <!--Fields for blacklight.-->
    <field name="format_code" type="text" indexed="true" stored="true" default="coversheet"/>
-   <field name="telescope_facet" type="string" indexed="true" stored="false"/>
-   <field name="type_facet" type="string" indexed="true" stored="false"/>
-   <field name="joint_facet" type="string" indexed="true" stored="false"/>
+   <field name="telescope_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="year_facet" type="string" indexed="true" stored="false"/>
+   <field name="proposal_type_facet" type="string" indexed="true" stored="false"/>
+   <field name="observing_type_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="rapid_response_type_facet" type="string" indexed="true" stored="false"/>
+   <field name="joint_proposal_facet" type="string" indexed="true" stored="false"/>
+   <field name="scientific_category_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="dissertation_plan_facet" type="string" indexed="true" stored="false"/>
 
-   <field name="year_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="date_sort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="telescope_sort" type="alphaOnlySort" indexed="true" stored="false"/>
-   <field name="prop_id_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="proposal_id_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+   <field name="legacy_id_sort" type="alphaOnlySort" indexed="true" stored="false"/>
 
    <!--Useful system fields.-->
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -95,22 +116,45 @@ n  <types>
  <solrQueryParser defaultOperator="AND"/>
 
  <!--Copy fields for generic term searches.-->
- <copyField source="title" dest="text"/>
+ <copyField source="proposal_title" dest="text"/>
  <copyField source="abstract" dest="text"/>
- <copyField source="principal" dest="text"/>
- <copyField source="investigator" dest="text"/>
- <copyField source="date" dest="text"/>
- <copyField source="telescope" dest="text"/>
- <copyField source="prop_id" dest="text"/>
+ <copyField source="principal_investigator" dest="text"/>
+ <copyField source="investigators" dest="text"/>
+ <!-- TODO - should we use deadline date instead, and use it for facet and sort? -->
+ <copyField source="submit_date" dest="text"/>
+ <copyField source="telescopes" dest="text"/>
+ <copyField source="proposal_id" dest="text"/>
  <copyField source="legacy_id" dest="text"/>
- <copyField source="type" dest="text"/>
-
- <copyField source="year_submitted" dest="year_sort"/>
- <copyField source="telescope" dest="telescope_sort"/>
- <copyField source="prop_id" dest="prop_id_sort"/>
+ <copyField source="proposal_type" dest="text"/>
+ <copyField source="observing_type" dest="text"/>
+ <copyField source="other_observing_type" dest="text"/>
+ <copyField source="rapid_response_type" dest="text"/>
+ <copyField source="scientific_category" dest="text"/>
 
  <!--Copy fields for alternate lookup.-->
- <copyField source="principal" dest="pi"/>
- <copyField source="investigator" dest="i"/>
- <copyField source="modified" dest="date"/>
+ <copyField source="proposal_title" dest="title"/>
+ <copyField source="related_proposal" dest="related"/>
+ <copyField source="principal_investigator" dest="principal"/>
+ <copyField source="principal_investigator" dest="pi"/>
+ <copyField source="investigators" dest="investigator"/>
+ <copyField source="investigators" dest="i"/>
+ <copyField source="submit_date" dest="date"/>
+
+ <!--Copy fields for facets.-->
+ <copyField source="telescopes" dest="telescope_facet"/>
+ <copyField source="year_submitted" dest="year_facet"/>
+ <copyField source="proposal_type" dest="proposal_type_facet"/>
+ <copyField source="observing_type" dest="observing_type_facet"/>
+ <copyField source="other_observing_type" dest="observing_type_facet"/>
+ <copyField source="rapid_response_type" dest="rapid_response_type_facet"/>
+ <copyField source="joint_proposal" dest="joint_proposal_facet"/>
+ <copyField source="scientific_category" dest="scientific_category_facet"/>
+ <copyField source="dissertation_plan" dest="dissertation_plan_facet"/>
+
+ <copyField source="submit_date" dest="date_sort"/>
+ <copyField source="principal_telescope" dest="telescope_sort"/>
+ <copyField source="proposal_id" dest="proposal_id_sort"/>
+ <copyField source="legacy_id" dest="legacy_id_sort"/>
+
+ <!--Copy fields for sort fields.-->
 </schema>
