@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /export/data_1/rduplain/sandbox/blacklight/isstt/manage &&
+time /export/data_1/rduplain/bin/python post.py -m isstt-db $@ &&
+cd -
