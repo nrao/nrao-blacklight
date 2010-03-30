@@ -23,6 +23,8 @@ count = 0
 # Using a generator, for lazy loading.
 try:
     for doc in docs:
+        if not (doc and doc.get('id')):
+            continue
         conn.add([doc], commit=False)
         count += 1
         sys.stdout.write('.')

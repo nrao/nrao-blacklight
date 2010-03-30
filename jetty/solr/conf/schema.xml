@@ -58,48 +58,47 @@
  </types>
 
  <fields>
-   <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
 
-   <!--
+   <field name="telescope" type="text" indexed="true" stored="true"/>
+   <field name="tel" type="text" indexed="true" stored="false"/>
+   <field name="proposal_id" type="text" indexed="true" stored="true"/>
+   <field name="legacy_id" type="text" indexed="true" stored="true"/>
+   <field name="session_id" type="text" indexed="true" stored="true"/>
+   <field name="session" type="text" indexed="true" stored="true"/>
+   <field name="projid" type="text" indexed="true" stored="false"/>
+   <field name="alt_id" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="project" type="text" indexed="true" stored="false" multiValued="true"/>
+
    <field name="title" type="text" indexed="true" stored="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
    <field name="pi" type="text" indexed="true" stored="true"/>
-   <field name="i" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="investigator" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="i" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="investigator_display" type="string" indexed="false" stored="true"/>
 
-   <field name="project_session" type="string" indexed="true" stored="true"/>
-   <field name="telescope" type="string" indexed="true" stored="true"/>
-   <field name="lastdate" type="date" indexed="true" stored="true"/>
+   <field name="object" type="text" indexed="true" stored="true"/>
+   <field name="observer" type="text" indexed="true" stored="true"/>
+   <field name="date-obs" type="date" indexed="true" stored="true"/>
+   <field name="procname" type="text" indexed="true" stored="true"/>
+   <field name="procname_facet" type="string" indexed="true" stored="false"/>
+   <field name="velocity" type="float" indexed="true" stored="true"/>
+   <field name="obstype" type="text" indexed="true" stored="true"/>
+   <field name="obstype_facet" type="string" indexed="true" stored="false"/>
+   <field name="veldef" type="text" indexed="true" stored="true"/>
+   <field name="skyfreq" type="float" indexed="true" stored="true"/>
+   <field name="band" type="text" indexed="true" stored="true"/>
 
-   <field name="source" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="observer" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="starttime" type="date" indexed="true" stored="true" multiValued="true"/>
-   <field name="frequency" type="float" indexed="true" stored="true" multiValued="true"/>
-   <field name="detector" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="receiver" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="band" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="polarization" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="year" type="int" indexed="true" stored="true" multiValued="true"/>
-   <field name="month" type="int" indexed="true" stored="true" multiValued="true"/>
+   <field name="restfreq" type="float" indexed="true" stored="true" multiValued="true" />
 
-   <field name="ghz" type="float" indexed="true" stored="false" multiValued="true"/>
-   <field name="mhz" type="float" indexed="true" stored="false" multiValued="true"/>
-
-   <field name="source_display" type="string" indexed="false" stored="true"/>
-   <field name="observer_display" type="string" indexed="false" stored="true"/>
-   <field name="frequency_display" type="string" indexed="false" stored="true"/>
-   <field name="detector_display" type="string" indexed="false" stored="true"/>
-   <field name="receiver_display" type="string" indexed="false" stored="true"/>
-   <field name="band_display" type="string" indexed="false" stored="true"/>
-   <field name="polarization_display" type="string" indexed="false" stored="true"/>
-   <field name="year_display" type="string" indexed="false" stored="true"/>
-   <field name="month_display" type="string" indexed="false" stored="true"/>
-
-   <field name="band_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
-   <field name="receiver_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
-   <field name="detector_facet" type="string" indexed="true" stored="false" multiValued="true" default="unknown"/>
-   -->
+   <field name="ra" type="string" indexed="true" stored="true"/>
+   <field name="dec" type="string" indexed="true" stored="true"/>
+   <field name="pol" type="text" indexed="true" stored="true"/>
+   <field name="receiver" type="text" indexed="true" stored="true"/>
+   <field name="receiver_facet" type="string" indexed="true" stored="false"/>
+   <field name="backend" type="text" indexed="true" stored="true"/>
+   <field name="backend_facet" type="string" indexed="true" stored="false"/>
+   <field name="bandwidth" type="float" indexed="true" stored="true"/>
 
    <field name="format_code" type="string" indexed="true" stored="true" default="gbt_raw_fits"/>
 
@@ -115,6 +114,17 @@
  <solrQueryParser defaultOperator="AND"/>
 
  <copyField source="*" dest="text"/>
+ <copyField source="telescope" dest="tel"/>
+ <copyField source="proposal_id" dest="project"/>
+ <copyField source="legacy_id" dest="project"/>
+ <copyField source="session_id" dest="project"/>
+ <copyField source="session" dest="project"/>
+ <copyField source="alt_id" dest="project"/>
+ <copyField source="investigator" dest="i"/>
+ <copyField source="procname" dest="procname_facet"/>
+ <copyField source="obstype" dest="obstype_facet"/>
+ <copyField source="receiver" dest="receiver_facet"/>
+ <copyField source="backend" dest="backend_facet"/>
 
  <!--
  <copyField source="band" dest="band_facet"/>

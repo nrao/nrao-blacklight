@@ -11,12 +11,15 @@ import user
 
 import pytz
 
+def is_a_value(x):
+    return (x is not None and x != '' and x != [])
+
 def proposal_id(record):
     """Get a proposal_id value given a scan dict record."""
     if record.has_key('proposal_id'):
         return record['proposal_id']
     given = record.get('PROJID')
-    if (given is None or given == ''):
+    if not is_a_value(given):
         return None
     pass
     prop_id = None
@@ -30,6 +33,12 @@ def legacy_id(prop_id):
 
 def session_id(record):
     """Get session ID (based on proposal ID) value given a scan dict record."""
+    prop_id = proposal_id(record)
+    pass
+    return None
+
+def alt_id(record):
+    """Create alternate IDs (permute on non-alpha) given a scan dict record."""
     prop_id = proposal_id(record)
     pass
     return None
@@ -58,6 +67,12 @@ def investigators(record):
     pass
     return None
 
+def investigator_display(record):
+    """Create an investigator display (proposal) given a scan dict record."""
+    prop_id = proposal_id(record)
+    pass
+    return None
+
 def get_utc_datetime(timestamp, format='%Y-%m-%dT%H:%M:%S', tz='US/Eastern'):
     """Get a UTC datetime object given a timestamp string."""
     timezone = pytz.timezone(tz)
@@ -77,7 +92,7 @@ def utc_datetime(record):
 def velocity(record):
     """Get a velocity value given a scan dict record, convert m/s to km/s."""
     given = record.get('VELOCITY')
-    if (given is None or given == ''):
+    if not is_a_value(given):
         return None
     else:
         return float(given) / 1000.0
@@ -85,7 +100,7 @@ def velocity(record):
 def skyfreq(record):
     """Get a skyfreq value given a scan dict record, convert Hz to GHz."""
     given = record.get('SKYFREQ')
-    if (given is None or given == ''):
+    if not is_a_value(given):
         return None
     else:
         return float(given) / 1000000000.0
@@ -143,7 +158,7 @@ def band(record):
 def restfreq(record):
     """Get restfreq values given a scan dict record, convert MHz to GHz."""
     given = record.get('config_restfreq')
-    if (given is None or given == ''):
+    if not is_a_value(given):
         return None
     else:
         restfreqs = given.split(',')
@@ -160,28 +175,33 @@ def ra_dec(record):
 def bandwidth(record):
     """Get a bandwidth value given a scan dict record."""
     given = record.get('config_bandwidth')
-    if (given is None or given == ''):
+    if not is_a_value(given):
         return None
     return float(given)
 
 def doc_it(record):
     """Create a Solr doc (dict for pysolr) given a scan dict record."""
-    if record.get('PROJID') and record.get('SCAN'):
-        doc_id = record.get('PROJID') + '-' + record.get('SCAN')
+    pass
+    sess_id = record.get('PROJID') # session_id(record)
+    scan = record.get('SCAN')
+    if sess_id and scan:
+        doc_id = sess_id + '-' + scan
     else:
         # ID is required.
         doc_id = None
         return {}
     ra, dec = ra_dec(record)
     items = [('id', doc_id),
-             ('tel', 'GBT'),
+             ('telescope', 'GBT'), # TODO, really?  And, what about B* projects on GBT?
              ('proposal_id', proposal_id(record)),
              ('legacy_id', legacy_id(record)),
              ('session_id', session_id(record)),
+             ('alt_id', alt_id(record)),
              ('title', title(record)),
              ('abstract', abstract(record)),
              ('pi', pi(record)),
-             ('investigators', investigators(record)),
+             ('investigator', investigators(record)),
+             ('investigator_display', investigator_display(record)),
              ('projid', record.get('PROJID')),
              ('session', record.get('PROJID')),
              ('object', record.get('OBJECT')),
@@ -198,9 +218,10 @@ def doc_it(record):
              ('dec', dec),
              ('pol', record.get('config_pol')),
              ('receiver', record.get('config_receiver')),
+             ('backend', record.get('config_backend')),
              ('bandwidth', bandwidth(record)),
              ]
-    return dict([(k, v) for k, v in items if (v is not None and v != '')])
+    return dict([(k, v) for k, v in items if is_a_value(v)])
 
 # Create generator for lazy iteration over all scans in CSV dump of GBT data.
 docs = (doc_it(record) for record in csv.DictReader(open('data.csv')))
