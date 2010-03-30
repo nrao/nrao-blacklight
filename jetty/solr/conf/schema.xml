@@ -107,7 +107,7 @@
    <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
 
    <!--Everything else is allowed, as text fields.-->
-   <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="false"/>
  </fields>
 
  <uniqueKey>id</uniqueKey>

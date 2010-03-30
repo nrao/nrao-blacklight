@@ -4,70 +4,59 @@ import pytz
 import sys
 import user
 
-if '-m' in sys.argv:
-    i = sys.argv.index('-m')
-    name = sys.argv[i+1]
-    print 'using module named', name
-    module = __import__(name)
-    raw_docs = module.docs
-else:
-    raw_docs = [record for record in csv.DictReader(open('data.csv'),
-                                                    delimiter=',')]
-
-docs = []
-
-def get_utc_datetime(timestamp, format='%Y-%m-%d %H:%M:%S', tz='US/Eastern'):
+def get_utc_datetime(timestamp, format='%Y-%m-%dT%H:%M:%S', tz='US/Eastern'):
     timezone = pytz.timezone(tz)
     utc = pytz.utc
-    dt = datetime.datetime.strptime(timestamp, format)
+    try:
+        dt = datetime.datetime.strptime(timestamp, format)
+    except ValueError:
+        return None
+    if dt.year < 1900:
+        return None
     return timezone.localize(dt).astimezone(utc)
 
-multifields = ('source', 'observer', 'starttime', 'frequency', 'detector',
-               'receiver', 'band', 'polarization', 'year', 'month',)
+def utc_datetime(record):
+    return get_utc_datetime(record.get('DATE-OBS', ''), tz='UTC')
 
-display_exceptions = ('source', 'starttime', 'frequency', 'year', 'month',)
-
-display_fields = tuple([k for k in multifields if k not in display_exceptions])
-
-# This can be simplified, but let's make it work first.
-for raw_doc in raw_docs:
-    doc = dict()
-    for k,v in raw_doc.items():
-        v = v or ''
-        # v = v.decode('utf8')
-        if k in multifields:
-            doc[k] = v.split(':::')
-        else:
-            doc[k] = v
-    doc['id'] = doc.get('project_session', '')
-    for key in display_fields:
-        doc[key + '_display'] = ', '.join(doc[key])
-    doc['mhz'] = [float(f) / 1000000.0 for f in doc['frequency']]
-    doc['ghz'] = [float(f) / 1000000000.0 for f in doc['frequency']]
-    formatted_ghz = ['%6.2f' % f for f in doc['ghz']]
-    [s.strip() for s in formatted_ghz]
-    doc['frequency_display'] = ', '.join(formatted_ghz)
-    doc['source_display'] = ', '.join(doc['source'])
-
-    starttimes = doc.get('starttime', [])
-    formatted_starttimes = []
-    for starttime in starttimes:
-        try:
-            formatted_starttimes.append(get_utc_datetime(starttime, tz='UTC'))
-        except ValueError:
-            pass
-    if formatted_starttimes:
-        doc['starttime'] = formatted_starttimes
+def velocity(record):
+    # m/s to km/s
+    given = record.get('VELOCITY')
+    if (given is None or given == ''):
+        return None
     else:
-        doc.pop('starttime', None)
+        return float(given) / 1000.0
 
-    if doc.get('lastdate', ''):
-        doc['lastdate'] = get_utc_datetime(doc['lastdate'], tz='UTC')
-    doc['frequency'] = [float(x) for x in doc['frequency']]
-    doc['year'] = [int(x) for x in doc['year']]
-    doc['month'] = [int(x) for x in doc['month']]
+def skyfreq(record):
+    # Hz to GHz
+    given = record.get('SKYFREQ')
+    if (given is None or given == ''):
+        return None
+    else:
+        return float(given) / 1000000000.0
 
-    [doc.pop(k) for k,v in doc.items() if not v]
+def doc_it(record):
+    if record.get('PROJID') and record.get('SCAN'):
+        doc_id = record.get('PROJID') + '-' + record.get('SCAN')
+    else:
+        # ID is required.
+        doc_id = None
+        return {}
+    items = [('id', doc_id),
+             ('session', record.get('PROJID')),
+             ('object', record.get('OBJECT')),
+             ('observer', record.get('OBSERVER')),
+             ('datetime', utc_datetime(record)),
+             ('procname', record.get('PROCNAME')),
+             ('velocity', velocity(record)),
+             ('veldef', record.get('VELDEF')),
+             ('skyfreq', skyfreq(record)),
+             ('', record.get('')),
+             ('', record.get('')),
+             ('', record.get('')),
+             ('', record.get('')),
+             ('', record.get('')),
+             ('', record.get('')),
+             ]
+    return dict([(k, v) for k, v in items if (v is not None and v != '')])
 
-    if doc.get('id', ''):
-        docs.append(doc)
+docs = (doc_it(record) for record in csv.DictReader(open('data.csv')))
