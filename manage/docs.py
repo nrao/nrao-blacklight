@@ -324,13 +324,18 @@ def restfreq(record):
         restfreqs = given.split(',')
         return [float(f) / 1000.0 for f in restfreqs]
 
+ra_dec_expression = re.compile('J2000\s*@\s*\(([^,]*),\s*([^\)]*)\)')
+
 def ra_dec(record):
     """Get a ra, dec value pair given a scan dict record."""
-    loc = record.get('config_restfreq')
+    loc = record.get('catalog_location')
     if (loc is None or loc == ''):
         return None, None
-    pass
-    return None, None
+    match = ra_dec_expression.search(loc)
+    if match:
+        return match.groups()
+    else:
+        return None, None
 
 def bandwidth(record):
     """Get a bandwidth value given a scan dict record."""
