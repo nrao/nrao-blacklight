@@ -37,14 +37,14 @@ def fetch_ids(record):
     Given complexity in dealing with IDs, this function has some side effects:
      * store proposal ID to record['proposal_id']
      * store legacy ID to record['legacy_id']
-     * store base for document ID to record['base_id']
+     * store session for document ID to record['session_id']
      * store some alternate IDs to record['alt_ids']
      * store a flag indicating fetched_ids to record['fetched_ids']
 
     There are several cases where document ID should be based on the legacy ID.
     As such, the logic is currently encoded up front in determining the IDs.
     """
-    if record.has_key('fetched_ids'):
+    if record.get('fetched_ids', False):
         return
     given = record.get('PROJID')
     if not is_a_value(given):
@@ -57,14 +57,14 @@ def fetch_ids(record):
     match4 = idcase4.search(given)
     prop_id = None
     leg_id = None
-    base_id = None
+    sess_id = None
     alt_ids = []
     if match1:
         trimester, num = match1.groups()
         if len(num) < 3:
             num = '0' + num
         prop_id = 'GBT/%s-%s' % (trimester, num)
-        base_id = prop_id
+        sess_id = prop_id
     elif match2:
         letter, num = match2.groups()
         for x in range(4):
@@ -73,7 +73,7 @@ def fetch_ids(record):
         if len(num) < 3:
             num = '0' + num
         leg_id = 'B%s%s' % (letter, num)
-        base_id = leg_id
+        sess_id = leg_id
     elif match3:
         letter, num = match3.groups()
         for x in range(4):
@@ -82,7 +82,7 @@ def fetch_ids(record):
         if len(num) < 3:
             num = '0' + num
         leg_id = 'G%s%s' % (letter, num)
-        base_id = leg_id
+        sess_id = leg_id
     elif match4:
         num = match4.groups()[0]
         for x in range(4):
@@ -91,8 +91,8 @@ def fetch_ids(record):
         if len(num) < 5:
             num = '0' + num
         leg_id = 'GLST%s' % num
-        base_id = leg_id
-    info = proposal.get(base_id)
+        sess_id = leg_id
+    info = proposal.get(sess_id)
     if info:
         prop_id = info.get('proposal_id', prop_id)
         leg_id = info.get('legacy_id', leg_id)
@@ -100,8 +100,8 @@ def fetch_ids(record):
         prop_id = prop_id.upper()
     if leg_id:
         leg_id = leg_id.upper()
-    if base_id:
-        base_id = base_id.upper()
+    if sess_id:
+        sess_id = sess_id.upper()
     session_count_match = session_count_re.search(given)
     if session_count_match and len(session_count_match.groups()) > 1:
         session_count = session_count_match.groups()[-1]
@@ -112,13 +112,17 @@ def fetch_ids(record):
                 session_count = session_count[-2:]
             else:
                 session_count = session_count[-3:]
-        if base_id:
-            base_id = base_id + id_sep + session_count
+        if sess_id:
+            sess_id = sess_id + id_sep + session_count
     else:
-        base_id = None
-    record['proposal_id'] = prop_id
-    record['legacy_id'] = legacy_id
-    record['base_id'] = base_id
+        sess_id = None
+    if prop_id and not prop_id.startswith('None'):
+        record['proposal_id'] = prop_id
+    if leg_id and not leg_id.startswith('None'):
+        record['legacy_id'] = leg_id
+    if sess_id and not sess_id.startswith('None'):
+        alt_ids.append(sess_id)
+        record['session_id'] = sess_id.replace('/', '').replace('-', id_sep)
     record['alt_ids'] = [i.upper() for i in alt_ids]
     record['fetched_ids'] = True
     return
@@ -133,10 +137,15 @@ def legacy_id(record):
     fetch_ids(record)
     return record.get('legacy_id')
 
+def session_id(record):
+    """Get session ID (based on proposal ID) value given a scan dict record."""
+    fetch_ids(record)
+    return record.get('session_id')
+
 def doc_id(record):
     """Get an ID value for Solr given a scan dict record."""
     fetch_ids(record)
-    base = record.get('base_id')
+    base = record.get('session_id')
     scan = record.get('SCAN')
     if not is_a_value(base) or not is_a_value(scan):
         return None
@@ -144,45 +153,66 @@ def doc_id(record):
         scan = '0' + scan
     return base + id_sep + scan
 
-def session_id(record):
-    """Get session ID (based on proposal ID) value given a scan dict record."""
-    prop_id = proposal_id(record)
-    pass
-    return None
-
 def alt_id(record):
     """Create alternate IDs (permute on non-alpha) given a scan dict record."""
-    prop_id = proposal_id(record)
-    pass
-    return None
+    fetch_ids(record)
+    if record.has_key('alt_id'):
+        return record['alt_id']
+    alt_ids = record.pop('alt_ids', [])
+    prop_id = record.get('proposal_id', '')
+    leg_id = record.get('legacy_id', '')
+    for x in (prop_id, leg_id,):
+        alt_ids.append(x.replace('_', '-'))
+        alt_ids.append(x.replace('-', '_'))
+        alt_ids.append(x.replace('/', ''))
+        alt_ids.append(x.replace('-', '').replace('_', ''))
+        alt_ids.append(x.replace('/', '').replace('-', '').replace('_', ''))
+    alt_ids = [i for i in alt_ids if i]
+    record['alt_id'] = alt_ids
+    return record['alt_id']
+
+def get_proposal_info(record):
+    """Get a dict of proposal info given a scan dict record."""
+    fetch_ids(record)
+    proposal_info = {}
+    for key in ('proposal_id', 'legacy_id',):
+        info = proposal.get(record.get(key))
+        if info:
+            proposal_info = info
+            break
+    if not proposal_info:
+        for key in alt_id(record):
+            info = proposal.get(key)
+            if info:
+                proposal_info = info
+                break
+    return proposal_info
 
 def title(record):
     """Get the project title (proposal) given a scan dict record."""
-    prop_id = proposal_id(record)
-    pass
-    return None
+    proposal_info = get_proposal_info(record)
+    return proposal_info.get('title')
 
 def abstract(record):
     """Get the project abstract (proposal) given a scan dict record."""
-    prop_id = proposal_id(record)
-    pass
-    return None
+    proposal_info = get_proposal_info(record)
+    return proposal_info.get('abstract')
 
 def pi(record):
     """Get the project PI (proposal) given a scan dict record."""
-    prop_id = proposal_id(record)
+    proposal_info = get_proposal_info(record)
     pass
     return None
 
 def investigators(record):
     """Get the project investigators (proposal) given a scan dict record."""
-    prop_id = proposal_id(record)
+    proposal_info = get_proposal_info(record)
     pass
     return None
 
 def investigator_display(record):
     """Create an investigator display (proposal) given a scan dict record."""
-    prop_id = proposal_id(record)
+    proposal_info = get_proposal_info(record)
     pass
     return None
 
