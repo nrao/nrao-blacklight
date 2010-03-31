@@ -24,6 +24,8 @@ count = 0
 try:
     for doc in docs:
         if not (doc and doc.get('id')):
+            sys.stdout.write('-')
+            sys.stdout.flush()
             continue
         conn.add([doc], commit=False)
         count += 1

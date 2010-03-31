@@ -6,30 +6,122 @@ See project gbt-fits-dump, which is run on bigdog.cv.nrao.edu.
 
 import csv
 import datetime
+import re
 import sys
 import user
 
 import pytz
 
+import proposal
+
 def is_a_value(x):
     return (x is not None and x != '' and x != [])
 
-def proposal_id(record):
-    """Get a proposal_id value given a scan dict record."""
-    if record.has_key('proposal_id'):
-        return record['proposal_id']
+# We are dealing with several cases of project names in the archive.
+# Example 1: AGBT10A_001, GBT10A_001, AGBT_05B_046
+idcase1 = re.compile('^A?GBT[-|_]*(\d{2}[ABC])[-|_]*(\d{2,3})', re.I)
+# Example 2: ABB240, BB240
+idcase2 = re.compile('^A?B([A-Z])0*(\d{2,3})', re.I)
+# Example 3: AGH009, GH009, AGV020, GV020
+idcase3 = re.compile('^A?G([A-Z])0*(\d{2,3})', re.I)
+# Example 4: AGLST011217, GLST011217
+idcase4 = re.compile('^A?GLST0*(\d{4,5})', re.I)
+
+def fetch_ids(record):
+    """Fetch/determine essential IDs given a scan dict record.
+
+    Given complexity in dealing with IDs, this function has some side effects:
+     * store proposal ID to record['proposal_id']
+     * store legacy ID to record['legacy_id']
+     * store base for document ID to record['base_id']
+     * store some alternate IDs to record['alt_ids']
+     * store a flag indicating fetched_ids to record['fetched_ids']
+
+    There are several cases where document ID should be based on the legacy ID.
+    As such, the logic is currently encoded up front in determining the IDs.
+    """
+    if record.has_key('fetched_ids'):
+        return
     given = record.get('PROJID')
     if not is_a_value(given):
-        return None
-    pass
+        record['fetched_ids'] = True
+        return
+    match1 = idcase1.search(given)
+    match2 = idcase2.search(given)
+    match3 = idcase3.search(given)
+    match4 = idcase4.search(given)
     prop_id = None
+    leg_id = None
+    base_id = None
+    alt_ids = []
+    if match1:
+        trimester, num = match1.groups()
+        if len(num) < 3:
+            num = '0' + num
+        prop_id = 'GBT/%s-%s' % (trimester, num)
+        base_id = prop_id
+    elif match2:
+        letter, num = match2.groups()
+        for x in range(4):
+            zs = '0' * x
+            alt_ids.append('B%s%s%s' % (letter, zs, num))
+        if len(num) < 3:
+            num = '0' + num
+        leg_id = 'B%s%s' % (letter, num)
+        base_id = leg_id
+    elif match3:
+        letter, num = match3.groups()
+        for x in range(4):
+            zs = '0' * x
+            alt_ids.append('G%s%s%s' % (letter, zs, num))
+        if len(num) < 3:
+            num = '0' + num
+        leg_id = 'G%s%s' % (letter, num)
+        base_id = leg_id
+    elif match4:
+        num = match4.groups()[0]
+        for x in range(4):
+            zs = '0' * x
+            alt_ids.append('GLST%s%s' % (zs, num))
+        if len(num) < 5:
+            num = '0' + num
+        leg_id = 'GLST%s' % num
+        base_id = leg_id
+    info = proposal.get(base_id)
+    if info:
+        prop_id = info.get('proposal_id', prop_id)
+        leg_id = info.get('legacy_id', leg_id)
+    if prop_id:
+        prop_id = prop_id.upper()
+    if leg_id:
+        leg_id = leg_id.upper()
+    if base_id:
+        base_id = base_id.upper()
     record['proposal_id'] = prop_id
-    return None
+    record['legacy_id'] = legacy_id
+    record['base_id'] = base_id
+    record['alt_ids'] = [i.upper() for i in alt_ids]
+    record['fetched_ids'] = True
+    return
 
-def legacy_id(prop_id):
-    """Get a legacy_id value given a proposal ID."""
-    pass
-    return None
+def proposal_id(record):
+    """Get a proposal ID value given a scan dict record."""
+    fetch_ids(record)
+    return record.get('proposal_id')
+
+def legacy_id(record):
+    """Get a legacy ID value given a scan dict record."""
+    fetch_ids(record)
+    return record.get('legacy_id')
+
+def doc_id(record):
+    """Get an ID value for Solr given a scan dict record."""
+    fetch_ids(record)
+    base = record.get('base_id')
+    scan = record.get('SCAN')
+    if not is_a_value(base) or not is_a_value(scan):
+        return None
+    return base + '-' + scan
 
 def session_id(record):
     """Get session ID (based on proposal ID) value given a scan dict record."""
@@ -181,18 +273,13 @@ def bandwidth(record):
 
 def doc_it(record):
     """Create a Solr doc (dict for pysolr) given a scan dict record."""
-    pass
-    sess_id = record.get('PROJID') # session_id(record)
-    scan = record.get('SCAN')
-    if sess_id and scan:
-        doc_id = sess_id + '-' + scan
-    else:
+    d_id = doc_id(record)
+    if not d_id:
         # ID is required.
-        doc_id = None
         return {}
     ra, dec = ra_dec(record)
-    items = [('id', doc_id),
-             ('telescope', 'GBT'), # TODO, really?  And, what about B* projects on GBT?
+    items = [('id', d_id),
+             ('telescope', 'GBT'), # TODO, really?  And, what of GBT+VLBA projects?
              ('proposal_id', proposal_id(record)),
              ('legacy_id', legacy_id(record)),
              ('session_id', session_id(record)),
