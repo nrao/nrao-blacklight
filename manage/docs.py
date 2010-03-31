@@ -198,23 +198,40 @@ def abstract(record):
     proposal_info = get_proposal_info(record)
     return proposal_info.get('abstract')
 
+def format_investigators(proposal_info, only_pi=False, mark_pi=False, m='**'):
+    """Format investigators, return list of strings. Optionally mark PI."""
+    pi = proposal_info.get('pi_details', {})
+    guys = proposal_info.get('investigator_details', [])
+    if only_pi:
+        if pi:
+            guys = [pi]
+        else:
+            pi = None
+            guys = []
+    formatted_guys = []
+    for guy in guys:
+        formatted_guy = '%s, %s (%s)' % (guy['last_name'],
+                                         guy['first_name'],
+                                         guy['affiliation'])
+        if mark_pi and guy == pi:
+            formatted_guy += m
+        formatted_guys.append(formatted_guy)
+    return sorted(formatted_guys)
+
 def pi(record):
     """Get the project PI (proposal) given a scan dict record."""
     proposal_info = get_proposal_info(record)
-    pass
-    return None
+    return ', '.join(format_investigators(proposal_info, only_pi=True))
 
 def investigators(record):
     """Get the project investigators (proposal) given a scan dict record."""
     proposal_info = get_proposal_info(record)
-    pass
-    return None
+    return format_investigators(proposal_info)
 
 def investigator_display(record):
     """Create an investigator display (proposal) given a scan dict record."""
     proposal_info = get_proposal_info(record)
-    pass
-    return None
+    return ', '.join(format_investigators(proposal_info, mark_pi=True))
 
 def get_utc_datetime(timestamp, format='%Y-%m-%dT%H:%M:%S', tz='US/Eastern'):
     """Get a UTC datetime object given a timestamp string."""
