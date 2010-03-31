@@ -14,6 +14,8 @@ import pytz
 
 import proposal
 
+id_sep = '_'
+
 def is_a_value(x):
     return (x is not None and x != '' and x != [])
 
@@ -26,6 +28,8 @@ idcase2 = re.compile('^A?B([A-Z])0*(\d{2,3})', re.I)
 idcase3 = re.compile('^A?G([A-Z])0*(\d{2,3})', re.I)
 # Example 4: AGLST011217, GLST011217
 idcase4 = re.compile('^A?GLST0*(\d{4,5})', re.I)
+
+session_count_re = re.compile('(\d{2,5})[-|_](\d{1,3})$', re.I)
 
 def fetch_ids(record):
     """Fetch/determine essential IDs given a scan dict record.
@@ -46,6 +50,7 @@ def fetch_ids(record):
     if not is_a_value(given):
         record['fetched_ids'] = True
         return
+    given = given.strip()
     match1 = idcase1.search(given)
     match2 = idcase2.search(given)
     match3 = idcase3.search(given)
@@ -97,6 +102,20 @@ def fetch_ids(record):
         leg_id = leg_id.upper()
     if base_id:
         base_id = base_id.upper()
+    session_count_match = session_count_re.search(given)
+    if session_count_match and len(session_count_match.groups()) > 1:
+        session_count = session_count_match.groups()[-1]
+        while len(session_count) < 2:
+            session_count = '0' + session_count
+        if len(session_count) > 2:
+            if session_count[-3] == '0':
+                session_count = session_count[-2:]
+            else:
+                session_count = session_count[-3:]
+        if base_id:
+            base_id = base_id + id_sep + session_count
+    else:
+        base_id = None
     record['proposal_id'] = prop_id
     record['legacy_id'] = legacy_id
     record['base_id'] = base_id
@@ -121,7 +140,9 @@ def doc_id(record):
     scan = record.get('SCAN')
     if not is_a_value(base) or not is_a_value(scan):
         return None
-    return base + '-' + scan
+    while len(scan) < 3:
+        scan = '0' + scan
+    return base + id_sep + scan
 
 def session_id(record):
     """Get session ID (based on proposal ID) value given a scan dict record."""
