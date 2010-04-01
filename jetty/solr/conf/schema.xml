@@ -101,6 +101,8 @@
    <field name="backend_facet" type="string" indexed="true" stored="false"/>
    <field name="bandwidth" type="float" indexed="true" stored="true"/>
 
+   <field name="key" type="string" indexed="true" stored="false" multiValued="true"/>
+
    <field name="format_code" type="string" indexed="true" stored="true" default="gbt_raw_fits"/>
 
    <!--Free-text search field.-->

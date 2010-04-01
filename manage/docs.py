@@ -167,8 +167,11 @@ def alt_id(record):
         alt_ids.append(x.replace('/', ''))
         alt_ids.append(x.replace('-', '').replace('_', ''))
         alt_ids.append(x.replace('/', '').replace('-', '').replace('_', ''))
-    alt_ids = [i for i in alt_ids if i]
-    record['alt_id'] = alt_ids
+    uniq_alt_ids = []
+    for i in alt_ids:
+        if i and i not in uniq_alt_ids:
+            uniq_alt_ids.append(i)
+    record['alt_id'] = uniq_alt_ids
     return record['alt_id']
 
 def get_proposal_info(record):
@@ -255,7 +258,7 @@ def velocity(record):
     if not is_a_value(given):
         return None
     else:
-        return float(given) / 1000.0
+        return '%.4f' % (float(given) / 1000.0)
 
 def skyfreq(record):
     """Get a skyfreq value given a scan dict record, convert Hz to GHz."""
@@ -263,12 +266,18 @@ def skyfreq(record):
     if not is_a_value(given):
         return None
     else:
-        return float(given) / 1000000000.0
+        return '%.10f' % (float(given) / 1000000000.0)
 
 def price_is_right(bands, freq):
     """Return the closest band in bands without going over freq."""
     freq_band = None
-    if freq is None or not bands:
+    if not is_a_value(freq) or not bands:
+        return None
+    try:
+        freq = float(freq)
+    except ValueError:
+        return None
+    except TypeError:
         return None
     for band_key in sorted(bands.keys()):
         if band_key > freq:
@@ -276,7 +285,7 @@ def price_is_right(bands, freq):
         freq_band = bands[band_key]
     return freq_band
 
-bands = {0.0: '4-band',
+bands = {0.0: 'Unknown', # 0.0: '4-band',
          0.225: 'P-band',
          0.390: '450-band',
          0.510: '600-band',
@@ -321,8 +330,22 @@ def restfreq(record):
     if not is_a_value(given):
         return None
     else:
-        restfreqs = given.split(',')
-        return [float(f) / 1000.0 for f in restfreqs]
+        restfreqs = []
+        for f in given.split(','):
+            try:
+                freq = '%.4f' % (float(f) / 1000.0)
+            except:
+                pass
+            else:
+                if freq not in restfreqs:
+                    restfreqs.append(freq)
+        if not restfreqs:
+            backup = record.get('RESTFRQ')
+            if not is_a_value(backup):
+                return None
+            freq = '%.10f' % (float(backup) / 1000000000.0)
+            return [freq]
+        return restfreqs
 
 ra_dec_expression = re.compile('J2000\s*@\s*\(([^,]*),\s*([^\)]*)\)')
 
@@ -342,7 +365,17 @@ def bandwidth(record):
     given = record.get('config_bandwidth')
     if not is_a_value(given):
         return None
-    return float(given.split(',')[0])
+    else:
+        bandwidths = []
+        for b in given.split(','):
+            try:
+                bw = '%.2f' % (float(b))
+            except:
+                pass
+            else:
+                if bw not in bandwidths:
+                    bandwidths.append(bw)
+        return bandwidths
 
 def doc_it(record):
     """Create a Solr doc (dict for pysolr) given a scan dict record."""
@@ -381,7 +414,9 @@ def doc_it(record):
              ('backend', record.get('config_backend')),
              ('bandwidth', bandwidth(record)),
              ]
-    return dict([(k, v) for k, v in items if is_a_value(v)])
+    doc = dict([(k, v) for k, v in items if is_a_value(v)])
+    doc['key'] = doc.keys()
+    return doc
 
 # Create generator for lazy iteration over all scans in CSV dump of GBT data.
 docs = (doc_it(record) for record in csv.DictReader(open('data.csv')))
