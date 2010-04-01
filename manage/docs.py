@@ -342,7 +342,7 @@ def bandwidth(record):
     given = record.get('config_bandwidth')
     if not is_a_value(given):
         return None
-    return float(given)
+    return float(given.split(',')[0])
 
 def doc_it(record):
     """Create a Solr doc (dict for pysolr) given a scan dict record."""

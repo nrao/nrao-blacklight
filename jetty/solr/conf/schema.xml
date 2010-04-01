@@ -66,7 +66,7 @@
    <field name="legacy_id" type="text" indexed="true" stored="true"/>
    <field name="session_id" type="text" indexed="true" stored="true"/>
    <field name="session" type="text" indexed="true" stored="true"/>
-   <field name="projid" type="text" indexed="true" stored="false"/>
+   <field name="projid" type="text" indexed="true" stored="true"/>
    <field name="alt_id" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="project" type="text" indexed="true" stored="false" multiValued="true"/>
 
@@ -87,7 +87,6 @@
    <field name="obstype_facet" type="string" indexed="true" stored="false"/>
    <field name="veldef" type="text" indexed="true" stored="true"/>
    <field name="skyfreq" type="float" indexed="true" stored="true"/>
-   <field name="band" type="text" indexed="true" stored="true"/>
 
    <field name="restfreq" type="float" indexed="true" stored="true" multiValued="true" />
 
@@ -96,6 +95,8 @@
    <field name="pol" type="text" indexed="true" stored="true"/>
    <field name="receiver" type="text" indexed="true" stored="true"/>
    <field name="receiver_facet" type="string" indexed="true" stored="false"/>
+   <field name="band" type="text" indexed="true" stored="true"/>
+   <field name="band_facet" type="string" indexed="true" stored="false"/>
    <field name="backend" type="text" indexed="true" stored="true"/>
    <field name="backend_facet" type="string" indexed="true" stored="false"/>
    <field name="bandwidth" type="float" indexed="true" stored="true"/>
@@ -123,6 +124,7 @@
  <copyField source="investigator" dest="i"/>
  <copyField source="procname" dest="procname_facet"/>
  <copyField source="obstype" dest="obstype_facet"/>
+ <copyField source="band" dest="band_facet"/>
  <copyField source="receiver" dest="receiver_facet"/>
  <copyField source="backend" dest="backend_facet"/>
 
