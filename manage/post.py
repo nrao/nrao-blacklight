@@ -23,6 +23,12 @@ count = 0
 # Using a generator, for lazy loading.
 try:
     for doc in docs:
+        if doc.get('error'):
+            print
+            print doc.get('id')
+            print doc['error']
+            print
+            _ = raw_input()
         if not (doc and doc.get('id')):
             sys.stdout.write('-')
             sys.stdout.flush()

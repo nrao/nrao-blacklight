@@ -260,6 +260,15 @@ def velocity(record):
     else:
         return '%.4f' % (float(given) / 1000.0)
 
+def obstype(record):
+    """Get observing type given a scan dict record."""
+    given = record.get('OBSTYPE')
+    if not is_a_value(given):
+        return None
+    if given == 'CONTINUUM':
+        return 'Continuum'
+    return given
+
 def skyfreq(record):
     """Get a skyfreq value given a scan dict record, convert Hz to GHz."""
     given = record.get('SKYFREQ')
@@ -402,7 +411,7 @@ def doc_it(record):
              ('date-obs', utc_datetime(record)),
              ('procname', record.get('PROCNAME')),
              ('velocity', velocity(record)),
-             ('obstype', record.get('OBSTYPE')),
+             ('obstype', obstype(record)),
              ('veldef', record.get('VELDEF')),
              ('skyfreq', skyfreq(record)),
              ('band', band(record)),
