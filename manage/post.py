@@ -9,7 +9,7 @@ from docs import docs
 solr_url = 'http://localhost:8994/solr'
 print 'connecting to Solr at', solr_url
 
-conn = Solr(solr_url)
+conn = Solr(solr_url, timeout=3600)
 
 if '-d' in sys.argv:
     print 'deleting docs in Solr'

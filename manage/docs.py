@@ -201,7 +201,8 @@ def abstract(record):
     proposal_info = get_proposal_info(record)
     return proposal_info.get('abstract')
 
-def format_investigators(proposal_info, only_pi=False, mark_pi=False, m='**'):
+def format_investigators(proposal_info, only_pi=False, mark_pi=False,
+                         concise=False, m='**'):
     """Format investigators, return list of strings. Optionally mark PI."""
     pi = proposal_info.get('pi_details', {})
     guys = proposal_info.get('investigator_details', [])
@@ -213,9 +214,12 @@ def format_investigators(proposal_info, only_pi=False, mark_pi=False, m='**'):
             guys = []
     formatted_guys = []
     for guy in guys:
-        formatted_guy = '%s, %s (%s)' % (guy['last_name'],
-                                         guy['first_name'],
-                                         guy['affiliation'])
+        if concise:
+            formatted_guy = '%s' % guy['last_name']
+        else:
+            formatted_guy = '%s, %s (%s)' % (guy['last_name'],
+                                             guy['first_name'],
+                                             guy['affiliation'])
         if mark_pi and guy == pi:
             formatted_guy += m
         formatted_guys.append(formatted_guy)
@@ -236,6 +240,12 @@ def investigator_display(record):
     proposal_info = get_proposal_info(record)
     return ', '.join(format_investigators(proposal_info, mark_pi=True))
 
+def investigator_concise(record):
+    """Create a concise investigator display given a scan dict record."""
+    proposal_info = get_proposal_info(record)
+    return ', '.join(format_investigators(proposal_info, concise=True,
+                                          mark_pi=True))
+
 def get_utc_datetime(timestamp, format='%Y-%m-%dT%H:%M:%S', tz='US/Eastern'):
     """Get a UTC datetime object given a timestamp string."""
     timezone = pytz.timezone(tz)
@@ -251,6 +261,13 @@ def get_utc_datetime(timestamp, format='%Y-%m-%dT%H:%M:%S', tz='US/Eastern'):
 def utc_datetime(record):
     """Get a UTC datetime value given a scan dict record."""
     return get_utc_datetime(record.get('DATE-OBS', ''), tz='UTC')
+
+def date_display(record):
+    """Get a date string (no time) given a scan dict record."""
+    dt = utc_datetime(record)
+    if not is_a_value(dt):
+        return None
+    return dt.strftime('%Y-%m-%d')
 
 def velocity(record):
     """Get a velocity value given a scan dict record, convert m/s to km/s."""
@@ -276,6 +293,14 @@ def skyfreq(record):
         return None
     else:
         return '%.10f' % (float(given) / 1000000000.0)
+
+def skyfreq_concise(record):
+    """Get a concise skyfreq value given a scan dict record, fewer digits."""
+    freq = skyfreq(record)
+    if not is_a_value(freq):
+        return None
+    else:
+        return '%.2f' % float(freq)
 
 def price_is_right(bands, freq):
     """Return the closest band in bands without going over freq."""
@@ -404,16 +429,19 @@ def doc_it(record):
              ('pi', pi(record)),
              ('investigator', investigators(record)),
              ('investigator_display', investigator_display(record)),
+             ('investigator_concise', investigator_concise(record)),
              ('projid', record.get('PROJID')),
              ('session', record.get('PROJID')),
              ('object', record.get('OBJECT')),
              ('observer', record.get('OBSERVER')),
              ('date-obs', utc_datetime(record)),
+             ('date_display', date_display(record)),
              ('procname', record.get('PROCNAME')),
              ('velocity', velocity(record)),
              ('obstype', obstype(record)),
              ('veldef', record.get('VELDEF')),
              ('skyfreq', skyfreq(record)),
+             ('skyfreq_concise', skyfreq_concise(record)),
              ('band', band(record)),
              ('restfreq', restfreq(record)),
              ('ra', ra),
