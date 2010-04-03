@@ -307,7 +307,7 @@ bands = {0.0: 'Unknown', # 0.0: '4-band',
          18.0: 'K-band',
          26.5: 'Ka-band',
          40.0: 'Q-band',
-         50.0: 'V-band',
+         52.0: 'V-band', # One rcvr hits just over 50GHz.
          75.0: 'W-band',
          }
 
