@@ -6,3 +6,8 @@ jetty/
 vendor/
 *~
 env/
+dump.csv
+*.pyc
+*.tmp
+*.temp
+temp
