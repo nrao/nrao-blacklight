@@ -8,7 +8,7 @@ require_dependency(RAILS_ROOT +
 module ApplicationHelper
 
   def application_name
-    'NRAO Telescope Data Archive'
+    'GBT Telescope Data Archive'
   end
 
   # collection of items to be rendered in the @sidebar
