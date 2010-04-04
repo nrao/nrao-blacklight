@@ -3,6 +3,8 @@
   <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
   <dataDir>${solr.data.dir:./solr/data}</dataDir>
 
+  <searchComponent name="collapse" class="org.apache.solr.handler.component.CollapseComponent" />
+
   <requestHandler name="standard" class="solr.SearchHandler" default="true">
     <lst name="defaults">
       <str name="q">*:*</str>
@@ -22,11 +24,23 @@
     <lst name="defaults">
       <str name="q">*:*</str>
       <str name="echoParams">explicit</str>
-      <str name="fl">*,score</str>
+      <str name="fl">id,session_id,projid,title,investigator_concise,date_display,score</str>
       <str name="facet">true</str>
       <str name="facet.mincount">1</str>
       <str name="facet.sort">false</str>
+      <str name="collapse.field">collapse</str>
+      <str name="collapse.facet">before</str>
+      <str name="collapse.info.doc">true</str>
+      <str name="collapse.info.count">true</str>
+      <str name="collapse.includeCollapsedDocs.fl">scan,object,band,receiver,backend,obstype,ra,dec,skyfreq_concise</str>
+      <!--
+      -->
     </lst>
+
+    <arr name="components">
+      <str>collapse</str>
+      <str>facet</str>
+    </arr>
   </requestHandler>
 
   <requestHandler name="document" class="solr.SearchHandler">
@@ -38,6 +52,17 @@
       <!-- use id=blah instead of q=id:blah -->
     </lst>
   </requestHandler>
+
+  <!-- Only available in later field collapsing patches. -->
+  <fieldCollapsing>
+    <fieldCollapseCache
+       class="solr.FastLRUCache"
+       size="512"
+       initialSize="512"
+       autowarmCount="128"/>
+  </fieldCollapsing>
+  <!--
+  -->
 
   <!-- CSV update handler, loaded on demand -->
   <requestHandler name="/update/csv" class="solr.CSVRequestHandler" startup="lazy" />

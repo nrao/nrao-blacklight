@@ -69,6 +69,7 @@
    <field name="projid" type="text" indexed="true" stored="true"/>
    <field name="alt_id" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="project" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="scan" type="string" indexed="true" stored="true"/>
 
    <field name="title" type="text" indexed="true" stored="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
@@ -76,10 +77,12 @@
    <field name="investigator" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="i" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="investigator_display" type="string" indexed="false" stored="true"/>
+   <field name="investigator_concise" type="string" indexed="false" stored="true"/>
 
    <field name="object" type="text" indexed="true" stored="true"/>
    <field name="observer" type="text" indexed="true" stored="true"/>
    <field name="date-obs" type="date" indexed="true" stored="true"/>
+   <field name="date_display" type="string" indexed="false" stored="true"/>
    <field name="procname" type="text" indexed="true" stored="true"/>
    <field name="procname_facet" type="string" indexed="true" stored="false"/>
    <field name="velocity" type="float" indexed="true" stored="true"/>
@@ -87,6 +90,7 @@
    <field name="obstype_facet" type="string" indexed="true" stored="false"/>
    <field name="veldef" type="text" indexed="true" stored="true"/>
    <field name="skyfreq" type="float" indexed="true" stored="true"/>
+   <field name="skyfreq_concise" type="float" indexed="true" stored="true"/>
 
    <field name="restfreq" type="float" indexed="true" stored="true" multiValued="true" />
 
@@ -102,6 +106,7 @@
    <field name="bandwidth" type="float" indexed="true" stored="true"/>
 
    <field name="key" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="collapse" type="string" indexed="true" stored="false"/>
 
    <field name="format_code" type="string" indexed="true" stored="true" default="gbt_raw_fits"/>
 
@@ -130,9 +135,5 @@
  <copyField source="receiver" dest="receiver_facet"/>
  <copyField source="backend" dest="backend_facet"/>
 
- <!--
- <copyField source="band" dest="band_facet"/>
- <copyField source="receiver" dest="receiver_facet"/>
- <copyField source="detector" dest="detector_facet"/>
- -->
+ <copyField source="session_id" dest="collapse"/>
 </schema>

@@ -432,6 +432,7 @@ def doc_it(record):
              ('investigator_concise', investigator_concise(record)),
              ('projid', record.get('PROJID')),
              ('session', record.get('PROJID')),
+             ('scan', record.get('SCAN')),
              ('object', record.get('OBJECT')),
              ('observer', record.get('OBSERVER')),
              ('date-obs', utc_datetime(record)),
