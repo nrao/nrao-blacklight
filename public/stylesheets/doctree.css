@@ -46,4 +46,4 @@ table.scanlist td {
 
 ul.mktree  li.liOpen   { cursor: pointer; background: url(../images/minus.gif)  top left no-repeat; }
 ul.mktree  li.liClosed { cursor: pointer; background: url(../images/plus.gif)   top left no-repeat; }
-ul.mktree  li.liBullet { cursor: default; background: none; }
+ul.mktree  li.liBullet { cursor: default; background: transparent none repeat scroll; }
