@@ -32,7 +32,7 @@
       <str name="collapse.facet">before</str>
       <str name="collapse.info.doc">true</str>
       <str name="collapse.info.count">true</str>
-      <str name="collapse.includeCollapsedDocs.fl">scan,object,band,receiver,backend,obstype,ra,dec,skyfreq_concise</str>
+      <str name="collapse.includeCollapsedDocs.fl">id,scan,object,band,receiver,backend,obstype,ra,dec,skyfreq_concise</str>
       <!--
       -->
     </lst>
