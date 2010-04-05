@@ -1,37 +1,32 @@
+<%= javascript_include_tag 'mktree.js' %>
+<%= stylesheet_link_tag 'mktree', 'doctree' %>
+
 <% # container for all documents in index view -%>
-<div id="documents">
+<a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
+<a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
+<ul id="documents" class="mktree">
   
   <% # loop thru each doc -%>
   <% @response.docs.each_with_index do |document,counter| %>
 
     <% # container for a single doc -%>
-    <div class="document">
-      
-      <% # header bar for doc items in index view -%>
-      <div class="documentHeader yui-g">
-        
-        <!--
-        <% # list controls for items/docs -%>
-        <div class="yui-u documentFunctions">
-          <%= render :partial=>'bookmark_control', :locals=>{:document=>document} %>
-        </div>
-        -->
-        
-        <% # main title container for doc partial view -%>
-
-        <div class="yui-u" style="float: none">
-          <table class="index"><tr>
-              <td class="index_counter"><h3><%= counter + 1 + @response.params[:start].to_i %>.</h3></td>
-              <td class="index_title"><h3 class="index_title"><%= link_to_document document, :label=>document_show_link_field, :counter => (counter + 1 + @response.params[:start].to_i) %></h3></td>
-          </tr></table>
-        </div>
-        
-      </div>
-      
-      <% # main container for doc partial view -%>
-      <%= render_document_partial document, :index %>
-
-    </div>
+    <li><%= counter + 1 + @response.params[:start].to_i %>. <%= h document["session_id"] %>
+      <ul class="document">
+        <% if document.get "title" %>
+        <li><%= h document.get("title") %></li>
+        <% end -%>
+        <% if document.get "investigator_concise" %>
+        <li><%= h document.get("investigator_concise") %></li>
+        <% end -%>
+        <table class="scanlist">
+          <tr><th>#</th><th>Object</th><th>Band</th><th>Receiver</th><th>Backend</th><th>Obstype</th><th>RA (2000)</th><th>Dec (2000)</th><th>Skyfreq (GHz)</th><th></th></tr>
+          <% @collapsed.default = [] %>
+          <% @collapsed[document["id"]].each do |scan| %>
+          <tr><td><%= h scan["scan"] %></td><td><%= h scan["object"] %></td><td><%= h scan["band"] %></td><td><%= h scan["receiver"] %></td><td><%= h scan["backend"] %></td><td><%= h scan["obstype"] %></td><td><%= h scan["ra"] %></td><td><%= h scan["dec"] %></td><td><%= h scan["skyfreq_concise"] %></td><td><a href="about:blank">more</a></td></tr>
+          <% end %>
+        </table>
+      </ul>
+    </li>
     
   <% end %>
-</div>
+</ul>

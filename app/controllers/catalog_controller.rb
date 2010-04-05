@@ -28,6 +28,20 @@ class CatalogController < ApplicationController
   def index
     @response = get_search_results
     @filters = params[:f] || []
+
+    @collapsed = {}
+
+    begin
+      i = 0
+      cc = @response['collapse_counts'][-1]
+      while i < cc.length
+        @collapsed[cc[i]] = cc[i+1][-1]["docs"]
+        i+=2
+      end
+    rescue
+      @collapsed = {}
+    end
+
     respond_to do |format|
       format.html { save_current_search_params }
       format.rss  { render :layout => false }

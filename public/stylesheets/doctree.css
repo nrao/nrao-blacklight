@@ -1,0 +1,49 @@
+#documents {
+    background-color: inherit;
+}
+
+ul.mktree, ul.mktree ul, ul.mktree li {
+    margin-left: 0;
+}
+
+ul.document, ul.documents {
+    margin: 0;
+}
+
+table.scanlist {
+    font-size: 12px;
+    margin-left: 20px;
+    margin-top: 5px;
+    text-align: center;
+    width: 105%;
+}
+
+table.scanlist {
+    border-width: 0px 0px 0px 0px;
+    border-spacing: 0px;
+    border-style: none none none none;
+    border-color: gray gray gray gray;
+    border-collapse: separate;
+}
+
+table.scanlist th {
+    border-width: 1px 1px 1px 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: dotted dotted dotted dotted;
+    border-color: gray gray gray gray;
+}
+
+table.scanlist td {
+    border-width: 1px 1px 1px 1px;
+    padding: 5px 5px 5px 5px;
+    border-style: dotted dotted dotted dotted;
+    border-color: gray gray gray gray;
+}
+
+.proposal {
+    margin-left: 10px;
+}
+
+ul.mktree  li.liOpen   { cursor: pointer; background: url(../images/minus.gif)  top left no-repeat; }
+ul.mktree  li.liClosed { cursor: pointer; background: url(../images/plus.gif)   top left no-repeat; }
+ul.mktree  li.liBullet { cursor: default; background: none; }
