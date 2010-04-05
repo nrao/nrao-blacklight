@@ -2,8 +2,10 @@
 <%= stylesheet_link_tag 'mktree', 'doctree' %>
 
 <% # container for all documents in index view -%>
+<% if @response.total > 0 %>
 <a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
 <a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
+<% end %>
 <ul id="documents" class="mktree">
   
   <% # loop thru each doc -%>
@@ -30,5 +32,7 @@
     
   <% end %>
 </ul>
+<% if @response.total > 0 %>
 <a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
 <a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
+<% end %>
