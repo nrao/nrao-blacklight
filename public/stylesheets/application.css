@@ -203,3 +203,23 @@ ul#appliedFiltersList,
 .application_details {width: 943px;}
 .application_name {margin-left: 5px; font-size: 123.1%; font-weight: bold; float: left;}
 .breadcrumbs {float: right; text-align: right; padding-top: 2px;}
+
+table.advanced {
+    padding: 0;
+}
+
+table.advanced td {
+    padding: 0 1em 0 0;
+}
+
+form.advanced .text {
+    width: 250px;
+}
+
+form.advanced .range {
+    width: 100px;
+}
+
+table.advanced td.first {
+    width: 160px;
+}
