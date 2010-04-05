@@ -1,10 +1,10 @@
-  <% form_tag url_for(:controller => "advanced", :action => "gbt"), :method => :get, :class => :advanced do %>
+  <% form_tag url_for(:controller => "advanced", :action => "submit"), :method => :get, :class => :advanced do %>
     <h3>Project Parameters</h3>
     <table class="advanced">
-      <tr><td class="first"><%= label_tag(:program_id, "Program ID") %></td><td colspan="3"><%= text_field_tag :program_id, params[:program_id], :class => :text %></td></tr>
+      <tr><td class="first"><%= label_tag(:project, "Program ID") %></td><td colspan="3"><%= text_field_tag :project, params[:project], :class => :text %></td></tr>
       <tr><td class="first"><%= label_tag(:i, "Investigator Name") %></td><td colspan="3"><%= text_field_tag :i, params[:i], :class => :text %></td></tr>
       <tr><td class="first"><%= label_tag(:observer, "Observer Name") %></td><td colspan="3"><%= text_field_tag :observer, params[:observer], :class => :text %></td></tr>
-      <tr><td class="first"><%= label_tag(:date, "Date Observed") %></td><td><%= text_field_tag :date_from, params[:date_from], :class => :range %></td><td>to</td><td><%= text_field_tag :date_to, params[:date_to], :class => :range %></td></tr>
+      <!--<tr><td class="first"><%= label_tag(:date, "Date Observed") %></td><td><%= text_field_tag :date_from, params[:date_from], :class => :range %></td><td>to</td><td><%= text_field_tag :date_to, params[:date_to], :class => :range %></td></tr>-->
     </table>
     <hr/>
     <h3>Object Parameters</h3>
@@ -16,9 +16,9 @@
     <table class="advanced">
       <tr><td class="first"><%= label_tag(:band, "Band") %></td><td colspan="3"><%= text_field_tag :band, params[:band], :class => :text %></td></tr>
       <tr><td class="first"><%= label_tag(:obstype, "Observing Type") %></td><td colspan="3"><%= text_field_tag :obstype, params[:obstype], :class => :text %></td></tr>
-      <tr><td class="first"><%= label_tag(:skyfreq, "Sky Frequency") %></td><td><%= text_field_tag :skyfreq_from, params[:skyfreq_from], :class => :range %></td><td>to</td><td><%= text_field_tag :skyfreq_to, params[:skyfreq_to], :class => :range %></td></tr>
-      <tr><td class="first"><%= label_tag(:restfreq, "Rest Frequency") %></td><td><%= text_field_tag :restfreq_from, params[:restfreq_from], :class => :range %></td><td>to</td><td><%= text_field_tag :restfreq_to, params[:restfreq_to], :class => :range %></td></tr>
-      <tr><td class="first"><%= label_tag(:bandwidth, "Bandwidth") %></td><td><%= text_field_tag :bandwidth_from, params[:bandwidth_from], :class => :range %></td><td>to</td><td><%= text_field_tag :bandwidth_to, params[:bandwidth_to], :class => :range %></td></tr>
+      <!--<tr><td class="first"><%= label_tag(:skyfreq, "Sky Frequency") %></td><td><%= text_field_tag :skyfreq_from, params[:skyfreq_from], :class => :range %></td><td>to</td><td><%= text_field_tag :skyfreq_to, params[:skyfreq_to], :class => :range %></td></tr>-->
+      <!--<tr><td class="first"><%= label_tag(:restfreq, "Rest Frequency") %></td><td><%= text_field_tag :restfreq_from, params[:restfreq_from], :class => :range %></td><td>to</td><td><%= text_field_tag :restfreq_to, params[:restfreq_to], :class => :range %></td></tr>-->
+      <!--<tr><td class="first"><%= label_tag(:bandwidth, "Bandwidth") %></td><td><%= text_field_tag :bandwidth_from, params[:bandwidth_from], :class => :range %></td><td>to</td><td><%= text_field_tag :bandwidth_to, params[:bandwidth_to], :class => :range %></td></tr>-->
       <tr><td class="first"><%= label_tag(:receiver, "Receiver") %></td><td colspan="3"><%= text_field_tag :receiver, params[:receiver], :class => :text %></td></tr>
       <tr><td class="first"><%= label_tag(:backend, "Backend (Detector)") %></td><td colspan="3"><%= text_field_tag :backend, params[:backend], :class => :text %></td></tr>
       <tr><td class="first"><%= label_tag(:procname, "Procedure Name") %></td><td colspan="3"><%= text_field_tag :procname, params[:procname], :class => :text %></td></tr>
