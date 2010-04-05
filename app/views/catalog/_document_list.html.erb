@@ -22,7 +22,7 @@
           <tr><th>#</th><th>Object</th><th>Band</th><th>Receiver</th><th>Backend</th><th>Obstype</th><th>RA (2000)</th><th>Dec (2000)</th><th>Skyfreq (GHz)</th><th></th></tr>
           <% @collapsed.default = [] %>
           <% @collapsed[document["id"]].each do |scan| %>
-          <tr><td><%= h scan["scan"] %></td><td><%= h scan["object"] %></td><td><%= h scan["band"] %></td><td><%= h scan["receiver"] %></td><td><%= h scan["backend"] %></td><td><%= h scan["obstype"] %></td><td><%= h scan["ra"] %></td><td><%= h scan["dec"] %></td><td><%= h scan["skyfreq_concise"] %></td><td><a href="about:blank">more</a></td></tr>
+          <tr><td><%= h scan["scan"] %></td><td><% if scan["object"].length > 9 %><%= h scan["object"][0..6] + "..." %><% else %><%= h scan["object"] %><% end %></td><td><%= h scan["band"] %></td><td><%= h scan["receiver"] %></td><td><%= h scan["backend"] %></td><td><%= h scan["obstype"] %></td><td><%= h scan["ra"] %></td><td><%= h scan["dec"] %></td><td><%= h scan["skyfreq_concise"] %></td><td><a href="about:blank">more</a></td></tr>
           <% end %>
         </table>
       </ul>
@@ -30,3 +30,5 @@
     
   <% end %>
 </ul>
+<a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
+<a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
