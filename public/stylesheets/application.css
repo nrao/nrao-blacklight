@@ -223,3 +223,7 @@ form.advanced .range {
 table.advanced td.first {
     width: 160px;
 }
+
+.advanced_link {
+    font-size: 12px;
+}
