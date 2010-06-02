@@ -47,8 +47,8 @@
   <!-- ping/healthcheck -->
   <requestHandler name="/admin/ping" class="PingRequestHandler">
     <lst name="defaults">
-      <str name="qt">standard</str>
-      <str name="q">alma</str>
+      <str name="qt">search</str>
+      <str name="q">waveguides</str>
       <str name="echoParams">all</str>
     </lst>
   </requestHandler>
@@ -63,7 +63,7 @@
 
   <!-- config for the admin interface --> 
   <admin>
-    <defaultQuery>submillimeter</defaultQuery>
+    <defaultQuery>zero-point</defaultQuery>
 
     <!-- configure a healthcheck file for servers behind a loadbalancer
       <healthcheck type="file">server-enabled</healthcheck>
