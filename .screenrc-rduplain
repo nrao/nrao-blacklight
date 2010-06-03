@@ -1,4 +1,4 @@
-sessionname nrao-blacklight
+sessionname socorro-data
 caption always
 screen -t editor 0 wrap $EDITOR
 screen -t git    1 wrap git status

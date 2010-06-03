@@ -8,7 +8,7 @@ from docs import docs
 
 print 'number of docs:', len(docs)
 
-solr_url = 'http://localhost:8990/solr'
+solr_url = 'http://localhost:8996/solr'
 print 'connecting to Solr at', solr_url
 
 conn = Solr(solr_url)

@@ -8,7 +8,7 @@ require_dependency(RAILS_ROOT +
 module ApplicationHelper
 
   def application_name
-    'NRAO Blacklight'
+    'NRAO Telescope Data'
   end
 
   # collection of items to be rendered in the @sidebar
