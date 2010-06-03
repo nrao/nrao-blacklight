@@ -38,14 +38,14 @@ Blacklight.configure(:shared) do |config|
 
   # solr field values given special treatment in the show (single result) view
   config[:show] = {
-    :html_title => "title_display",
-    :heading => "title_display",
+    :html_title => "project",
+    :heading => "project",
     :display_type => "format"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
-    :show_link => "title_display",
+    :show_link => "project",
     :num_per_page => 10,
     :record_display_type => "format"
   }
@@ -65,10 +65,29 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-      "id",
+      "source",
+      "project",
+      "frequency_mhz",
+      "tele_conf_sub_nant",
+      "lasttime",
     ],
     :labels => {
-      "id"                      => "ID:",
+      "source" => "Source",
+      "project" => "Project",
+      "frequency_mhz" => "Frequency (MHz)",
+      "distance_arcmin" => "Distance (arcmin)",
+      "tos_sec" => "TOS (sec)",
+      "rms_mjy" => "rms (mJy)",
+      "resolution_arcsec" => "resolution (arcsec)",
+      "fov_arcmin" => "FOV (arcmin)",
+      "tele_conf_sub_nant" => "Tele:conf:sub:nant",
+      "chans" => "Chans",
+      "bw_mhz" => "BW (MHz)",
+      "polar" => "Polar",
+      "firsttime" => "FirstTime",
+      "lasttime" => "LastTime",
+      "ra" => "Ra (?)",
+      "dec" => "Dec (?)",
     }
   }
 
@@ -76,10 +95,40 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-      "id",
+      "source",
+      "project",
+      "frequency_mhz",
+      "distance_arcmin",
+      "tos_sec",
+      "rms_mjy",
+      "resolution_arcsec",
+      "fov_arcmin",
+      "tele_conf_sub_nant",
+      "chans",
+      "bw_mhz",
+      "polar",
+      "firsttime",
+      "lasttime",
+      "ra",
+      "dec",
     ],
     :labels => {
-      "id"                      => "ID:",
+      "source" => "Source",
+      "project" => "Project",
+      "frequency_mhz" => "Frequency (MHz)",
+      "distance_arcmin" => "Distance (arcmin)",
+      "tos_sec" => "TOS (sec)",
+      "rms_mjy" => "rms (mJy)",
+      "resolution_arcsec" => "resolution (arcsec)",
+      "fov_arcmin" => "FOV (arcmin)",
+      "tele_conf_sub_nant" => "Tele:conf:sub:nant",
+      "chans" => "Chans",
+      "bw_mhz" => "BW (MHz)",
+      "polar" => "Polar",
+      "firsttime" => "FirstTime",
+      "lasttime" => "LastTime",
+      "ra" => "Ra (?)",
+      "dec" => "Dec (?)",
     }
   }
 
