@@ -2,7 +2,9 @@ import csv
 import operator
 import user
 
-raw_docs = [record for record in csv.DictReader(open('data.csv'))]
+datapath = '/home/shares/CVLib/NRAOThesesDB/Export/MainTable.txt'
+
+raw_docs = [record for record in csv.DictReader(open(datapath))]
 docs = []
 
 field_map = {'Instruments': ('12 Meter','36 Foot','85 Foot','140 Foot',
@@ -39,6 +41,8 @@ decade = build_decade_lookup(1950, 2020)
 
 def get_decade(year):
     """Provide a decade facet value given a year."""
+    if year == '':
+        year = 0
     return decade.get(int(year), 'none')
 
 # Heavily massage fields for creating dicts (pysolr) for Solr docs.
@@ -62,7 +66,7 @@ for raw_doc in raw_docs:
 
     for key in field_map.keys():
         ks = field_map[key]
-        doc[key] = [k for k,v in raw_doc.items() if k in ks and str(v) == 'TRUE']
+        doc[key] = [k for k,v in raw_doc.items() if k in ks and str(v) == '1']
 
     doc['Survey Facet'] = [survey for survey in doc['Surveys']]
     doc['Instrument Facet'] = [instrument for instrument in doc['Instruments']]
