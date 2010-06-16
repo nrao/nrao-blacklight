@@ -1,10 +1,12 @@
 import csv
 import operator
-import user
+import urllib
 
-datapath = '/home/shares/CVLib/NRAOThesesDB/Export/MainTable.txt'
+update_url = 'http://www.cv.nrao.edu/~mnunemak/Export_For_Solr.txt'
+update_path = 'update.csv'
+urllib.urlretrieve(update_url, update_path)
 
-raw_docs = [record for record in csv.DictReader(open(datapath))]
+raw_docs = [record for record in csv.DictReader(open(update_path))]
 docs = []
 
 field_map = {'Instruments': ('12 Meter','36 Foot','85 Foot','140 Foot',
