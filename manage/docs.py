@@ -11,7 +11,7 @@ docs = []
 
 field_map = {'Instruments': ('12 Meter','36 Foot','85 Foot','140 Foot',
                              '300 Foot','Archival VLA','GBI','GBT',
-                             'Technical','VLA','VLBA','VLBI','VSOP',
+                             'Technical','EVLA','VLA','VLBA','VLBI','VSOP',
                              'Non-Observational','MK II Correlator',
                              'MK IV Correlator','20 Meter',),
              'Surveys': ('CGPS','VGPS','MAGPIS','NVSS','SPGS','FIRST',
