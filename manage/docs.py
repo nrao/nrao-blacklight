@@ -10,7 +10,7 @@ raw_docs = [record for record in csv.DictReader(open(update_path))]
 docs = []
 
 field_map = {'Instruments': ('12 Meter','36 Foot','85 Foot','140 Foot',
-                             '300 Foot','Archival VLA','GBI','GBT',
+                             '300 Foot','Archival VLA','GBI','GBT','ALMA',
                              'Technical','EVLA','VLA','VLBA','VLBI','VSOP',
                              'Non-Observational','MK II Correlator',
                              'MK IV Correlator','20 Meter',),
