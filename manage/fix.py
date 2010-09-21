@@ -3,8 +3,9 @@ import re
 import sys
 
 def records(fd, **kwargs):
-    time_re = re.compile('\d\d\:\d\d:\d\d')
-    polar_re = re.compile('([RL]{2} ?){1,4}$')
+    proj_re = re.compile('^([A-Za-z0-9]*)-(public|lock)$')
+    time_re = re.compile('^\d\d\:\d\d:\d\d$')
+    polar_re = re.compile('^([RL]{2} ?){1,4}$')
 
     row = []
     for line in csv.reader(fd, **kwargs):
@@ -13,13 +14,19 @@ def records(fd, **kwargs):
             field = field.strip()
             if not field:
                 continue
+            proj_match = proj_re.match(field)
+            if proj_match is not None:
+                row += list(proj_match.groups())
+                if row[-1] == 'lock':
+                    row[-1] = 'locked'
+                continue
             if time_re.match(field):
                 row[-1] += ' ' + field
                 continue
             if polar_re.match(field) and polar_re.match(row[-1]):
                 row[-1] += ' ' + field
                 continue
-            if len(row) == 16:
+            if len(row) == 17:
                 tokens = field.split(' ')
                 row.append(tokens[0])
                 yield row
