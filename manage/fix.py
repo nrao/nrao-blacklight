@@ -38,6 +38,10 @@ def records(fd, **kwargs):
                 row.append(field)
 
 
+print >>sys.stdout, ('source,project,public,frequency,distance,tos,rms,'
+                     'resolution,fov,tele_conf_sub_nant,chans,bw,polar,start,'
+                     'stop,ra,dec,arch_file_id')
+
 writer = csv.writer(sys.stdout, quotechar='`')
 infile = open('fixme.csv')
 
