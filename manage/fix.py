@@ -21,6 +21,11 @@ def records(fd, **kwargs):
                     row.append('locked')
                 else:
                     row.append(proj_match.group(2))
+                # Some source names are strange, e.g. COSMIC EYELA.
+                # Need to make sure this source name isn't treated as 2 fields.
+                # assert len(row) == 3
+                if len(row) > 3:
+                    row = [' '.join(row[:-2]), row[-2], row[-1]]
                 continue
             if time_re.match(field):
                 row[-1] += ' ' + field
