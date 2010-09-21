@@ -3,7 +3,7 @@ import re
 import sys
 
 def records(fd, **kwargs):
-    proj_re = re.compile('^([A-Za-z0-9]*)-(public|lock)$')
+    proj_re = re.compile('^(.*)(public|lock)$')
     time_re = re.compile('^\d\d\:\d\d:\d\d$')
     polar_re = re.compile('^([RL]{2} ?){1,4}$')
 
@@ -16,9 +16,11 @@ def records(fd, **kwargs):
                 continue
             proj_match = proj_re.match(field)
             if proj_match is not None:
-                row += list(proj_match.groups())
-                if row[-1] == 'lock':
-                    row[-1] = 'locked'
+                row.append(proj_match.group(1).strip('-'))
+                if proj_match.group(2) == 'lock':
+                    row.append('locked')
+                else:
+                    row.append(proj_match.group(2))
                 continue
             if time_re.match(field):
                 row[-1] += ' ' + field
@@ -38,7 +40,7 @@ def records(fd, **kwargs):
                 row.append(field)
 
 
-print >>sys.stdout, ('source,project,public,frequency,distance,tos,rms,'
+print >>sys.stdout, ('source,project,proprietary,frequency,distance,tos,rms,'
                      'resolution,fov,tele_conf_sub_nant,chans,bw,polar,start,'
                      'stop,ra,dec,arch_file_id')
 
