@@ -3,6 +3,7 @@ import re
 import sys
 
 def records(fd, **kwargs):
+    start_re = re.compile('^.*(ngas_.*)$')
     time_re = re.compile('^\d\d\:\d\d:\d\d$')
     sep_re = re.compile('####')
 
@@ -12,6 +13,10 @@ def records(fd, **kwargs):
             # print row, field
             field = field.strip()
             if not field:
+                continue
+            start_match = start_re.match(field)
+            if start_match is not None:
+                row = [start_match.group(1)]
                 continue
             if time_re.match(field):
                 row[-1] += ' ' + field
