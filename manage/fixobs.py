@@ -53,7 +53,9 @@ print >>sys.stdout, ('source,project,proprietary,frequency,distance,tos,rms,'
                      'stop,ra,dec,arch_file_id')
 
 writer = csv.writer(sys.stdout, quotechar='`')
-infile = open('fixme.csv')
+
+# Copy input archobs* to archobs.txt, removing the header.
+infile = open('archobs.txt')
 
 try:
     for record in records(infile, quotechar='`'):
