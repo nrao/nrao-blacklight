@@ -30,8 +30,11 @@ def records(fd, **kwargs):
             if time_re.match(field):
                 row[-1] += ' ' + field
                 continue
-            if polar_re.match(field) and polar_re.match(row[-1]):
-                row[-1] += ' ' + field
+            if polar_re.match(field):
+                if polar_re.match(row[-1]):
+                    field = row[-1] + ' ' + field
+                    del row[-1]
+                row.append(' '.join(sorted(field.split(' '))))
                 continue
             if len(row) == 17:
                 tokens = field.split(' ')
