@@ -22,11 +22,6 @@ Blacklight.configure(:shared) do |config|
   SolrDocument.default_params[:search] = {
     :qt=>:search,
     :per_page => 10,
-    :facets => {
-      :fields => [
-        "format",
-      ]
-    }
   }
 
   # default params for the SolrDocument.find_by_id method
@@ -38,98 +33,125 @@ Blacklight.configure(:shared) do |config|
 
   # solr field values given special treatment in the show (single result) view
   config[:show] = {
-    :html_title => "project",
-    :heading => "project",
+    :html_title => "id",
+    :heading => "id",
     :display_type => "format"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
-    :show_link => "project",
+    :show_link => "id",
     :num_per_page => 10,
-    :record_display_type => "format"
+    :record_display_type => "format_code"
   }
+
+  labels = {
+        "source" => "Source",
+        "project" => "Project",
+        "proprietary" => "Proprietary",
+        "frequency" => "Frequency (MHz)",
+        "frequency_display" => "Frequency (MHz)",
+        "distance" => "Distance (arcmin)",
+        "tos" => "TOS (sec)",
+        "rms" => "rms (mJy)",
+        "resolution" => "Resolution (arcsec)",
+        "fov" => "FOV (arcmin)",
+        "tele_conf_sub_nant" => "Tele:conf:sub:nant",
+        "telescope" => "Telescope",
+        "telescope_facet" => "Telescope",
+        "configuration" => "Conf",
+        "configuration_facet" => "Conf",
+        "sub" => "Sub",
+        "nant" => "Number Antennae",
+        "chans" => "Chans",
+        "bw" => "Bandwidth (MHz)",
+        "polar" => "Polar",
+        "polar_facet" => "Polar",
+        "start" => "First",
+        "stop" => "Last",
+        "ra" => "RA (J2000 rad)",
+        "dec" => "Dec (J2000 rad)",
+        "arch_file_id" => "File ID",
+    }
 
   # solr fields that will be treated as facets by the blacklight application
   #   The ordering of the field names is the order of the display
   config[:facet] = {
     :field_names => [
-      "format",
+        "proprietary",
+        "distance",
+        "resolution",
+        "fov",
+        # "tele_conf_sub_nant",
+        "telescope_facet",
+        "configuration_facet",
+        "sub",
+        "nant",
+        "chans",
+        "bw",
+        "polar_facet",
     ],
-    :labels => {
-      "format"              => "Format",
-    }
+    :labels => labels
   }
 
   # solr fields to be displayed in the index (search results) view
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-      "source",
-      "project",
-      "frequency_mhz",
-      "tele_conf_sub_nant",
-      "lasttime",
+        "source",
+        "project",
+        "proprietary",
+        "frequency_display",
+        "distance",
+        "tos",
+        "rms",
+        "resolution",
+        "fov",
+        "tele_conf_sub_nant",
+        # "telescope",
+        # "configuration",
+        # "sub",
+        # "nant",
+        "chans",
+        "bw",
+        "polar",
+        "start",
+        "stop",
+        "ra",
+        "dec",
+        "arch_file_id",
     ],
-    :labels => {
-      "source" => "Source",
-      "project" => "Project",
-      "frequency_mhz" => "Frequency (MHz)",
-      "distance_arcmin" => "Distance (arcmin)",
-      "tos_sec" => "TOS (sec)",
-      "rms_mjy" => "rms (mJy)",
-      "resolution_arcsec" => "resolution (arcsec)",
-      "fov_arcmin" => "FOV (arcmin)",
-      "tele_conf_sub_nant" => "Tele:conf:sub:nant",
-      "chans" => "Chans",
-      "bw_mhz" => "BW (MHz)",
-      "polar" => "Polar",
-      "firsttime" => "FirstTime",
-      "lasttime" => "LastTime",
-      "ra" => "Ra (?)",
-      "dec" => "Dec (?)",
-    }
+    :labels => labels
   }
 
   # solr fields to be displayed in the show (single result) view
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-      "source",
-      "project",
-      "frequency_mhz",
-      "distance_arcmin",
-      "tos_sec",
-      "rms_mjy",
-      "resolution_arcsec",
-      "fov_arcmin",
-      "tele_conf_sub_nant",
-      "chans",
-      "bw_mhz",
-      "polar",
-      "firsttime",
-      "lasttime",
-      "ra",
-      "dec",
+        "source",
+        "project",
+        "proprietary",
+        "frequency_display",
+        "distance",
+        "tos",
+        "rms",
+        "resolution",
+        "fov",
+        "tele_conf_sub_nant",
+        # "telescope",
+        # "configuration",
+        # "sub",
+        # "nant",
+        "chans",
+        "bw",
+        "polar",
+        "start",
+        "stop",
+        "ra",
+        "dec",
+        "arch_file_id",
     ],
-    :labels => {
-      "source" => "Source",
-      "project" => "Project",
-      "frequency_mhz" => "Frequency (MHz)",
-      "distance_arcmin" => "Distance (arcmin)",
-      "tos_sec" => "TOS (sec)",
-      "rms_mjy" => "rms (mJy)",
-      "resolution_arcsec" => "resolution (arcsec)",
-      "fov_arcmin" => "FOV (arcmin)",
-      "tele_conf_sub_nant" => "Tele:conf:sub:nant",
-      "chans" => "Chans",
-      "bw_mhz" => "BW (MHz)",
-      "polar" => "Polar",
-      "firsttime" => "FirstTime",
-      "lasttime" => "LastTime",
-      "ra" => "Ra (?)",
-      "dec" => "Dec (?)",
-    }
+    :labels => labels
   }
 
   # "fielded" search select (pulldown)
@@ -145,7 +167,7 @@ Blacklight.configure(:shared) do |config|
   # except in the relevancy case).
   # label is key, solr field is value
   config[:sort_fields] ||= []
-  config[:sort_fields] << ['relevance', 'score desc, title_sort asc']
+  config[:sort_fields] << ['relevance', 'score desc']
 
   # If there are more than this many search results, no spelling ("did you
   # mean") suggestion is offered.

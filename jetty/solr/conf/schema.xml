@@ -59,7 +59,36 @@
 
  <fields>
    <!--Domain-specific fields.-->
-   <field name="id" type="uuid" indexed="true" stored="true" default="NEW"/>
+   <field name="id" type="string" indexed="true" stored="true" required="true"/>
+
+   <field name="source" type="text" indexed="true" stored="true"/>
+   <field name="project" type="text" indexed="true" stored="true"/>
+   <field name="proprietary" type="string" indexed="true" stored="true"/>
+   <field name="frequency" type="sfloat" indexed="true" stored="true"/>
+   <field name="distance" type="string" indexed="true" stored="true"/>
+   <field name="tos" type="sfloat" indexed="true" stored="true"/>
+   <field name="rms" type="sfloat" indexed="true" stored="true"/>
+   <field name="resolution" type="sfloat" indexed="true" stored="true"/>
+   <field name="fov" type="sfloat" indexed="true" stored="true"/>
+   <field name="tele_conf_sub_nant" type="string" indexed="true" stored="true"/>
+   <field name="telescope" type="text" indexed="true" stored="true"/>
+   <field name="configuration" type="text" indexed="true" stored="true"/>
+   <field name="sub" type="string" indexed="true" stored="true"/>
+   <field name="nant" type="sint" indexed="true" stored="true"/>
+   <field name="chans" type="sint" indexed="true" stored="true"/>
+   <field name="bw" type="sfloat" indexed="true" stored="true"/>
+   <field name="polar" type="text" indexed="true" stored="true"/>
+   <field name="start" type="date" indexed="true" stored="true"/>
+   <field name="stop" type="date" indexed="true" stored="true"/>
+   <field name="ra" type="string" indexed="true" stored="true"/>
+   <field name="dec" type="string" indexed="true" stored="true"/>
+   <field name="arch_file_id" type="integer" indexed="true" stored="true"/>
+
+   <field name="frequency_display" type="string" indexed="true" stored="true"/>
+   <field name="polar_facet" type="string" indexed="true" stored="false"/>
+   <field name="telescope_facet" type="string" indexed="true" stored="false"/>
+   <field name="configuration_facet" type="string" indexed="true" stored="false"/>
+   <field name="conf" type="text" indexed="true" stored="false"/>
 
    <field name="format_code" type="string" indexed="true" stored="true" default="generic"/>
 
@@ -75,4 +104,9 @@
  <solrQueryParser defaultOperator="AND"/>
 
  <copyField source="*" dest="text"/>
+ <copyField source="frequency" dest="frequency_display"/>
+ <copyField source="polar" dest="polar_facet"/>
+ <copyField source="telescope" dest="telescope_facet"/>
+ <copyField source="configuration" dest="configuration_facet"/>
+ <copyField source="configuration" dest="conf"/>
 </schema>
