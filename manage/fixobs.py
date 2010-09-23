@@ -34,7 +34,7 @@ def records(fd, **kwargs):
                 if polar_re.match(row[-1]):
                     field = row[-1] + ' ' + field
                     del row[-1]
-                row.append(' '.join(sorted(field.split(' '))))
+                row.append(' '.join(sorted(field.split(' '), reverse=True)))
                 continue
             if len(row) == 17:
                 tokens = field.split(' ')
