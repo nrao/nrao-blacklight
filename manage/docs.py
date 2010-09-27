@@ -22,7 +22,7 @@ def obs_factory(key, group):
     doc = collections.defaultdict(lambda: [])
     doc['id'] = key
     for record in group:
-        tcsn = record.pop('tele_conf_sub_nant', '')
+        tcsn = record.get('tele_conf_sub_nant', '')
         (record['telescope'], record['configuration'],
          record['sub'], record['nant']) = tcsn.split(':')
         for key in record:
@@ -90,7 +90,59 @@ def merge_docs():
         else:
             print >>sys.stdout, 'Warning: no archive file data for', key
 
-docs = merge_docs()
+def uniquify(a_list):
+    return list(set(a_list))
+
+def format_docs():
+    ids = set()
+    for doc in merge_docs():
+        # Prerequisites for building ID.
+        doc['telescope'] = sorted(uniquify(doc['telescope']))
+        doc['telescope_display'] = ', '.join(doc['telescope'])
+
+        subs = uniquify(doc['sub'])
+        if len(subs) > 1:
+            raise ValueError, 'too many subarrays: %s' % doc['logical_file']
+        doc['subarray'] = subs[0]
+        doc['project'] = doc.pop('project_code')
+
+        # Set ID based on telescope.  Ensure unique.
+        if 'VLA' in doc['telescope']:
+            doc['id'] = (doc['project'] +
+                         '_subarray' + doc['subarray'] +
+                         '_' + doc['logical_file'])
+        else:
+            doc['id'] = doc['logical_file']
+        # doc['id'] = urllib.quote(doc['id'], safe='')
+
+        if doc['id'] in ids:
+            raise ValueError, 'record %s has duplicate id' % doc['id']
+        ids.add(doc['id'])
+
+        # Other fields.
+        doc['proprietary'] = doc.pop('lock_status', '')
+
+        doc['band'] = doc['obs_bands'].split()
+
+        doc['type'] = doc['calib']
+
+        # Final flight check. We assume these are equal length later.
+        if not (len(doc['source']) ==
+                len(doc['first']) ==
+                len(doc['last']) ==
+                len(doc['tele_conf_sub_nant']) ==
+                len(doc['frequency']) ==
+                len(doc['chans']) ==
+                len(doc['polar']) ==
+                len(doc['ra']) ==
+                len(doc['dec'])):
+            raise ValueError, 'Lists are not same length for %s' % doc['id']
+
+        # Polish and ship doc.
+        [doc.pop(k) for k in doc if doc[k] in (None, '', list(), tuple(),)]
+        yield doc
+
+docs = format_docs()
 
 if __name__ == '__main__':
     # obs_ids = set()
