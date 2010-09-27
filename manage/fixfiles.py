@@ -5,6 +5,8 @@ import sys
 def records(fd, **kwargs):
     start_re = re.compile('^.*(ngas_.*)$')
     time_re = re.compile('^\d\d\:\d\d:\d\d$')
+    band_re = re.compile('^([A-Za-z]{1,2} )*([A-Za-z]{1,2})$')
+    num_re = re.compile('^\d\d+$')
     sep_re = re.compile('####')
 
     row = []
@@ -18,10 +20,20 @@ def records(fd, **kwargs):
             if start_match is not None:
                 row = [start_match.group(1)]
                 continue
-            if time_re.match(field):
+            if time_re.match(field) is not None:
                 row[-1] += ' ' + field
                 continue
-            if sep_re.match(field):
+            if sep_re.match(field) is not None:
+                # If we have more than 14 fields, something went wrong.
+                if len(row) > 14:
+                    # Fix the case where a obs band names are split.
+                    maybe_bands = row[9] + ' ' + row[10]
+                    if band_re.match(maybe_bands) is not None:
+                        row = row[:9] + [maybe_bands] + row[11:]
+                if len(row) > 14:
+                    # Fix the case where a project name with a space is split.
+                    if num_re.match(row[13]) is None:
+                        row = row[:12] + [row[12] + ' ' + row[13]] + row[14:]
                 yield row
                 row = []
             else:

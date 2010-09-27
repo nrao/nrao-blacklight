@@ -49,8 +49,8 @@ def records(fd, **kwargs):
 
 
 print >>sys.stdout, ('source,project,proprietary,frequency,distance,tos,rms,'
-                     'resolution,fov,tele_conf_sub_nant,chans,bw,polar,start,'
-                     'stop,ra,dec,arch_file_id')
+                     'resolution,fov,tele_conf_sub_nant,chans,bw,polar,first,'
+                     'last,ra,dec,arch_file_id')
 
 writer = csv.writer(sys.stdout, quotechar='`')
 

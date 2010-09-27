@@ -1,1 +1,8 @@
 Working with NRAO VLA/VLBA Observation data from John Benson
+
+# *-pre.csv is input csv without a header row.
+time ( cat archobs-header.csv; sort -t, -k2,2 archobs-pre.csv ) > archobs-project-sorted.csv
+time ( cat archfiles-header.csv; sort -t, -k4,4 archfiles-pre.csv ) > archfiles-project-sorted.csv
+
+time ( cat archobs-header.csv; sort -t, -k18,18 archobs-pre.csv ) > archobs-fileid-sorted.csv
+time ( cat archfiles-header.csv; sort -t, -k14,14 archfiles-pre.csv ) > archfiles-fileid-sorted.csv

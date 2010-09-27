@@ -1,23 +1,40 @@
+import collections
 import csv
 import datetime
+import itertools
 import user
 
 strptime = datetime.datetime.strptime
 
-def _docs(fd, **kwargs):
-    ids = set()
-    for doc in csv.DictReader(fd):
-        candidate_id = doc['project'] + strptime(doc['start'], '%y-%b-%d %H:%M:%S').strftime('_%Y-%m-%d_%H:%M:%S')
-        doc['start'] = strptime(doc['start'], '%y-%b-%d %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%SZ')
-        doc['stop'] = strptime(doc['stop'], '%y-%b-%d %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%SZ')
-        doc['id'] = candidate_id
-        count = 1
-        while doc['id'] in ids:
-            count += 1
-            doc['id'] = candidate_id + '%s' % chr(96 + count) # 97 = ascii 'a'
-        ids.add(doc['id'])
-        doc['telescope'], doc['configuration'], doc['sub'], doc['nant'] =\
-            doc['tele_conf_sub_nant'].split(':')
+def format_datetime(datestring, strpformat='%y-%b-%d %H:%M:%S',
+                    strfformat='%Y-%m-%dT%H:%M:%SZ'):
+    return strptime(datestring, strpformat).strftime(strfformat)
+
+def _obs(fd):
+    for key, group in \
+            itertools.groupby(csv.DictReader(fd, quoting=csv.QUOTE_NONE),
+                              key=lambda x: x['project']):
+        doc = collections.defaultdict(lambda: [])
+        doc['id'] = key
+        for record in group:
+            tcsn = record.pop('tele_conf_sub_nant', '')
+            (record['telescope'], record['configuration'],
+             record['sub'], record['nant']) = tcsn.split(':')
+            for key in record:
+                if key in ('first', 'last',):
+                    record[key] = format_datetime(record[key])
+                doc[key] = doc[key] + [record[key]]
+        yield dict(doc)
+
+def _docs(obs_fd):
+    for doc in _obs(obs_fd):
         yield doc
 
-docs = _docs(open('data.csv'), quotechar=None)
+docs = _docs(open('archobs-project-sorted.csv'))
+
+if __name__ == '__main__':
+    count = 0
+    for doc in docs:
+        print doc['id']
+        count += 1
+    print count, 'docs'
