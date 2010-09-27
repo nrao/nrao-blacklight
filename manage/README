@@ -1,8 +1,42 @@
 Working with NRAO VLA/VLBA Observation data from John Benson
 
+# Process to build docs:
+
+# The input files included are currently 2009-01-01 to 2010-06-08.
+
+# Unpack input files.
+bunzip2 archobs.txt.bz2
+bunzip2 archfiles.txt.bz2
+
+# Fix input files.
+python fixobs.py > archobs.csv
+cp archobs.csv archobs-pre.csv
+head -1 archobs-pre.csv > archobs-header.csv
+vi archobs-pre.csv # remove header row
+
+python fixfiles.py > archfiles.csv
+cp archfiles.csv archfiles-pre.csv
+head -1 archfiles-pre.csv > archfiles-header.csv
+vi archfiles-pre.csv # remove header row
+
 # *-pre.csv is input csv without a header row.
+
+# Sort fixed files, so that we can use groupby (similar to uniq).
 time ( cat archobs-header.csv; sort -t, -k2,2 archobs-pre.csv ) > archobs-project-sorted.csv
+
 time ( cat archfiles-header.csv; sort -t, -k4,4 archfiles-pre.csv ) > archfiles-project-sorted.csv
 
 time ( cat archobs-header.csv; sort -t, -n -k18,18 archobs-pre.csv ) > archobs-fileid-sorted.csv
+
 time ( cat archfiles-header.csv; sort -t, -n -k14,14 archfiles-pre.csv ) > archfiles-fileid-sorted.csv
+
+# Verify CSV. The commands below should output a single blank line.
+# If they don't, fixobs.py or fixfiles.py are not handling all cases.
+
+# Note there are 18 fields in archobs and 14 in archfiles.
+awk -F , '{ print $19 }' archobs-fileid-sorted.csv | sort -u
+awk -F , '{ print $15 }' archfiles-fileid-sorted.csv | sort -u
+
+# Verify docs. Interact with docs.py. Ensure no exceptions.
+# Inspect result dicts.
+python -i docs.py
