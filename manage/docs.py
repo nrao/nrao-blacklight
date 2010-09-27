@@ -65,10 +65,24 @@ def merge_docs():
     for obs_doc in obs_docs:
         doc = obs_doc
         key = doc['id']
+
+        # Verify consistency of project IDs.
         project = doc['project'][0]
         for i in range(1, len(doc['project'])):
             if doc['project'][i] != project:
                 raise ValueError, 'record %s is inconsistent' % str(key)
+
+        # Verify consistency of multiValued field lengths.
+        length = None
+        for k in doc:
+            if k in ('id',): # exclude non-multiValued fields
+                continue
+            if length is None:
+                length = len(doc[k])
+            if len(doc[k]) != length:
+                raise ValueError, 'record %s is inconsistent' % str(key)
+
+        # Integrate with record from archfiles.
         files_doc = files_table.get(key, {})
         if files_doc:
             doc.update(files_doc)
