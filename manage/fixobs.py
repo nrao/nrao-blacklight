@@ -26,6 +26,11 @@ def records(fd, **kwargs):
                 # assert len(row) == 3
                 if len(row) > 3:
                     row = [' '.join(row[:-2]), row[-2], row[-1]]
+                breaks_on = 'Bryan Butler'
+                maybe_broken = (row[0] + ' ' + row[1]).replace(',', ' ')
+                if maybe_broken.endswith(breaks_on):
+                    row = [maybe_broken.replace(breaks_on, '').strip(),
+                           breaks_on] + row[2:]
                 continue
             if time_re.match(field):
                 row[-1] += ' ' + field
