@@ -5,6 +5,7 @@ import datetime
 import itertools
 import sys
 import user
+from math import ceil
 
 strptime = datetime.datetime.strptime
 
@@ -105,15 +106,21 @@ def format_docs():
             raise ValueError, 'too many subarrays: %s' % doc['logical_file']
         doc['subarray'] = subs[0]
         doc['project'] = doc.pop('project_code')
+        doc['format_code'] = doc['telescope'][0]
 
         # Set ID based on telescope.  Ensure unique.
         if 'VLA' in doc['telescope']:
             doc['id'] = (doc['project'] +
                          '_subarray' + doc['subarray'] +
                          '_' + doc['logical_file'])
+            doc['format_code'] = 'VLA' # double-checking
         else:
             doc['id'] = doc['logical_file']
+
         # doc['id'] = urllib.quote(doc['id'], safe='')
+        # Clean up id to be simple for Blacklight.
+        doc['id_display'] = doc['id']
+        doc['id'] = doc['id'].replace('/', '').replace('.', '')
 
         if doc['id'] in ids:
             raise ValueError, 'record %s has duplicate id' % doc['id']
@@ -121,10 +128,16 @@ def format_docs():
 
         # Other fields.
         doc['proprietary'] = doc.pop('lock_status', '')
-
+        doc['filesize_display'] = int(ceil(float(doc['filesize'])/1000.0))#k->M
         doc['band'] = doc['obs_bands'].split()
-
+        doc['band_facet'] = doc['band']
         doc['type'] = doc['calib']
+
+        doc['starttime'] = format_datetime(doc['starttime'])
+        doc['stoptime'] = format_datetime(doc['stoptime'])
+
+        # Ensure format code is lower case, for Blacklight use.
+        doc['format_code'] = doc['format_code'].lower()
 
         # Final flight check. We assume these are equal length later.
         if not (len(doc['source']) ==

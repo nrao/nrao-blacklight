@@ -6,7 +6,7 @@ from pysolr import Solr
 
 from docs import docs
 
-solr_url = 'http://perseus.cv.nrao.edu:8996/solr'
+solr_url = 'http://localhost:8996/solr'
 print 'connecting to Solr at', solr_url
 
 conn = Solr(solr_url)
