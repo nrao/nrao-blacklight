@@ -1,37 +1,55 @@
+<%= javascript_include_tag 'mktree.js' %>
+<%= stylesheet_link_tag 'mktree', 'doctree' %>
+
 <% # container for all documents in index view -%>
-<div id="documents">
-  
+<% if @response.total > 0 %>
+<a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
+<a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
+<% end %>
+<ul id="documents" class="mktree">
+
   <% # loop thru each doc -%>
   <% @response.docs.each_with_index do |document,counter| %>
 
     <% # container for a single doc -%>
-    <div class="document">
-      
-      <% # header bar for doc items in index view -%>
-      <div class="documentHeader yui-g">
-        
-        <!--
-        <% # list controls for items/docs -%>
-        <div class="yui-u documentFunctions">
-          <%= render :partial=>'bookmark_control', :locals=>{:document=>document} %>
-        </div>
-        -->
-        
-        <% # main title container for doc partial view -%>
+    <li><%= counter + 1 + @response.params[:start].to_i %>. <%= h document["id_display"] %>
+      <ul class="document">
+        <% if document.get "title" %>
+        <li><%= h document.get("title") %></li>
+        <% end -%>
+        <% if document.get "investigator_concise" %>
+        <li><%= h document.get("investigator_concise") %></li>
+        <% end -%>
+        <table class="filemeta">
+          <tr><th>Project</th><td><%= h document.get("project") %></td></tr>
+          <tr><th>Telescope</th><td><%= h document.get("telescope_display") %></td></tr>
+          <tr><th>Band</th><td><%= h document.get("obs_bands") %></td></tr>
+          <tr><th>Proprietary</th><td class="<%= h document.get("proprietary") %>"><%= h document.get("proprietary") %></td></tr>
+          <tr><th>Format</th><td><%= h document.get("format") %></td></tr>
+          <tr><th>Type</th><td><%= h document.get("type") %></td></tr>
+          <tr><th>Filesize (MB)</th><td><%= h document.get("filesize_display") %></td></tr>
+          <tr><th>Data Starts</th><td><%= h document.get("starttime") %></td></tr>
+          <tr><th>Data Stops</th><td><%= h document.get("stoptime") %></td></tr>
+        </table>
+        <table class="obslist">
+          <tr><th>Source</th><th>Freq (MHz)</th><th>RA(J2000)</th><th>DEC(J2000)</th><th>First</th><th>Last</th></tr>
+          <% document["source"].each_index do |x| %>
+          <tr>
+            <td><%= h document["source"][x] %></td>
+            <td><%= h document["frequency"][x] %></td>
+            <td><%= h document["ra"][x] %></td>
+            <td><%= h document["dec"][x] %></td>
+            <td><%= h document["first"][x] %></td>
+            <td><%= h document["last"][x] %></td>
+          </tr>
+          <% end %>
+        </table>
+      </ul>
+    </li>
 
-        <div class="yui-u" style="float: none">
-          <table class="index"><tr>
-              <td class="index_counter"><h3><%= counter + 1 + @response.params[:start].to_i %>.</h3></td>
-              <td class="index_title"><h3 class="index_title"><%= link_to_document document, :label=>document_show_link_field, :counter => (counter + 1 + @response.params[:start].to_i) %></h3></td>
-          </tr></table>
-        </div>
-        
-      </div>
-      
-      <% # main container for doc partial view -%>
-      <%= render_document_partial document, :index %>
-
-    </div>
-    
   <% end %>
-</div>
+</ul>
+<% if @response.total > 0 %>
+<a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
+<a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
+<% end %>

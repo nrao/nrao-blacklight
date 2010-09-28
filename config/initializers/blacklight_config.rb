@@ -72,7 +72,7 @@ Blacklight.configure(:shared) do |config|
         "ra" => "RA (J2000 rad)",
         "dec" => "Dec (J2000 rad)",
         "arch_file_id" => "File ID",
-        "project_code" => "Project",
+        "project" => "Project",
         "telescope_display" => "Telescope",
         "obs_bands" => "Band",
         "proprietary" => "Proprietary",
@@ -100,7 +100,7 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-        "project_code",
+        "project",
         "telescope_display",
         "obs_bands",
         "proprietary",
@@ -117,7 +117,7 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-        "project_code",
+        "project",
         "telescope_display",
         "obs_bands",
         "proprietary",
