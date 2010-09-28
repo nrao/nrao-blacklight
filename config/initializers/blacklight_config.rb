@@ -33,14 +33,14 @@ Blacklight.configure(:shared) do |config|
 
   # solr field values given special treatment in the show (single result) view
   config[:show] = {
-    :html_title => "id",
-    :heading => "id",
-    :display_type => "format"
+    :html_title => "id_display",
+    :heading => "id_display",
+    :display_type => "format_code"
   }
 
   # solr fld values given special treatment in the index (search results) view
   config[:index] = {
-    :show_link => "id",
+    :show_link => "id_display",
     :num_per_page => 10,
     :record_display_type => "format_code"
   }
@@ -56,14 +56,14 @@ Blacklight.configure(:shared) do |config|
         "rms" => "rms (mJy)",
         "resolution" => "Resolution (arcsec)",
         "fov" => "FOV (arcmin)",
-        "tele_conf_sub_nant" => "Tele:conf:sub:nant",
+        "tele_conf_sub_nant" => "Tel:conf:sub:nant",
         "telescope" => "Telescope",
         "telescope_facet" => "Telescope",
         "configuration" => "Conf",
         "configuration_facet" => "Conf",
         "sub" => "Sub",
-        "nant" => "Number Antennae",
-        "chans" => "Chans",
+        "nant" => "# Ant.",
+        "chans" => "Channels",
         "bw" => "Bandwidth (MHz)",
         "polar" => "Polar",
         "polar_facet" => "Polar",
@@ -72,24 +72,26 @@ Blacklight.configure(:shared) do |config|
         "ra" => "RA (J2000 rad)",
         "dec" => "Dec (J2000 rad)",
         "arch_file_id" => "File ID",
+        "project_code" => "Project",
+        "telescope_display" => "Telescope",
+        "obs_bands" => "Band",
+        "proprietary" => "Proprietary",
+        "format" => "Format",
+        "filesize_display" => "Filesize (MB)",
+        "starttime" => "Data Starts",
+        "stoptime" => "Data Stops",
+        "type" => "Type",
     }
 
   # solr fields that will be treated as facets by the blacklight application
   #   The ordering of the field names is the order of the display
   config[:facet] = {
     :field_names => [
-        "proprietary",
-        "distance",
-        "resolution",
-        "fov",
-        # "tele_conf_sub_nant",
         "telescope_facet",
-        "configuration_facet",
-        "sub",
-        "nant",
-        "chans",
-        "bw",
-        "polar_facet",
+        "band_facet",
+        "proprietary",
+        "type",
+        "format",
     ],
     :labels => labels
   }
@@ -98,28 +100,15 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:index_fields] = {
     :field_names => [
-        "source",
-        "project",
+        "project_code",
+        "telescope_display",
+        "obs_bands",
         "proprietary",
-        "frequency_display",
-        "distance",
-        "tos",
-        "rms",
-        "resolution",
-        "fov",
-        "tele_conf_sub_nant",
-        # "telescope",
-        # "configuration",
-        # "sub",
-        # "nant",
-        "chans",
-        "bw",
-        "polar",
-        "start",
-        "stop",
-        "ra",
-        "dec",
-        "arch_file_id",
+        "format",
+        "type",
+        "filesize_display",
+        "starttime",
+        "stoptime",
     ],
     :labels => labels
   }
@@ -128,28 +117,25 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display
   config[:show_fields] = {
     :field_names => [
-        "source",
-        "project",
+        "project_code",
+        "telescope_display",
+        "obs_bands",
         "proprietary",
-        "frequency_display",
-        "distance",
-        "tos",
-        "rms",
-        "resolution",
-        "fov",
-        "tele_conf_sub_nant",
-        # "telescope",
-        # "configuration",
-        # "sub",
-        # "nant",
+        "format",
+        "type",
+        "filesize_display",
+        "starttime",
+        "stoptime",
+
+        "source",
+        "frequency",
+        "tele_conf_sub_nants",
         "chans",
-        "bw",
         "polar",
-        "start",
-        "stop",
+        "first",
+        "last",
         "ra",
         "dec",
-        "arch_file_id",
     ],
     :labels => labels
   }

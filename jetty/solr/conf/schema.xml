@@ -60,35 +60,55 @@
  <fields>
    <!--Domain-specific fields.-->
    <field name="id" type="string" indexed="true" stored="true" required="true"/>
+   <field name="id_display" type="string" indexed="true" stored="true" required="true"/>
 
-   <field name="source" type="text" indexed="true" stored="true"/>
+   <field name="arch_file_id" type="integer" indexed="true" stored="true"/>
+   <field name="calib" type="string" indexed="true" stored="true"/>
+   <field name="file_root" type="string" indexed="true" stored="true"/>
+   <field name="filesize" type="string" indexed="true" stored="true"/>
+   <field name="filesize_display" type="string" indexed="true" stored="true"/>
+   <field name="format" type="string" indexed="true" stored="true"/>
+   <field name="logical_file" type="string" indexed="true" stored="true"/>
+   <field name="obs_bands" type="string" indexed="true" stored="true"/>
    <field name="project" type="text" indexed="true" stored="true"/>
    <field name="proprietary" type="string" indexed="true" stored="true"/>
-   <field name="frequency" type="sfloat" indexed="true" stored="true"/>
-   <field name="distance" type="string" indexed="true" stored="true"/>
-   <field name="tos" type="sfloat" indexed="true" stored="true"/>
-   <field name="rms" type="sfloat" indexed="true" stored="true"/>
-   <field name="resolution" type="sfloat" indexed="true" stored="true"/>
-   <field name="fov" type="sfloat" indexed="true" stored="true"/>
-   <field name="tele_conf_sub_nant" type="string" indexed="true" stored="true"/>
-   <field name="telescope" type="text" indexed="true" stored="true"/>
-   <field name="configuration" type="text" indexed="true" stored="true"/>
-   <field name="sub" type="string" indexed="true" stored="true"/>
-   <field name="nant" type="sint" indexed="true" stored="true"/>
-   <field name="chans" type="sint" indexed="true" stored="true"/>
-   <field name="bw" type="sfloat" indexed="true" stored="true"/>
-   <field name="polar" type="text" indexed="true" stored="true"/>
-   <field name="start" type="date" indexed="true" stored="true"/>
-   <field name="stop" type="date" indexed="true" stored="true"/>
-   <field name="ra" type="string" indexed="true" stored="true"/>
-   <field name="dec" type="string" indexed="true" stored="true"/>
-   <field name="arch_file_id" type="integer" indexed="true" stored="true"/>
+   <field name="raw_project_code" type="string" indexed="true" stored="true"/>
+   <field name="segment" type="string" indexed="true" stored="true"/>
+   <field name="starttime" type="date" indexed="true" stored="true"/>
+   <field name="stoptime" type="date" indexed="true" stored="true"/>
+   <field name="subarray" type="string" indexed="true" stored="true"/>
+   <field name="telescope_config" type="string" indexed="true" stored="true"/>
+   <field name="telescope_display" type="string" indexed="true" stored="true"/>
+   <field name="type" type="string" indexed="true" stored="true"/>
 
-   <field name="frequency_display" type="string" indexed="true" stored="true"/>
-   <field name="polar_facet" type="string" indexed="true" stored="false"/>
-   <field name="telescope_facet" type="string" indexed="true" stored="false"/>
-   <field name="configuration_facet" type="string" indexed="true" stored="false"/>
-   <field name="conf" type="text" indexed="true" stored="false"/>
+   <field name="band" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="bw" type="sfloat" indexed="true" stored="true" multiValued="true"/>
+   <field name="chans" type="sint" indexed="true" stored="true" multiValued="true"/>
+   <field name="configuration" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="dec" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="distance" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="first" type="date" indexed="true" stored="true" multiValued="true"/>
+   <field name="file_roots" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="fov" type="sfloat" indexed="true" stored="true" multiValued="true"/>
+   <field name="frequency" type="sfloat" indexed="true" stored="true" multiValued="true"/>
+   <field name="last" type="date" indexed="true" stored="true" multiValued="true"/>
+   <field name="nant" type="sint" indexed="true" stored="true" multiValued="true"/>
+   <field name="polar" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ra" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="resolution" type="sfloat" indexed="true" stored="true" multiValued="true"/>
+   <field name="rms" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="source" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="sub" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="tele_conf_sub_nant" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="telescope" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="tos" type="sfloat" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="band_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="frequency_display" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="polar_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="telescope_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="configuration_facet" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="conf" type="text" indexed="true" stored="false" multiValued="true"/>
 
    <field name="format_code" type="string" indexed="true" stored="true" default="generic"/>
 
