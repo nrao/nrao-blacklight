@@ -96,6 +96,7 @@ def uniquify(a_list):
 
 def format_docs():
     ids = set()
+    id_displays = set()
     for doc in merge_docs():
         # Prerequisites for building ID.
         doc['telescope'] = sorted(uniquify(doc['telescope']))
@@ -108,30 +109,34 @@ def format_docs():
         doc['project'] = doc.pop('project_code')
         doc['format_code'] = doc['telescope'][0]
 
-        # Set ID based on telescope.  Ensure unique.
-        if 'VLA' in doc['telescope']:
-            doc['id'] = (doc['project'] +
-                         '_subarray' + doc['subarray'] +
-                         '_' + doc['logical_file'])
-            doc['format_code'] = 'VLA' # double-checking
-        else:
-            doc['id'] = doc['logical_file']
-
-        # doc['id'] = urllib.quote(doc['id'], safe='')
-        # Clean up id to be simple for Blacklight.
-        doc['id_display'] = doc['id']
-        doc['id'] = doc['id'].replace('/', '').replace('.', '')
+        # Set ID from arch_file_id.
+        doc['id'] = doc['arch_file_id']
 
         if doc['id'] in ids:
             raise ValueError, 'record %s has duplicate id' % doc['id']
         ids.add(doc['id'])
 
+        # Create a unique display id.
+        if 'VLA' in doc['telescope']:
+            doc['id_display'] = (doc['project'] +
+                                 '_subarray' + doc['subarray'] +
+                                 '_' + doc['logical_file'])
+            doc['format_code'] = 'VLA' # double-checking
+        else:
+            doc['id_display'] = doc['logical_file']
+
+        if doc['id_display'] in id_displays:
+            raise ValueError, '%s has duplicate display id' % doc['id_display']
+        id_displays.add(doc['id_display'])
+
         # Other fields.
         doc['proprietary'] = doc.pop('lock_status', '')
         doc['filesize_display'] = int(ceil(float(doc['filesize'])/1000.0))#k->M
         doc['band'] = doc['obs_bands'].split()
-        doc['band_facet'] = doc['band']
+        doc['band_facet'] = doc['obs_bands'].split()
         doc['type'] = doc['calib']
+
+        doc['conf_display'] = ', '.join(uniquify(doc['configuration']))
 
         doc['starttime'] = format_datetime(doc['starttime'])
         doc['stoptime'] = format_datetime(doc['stoptime'])
