@@ -103,8 +103,10 @@
    <field name="telescope" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="tos" type="sfloat" indexed="true" stored="true" multiValued="true"/>
 
+   <field name="conf_dispay" type="string" indexed="false" stored="true"/>
+   <field name="frequency_display" type="string" indexed="false" stored="true" multiValued="true"/>
+
    <field name="band_facet" type="string" indexed="true" stored="false" multiValued="true"/>
-   <field name="frequency_display" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="polar_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="telescope_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="configuration_facet" type="string" indexed="true" stored="false" multiValued="true"/>
@@ -128,5 +130,4 @@
  <copyField source="polar" dest="polar_facet"/>
  <copyField source="telescope" dest="telescope_facet"/>
  <copyField source="configuration" dest="configuration_facet"/>
- <copyField source="configuration" dest="conf"/>
 </schema>

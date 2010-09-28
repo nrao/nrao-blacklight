@@ -12,44 +12,43 @@
   <% @response.docs.each_with_index do |document,counter| %>
 
     <% # container for a single doc -%>
-    <li><%= counter + 1 + @response.params[:start].to_i %>. <%= h document["id_display"] %>
+    <li><%= counter + 1 + @response.params[:start].to_i %>. <%= h document.get("project") %> <%= h document.get("telescope_display") %> <span class="<%= h document.get("proprietary") %>"><%= h document.get("proprietary") %></span> (File ID: <%= h document["id"] %>) <a href="#">Download</a> <a href="#">Proposal</a>
       <ul class="document">
         <% if document.get "title" %>
         <li><%= h document.get("title") %></li>
         <% end -%>
+        <li>Title</li>
         <% if document.get "investigator_concise" %>
         <li><%= h document.get("investigator_concise") %></li>
         <% end -%>
-        <table class="filemeta">
-          <tr><th>Project</th><td><%= h document.get("project") %></td></tr>
-          <tr><th>Telescope</th><td><%= h document.get("telescope_display") %></td></tr>
-          <tr><th>Band</th><td><%= h document.get("obs_bands") %></td></tr>
-          <tr><th>Proprietary</th><td class="<%= h document.get("proprietary") %>"><%= h document.get("proprietary") %></td></tr>
-          <tr><th>Format</th><td><%= h document.get("format") %></td></tr>
-          <tr><th>Type</th><td><%= h document.get("type") %></td></tr>
-          <tr><th>Filesize (MB)</th><td><%= h document.get("filesize_display") %></td></tr>
-          <tr><th>Data Starts</th><td><%= h document.get("starttime") %></td></tr>
-          <tr><th>Data Stops</th><td><%= h document.get("stoptime") %></td></tr>
-        </table>
+        <li>Investigators</li>
+        <li>Band: <%= h document.get("obs_bands") %></li>
+        <li>Array Config.: <%= h document.get("conf_display") %></li>
+        <li>From <%= h document.get("starttime") %> to <%= h document.get("stoptime") %></li>
         <table class="obslist">
-          <tr><th>Source</th><th>Freq (MHz)</th><th>RA(J2000)</th><th>DEC(J2000)</th><th>First</th><th>Last</th></tr>
+          <tr><th>Source</th><th>RA(J2000)</th><th>DEC(J2000)</th><th>Freq (MHz)</th><th>BW (MHz)</th></tr>
           <% document["source"].each_index do |x| %>
           <tr>
             <td><%= h document["source"][x] %></td>
-            <td><%= h document["frequency"][x] %></td>
             <td><%= h document["ra"][x] %></td>
             <td><%= h document["dec"][x] %></td>
-            <td><%= h document["first"][x] %></td>
-            <td><%= h document["last"][x] %></td>
+            <td><%= h document["frequency"][x] %></td>
+            <td><%= h document["bw"][x] %></td>
           </tr>
           <% end %>
         </table>
       </ul>
     </li>
-
   <% end %>
 </ul>
 <% if @response.total > 0 %>
 <a href="#" onclick="expandTree('documents'); return false;">Expand All</a>&nbsp;&nbsp;&nbsp;
 <a href="#" onClick="collapseTree('documents'); return false;">Collapse All</a>&nbsp;&nbsp;&nbsp;
 <% end %>
+
+<script type="text/javascript">
+  function expandTreeOnLoad() {
+    expandTree("documents"); return false;
+  }
+  addEvent(window,"load",expandTreeOnLoad);
+</script>

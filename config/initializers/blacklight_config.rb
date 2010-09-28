@@ -1,3 +1,6 @@
+# NOTICE: See app/views/catalog/_document_list.html.erb - bypasses this config!
+# Facets are still configured via this document.
+#
 # You can configure Blacklight from here.
 #
 #   Blacklight.configure(:environment) do |config| end
@@ -60,7 +63,7 @@ Blacklight.configure(:shared) do |config|
         "telescope" => "Telescope",
         "telescope_facet" => "Telescope",
         "configuration" => "Conf",
-        "configuration_facet" => "Conf",
+        "configuration_facet" => "EVLA/VLA Array Config.",
         "sub" => "Sub",
         "nant" => "# Ant.",
         "chans" => "Channels",
@@ -81,6 +84,8 @@ Blacklight.configure(:shared) do |config|
         "starttime" => "Data Starts",
         "stoptime" => "Data Stops",
         "type" => "Type",
+        "band" => "Band",
+        "band_facet" => "Band",
     }
 
   # solr fields that will be treated as facets by the blacklight application
@@ -88,13 +93,15 @@ Blacklight.configure(:shared) do |config|
   config[:facet] = {
     :field_names => [
         "telescope_facet",
-        "band_facet",
         "proprietary",
-        "type",
-        "format",
+        "band_facet",
+        "configuration_facet",
     ],
     :labels => labels
   }
+
+# NOTICE: See app/views/catalog/_document_list.html.erb - bypasses this config!
+# NOTICE: See app/views/catalog/_document_list.html.erb - bypasses this config!
 
   # solr fields to be displayed in the index (search results) view
   #   The ordering of the field names is the order of the display
@@ -154,6 +161,12 @@ Blacklight.configure(:shared) do |config|
   # label is key, solr field is value
   config[:sort_fields] ||= []
   config[:sort_fields] << ['relevance', 'score desc']
+
+  # TODO: add these to sort
+  #  date asc
+  #  date desc
+  #  pi asc (last name first)
+  #  pi desc (last name first)
 
   # If there are more than this many search results, no spelling ("did you
   # mean") suggestion is offered.
