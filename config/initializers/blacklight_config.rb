@@ -160,7 +160,11 @@ Blacklight.configure(:shared) do |config|
   # except in the relevancy case).
   # label is key, solr field is value
   config[:sort_fields] ||= []
-  config[:sort_fields] << ['relevance', 'score desc']
+  config[:sort_fields] << ['Relevance', 'score desc']
+  config[:sort_fields] << ['Date, oldest first', 'starttime asc']
+  config[:sort_fields] << ['Date, newest first', 'starttime desc']
+  config[:sort_fields] << ['PI, ascending', 'investigator_sort asc']
+  config[:sort_fields] << ['PI, descending', 'investigator_sort desc']
 
   # TODO: add these to sort
   #  date asc

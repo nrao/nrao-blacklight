@@ -17,14 +17,12 @@
         <% if document.get "title" %>
         <li><%= h document.get("title") %></li>
         <% end -%>
-        <li>Title</li>
         <% if document.get "investigator_concise" %>
-        <li><%= h document.get("investigator_concise") %></li>
+        <li>Investigators: <%= h document.get("investigator_concise") %></li>
         <% end -%>
-        <li>Investigators</li>
         <li>Band: <%= h document.get("obs_bands") %></li>
         <li>Array Config.: <%= h document.get("conf_display") %></li>
-        <li>From <%= h document.get("starttime") %> to <%= h document.get("stoptime") %></li>
+        <li>Data from <%= h document.get("starttime") %> to <%= h document.get("stoptime") %></li>
         <table class="obslist">
           <tr><th>Source</th><th>RA(J2000)</th><th>DEC(J2000)</th><th>Freq (MHz)</th><th>BW (MHz)</th></tr>
           <% document["source"].each_index do |x| %>

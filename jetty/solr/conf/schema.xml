@@ -112,6 +112,10 @@
    <field name="configuration_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="conf" type="text" indexed="true" stored="false" multiValued="true"/>
 
+   <field name="investigators" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="i" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="investigator_sort" type="alphaOnlySort" indexed="true" stored="true" multiValued="true"/>
+
    <field name="format_code" type="string" indexed="true" stored="true" default="generic"/>
 
    <!--Free-text search field.-->
@@ -130,4 +134,5 @@
  <copyField source="polar" dest="polar_facet"/>
  <copyField source="telescope" dest="telescope_facet"/>
  <copyField source="configuration" dest="configuration_facet"/>
+ <copyField source="investigators" dest="i"/>
 </schema>
