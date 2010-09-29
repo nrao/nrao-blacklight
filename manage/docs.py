@@ -157,7 +157,7 @@ def format_docs():
             raise ValueError, 'Lists are not same length for %s' % doc['id']
 
         # Polish and ship doc.
-        [doc.pop(k) for k in doc if doc[k] in (None, '', list(), tuple(),)]
+        [doc.pop(k) for k,v in doc.items() if v in (None, '', list(), tuple())]
         yield doc
 
 docs = format_docs()
