@@ -12,17 +12,18 @@
   <% @response.docs.each_with_index do |document,counter| %>
 
     <% # container for a single doc -%>
-    <li><%= counter + 1 + @response.params[:start].to_i %>. <%= h document.get("project") %> <%= h document.get("telescope_display") %> <span class="<%= h document.get("proprietary") %>"><%= h document.get("proprietary") %></span> (File ID: <%= h document["id"] %>) <a href="#">Download</a> <a href="#">Proposal</a>
+    <li><%= counter + 1 + @response.params[:start].to_i %>. <%= h document.get("project") %> <%= h document.get("telescope_display") %> <% if document.get "pi_last_name" %><%= h document.get("pi_last_name") %><% end -%> <%= h document.get("date_display") %> <span class="<%= h document.get("proprietary") %>"><%= h document.get("proprietary") %></span> <a href="#">Download</a> <a href="#">Proposal</a>
       <ul class="document">
         <% if document.get "title" %>
-        <li><%= h document.get("title") %></li>
+        <li><strong>Title:</strong> <%= h document.get("title") %></li>
         <% end -%>
         <% if document.get "investigator_concise" %>
-        <li>Investigators: <%= h document.get("investigator_concise") %></li>
+        <li><strong>Investigators:</strong> <%= h document.get("investigator_concise") %></li>
         <% end -%>
-        <li>Band: <%= h document.get("obs_bands") %></li>
-        <li>Array Config.: <%= h document.get("conf_display") %></li>
-        <li>Data from <%= h document.get("starttime") %> to <%= h document.get("stoptime") %></li>
+        <li><strong>Band:</strong> <%= h document.get("obs_bands") %></li>
+        <li><strong>Array Config.:</strong> <%= h document.get("conf_display") %></li>
+        <li><strong>Time Range:</strong> <%= h document.get("starttime") %> to <%= h document.get("stoptime") %></li>
+        <li><strong>File ID:</strong> <%= h document["id"] %></li>
         <table class="obslist">
           <tr><th>Source</th><th>RA(J2000)</th><th>DEC(J2000)</th><th>Freq (MHz)</th><th>BW (MHz)</th></tr>
           <% document["source"].each_index do |x| %>

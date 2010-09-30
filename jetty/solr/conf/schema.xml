@@ -112,6 +112,8 @@
    <field name="configuration_facet" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="conf" type="text" indexed="true" stored="false" multiValued="true"/>
 
+   <field name="date_display" type="string" indexed="false" stored="true"/>
+
    <field name="investigator" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="i" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="investigator_sort" type="alphaOnlySort" indexed="true" stored="true" multiValued="true"/>

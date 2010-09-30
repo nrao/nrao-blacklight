@@ -1,1 +1,20 @@
-<h3>Demonstration search of sample metadata from Socorro.</h3>
+<p class="home">Basic NRAO data archive access tool that includes EVLA, VLA,
+VLBA (soon), and GBT (future) data.  You can search on investigator name,
+proposal ID, object name, telescope, title and abstract words, and position
+(future).</p>
+
+<p class="home">Standard query syntax may be used.  For example, <code><b>Frail OR
+GRB100413</b></code> to search records that contain either "Frail" or
+"GRB100413".  The logical AND is implied; for example, <code><b>Frail VLA
+baryons</b></code> will search records that contain all three words.  To be
+more exact you can search <code><b>i:Frail title:baryons
+telescope:VLA</b></code> (i for investigator and pi for principal
+investigator).  You can also use <code><b>+</b></code>
+and <code><b>-</b></code> like Google, e.g. <code><b>i:frail OR i:chandra
+-GRB</b></code>; here investigator is either Frail or Chandra and the results
+do not mention "GRB".  You may limit your search by using the "facets" to the
+left.</p>
+
+<p class="home">For more tips, search the web for
+<a href="http://www.google.com/search?q=solr+query+syntax">
+Solr query syntax.</a></p>
