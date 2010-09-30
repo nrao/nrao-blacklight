@@ -140,6 +140,7 @@ def format_docs():
 
         doc['starttime'] = format_datetime(doc['starttime'])
         doc['stoptime'] = format_datetime(doc['stoptime'])
+        doc['date_display'] = doc['starttime'].split('T')[0]
 
         # Ensure format code is lower case, for Blacklight use.
         doc['format_code'] = doc['format_code'].lower()
